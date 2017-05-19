@@ -1,0 +1,109 @@
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * CSS definitions
+ *
+ * @package       local
+ * @subpackage    assignsubmission_download
+ * @author        Andreas Hruska (andreas.hruska@tuwien.ac.at)
+ * @author        Katarzyna Potocka (katarzyna.potocka@tuwien.ac.at)
+ * @author        Günther Bernsteiner
+ * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+.path-mod-assign input#id_grpperpage_optimum {
+    margin-left:10px;
+}
+
+.path-mod-assign div.paging {
+    padding-left:10px;
+}
+
+.path-mod-assign input#selectall {
+    float:left;
+    margin-left:3px;
+}
+
+.path-mod-assign div.bold {
+    margin-top:20px;
+}
+
+.path-mod-assign .gradingtable td.c0 input {
+    margin-left:10px;
+}
+
+.path-mod-assign div.data_bold {
+    padding:12px;
+    font-weight:bold;
+}
+
+.path-mod-assign div.table_printpreview {
+    margin-left:10px;
+    margin-right:10px;
+    border:1px solid #D9D9D9;
+}
+
+.path-mod-assign div.table_printpreview .generalbox {
+    border:none;
+}
+
+.path-mod-assign div.table_printpreview .initialbar {
+    display:none;
+}
+
+.path-mod-assign .felement a,
+.path-mod-assign .felement strong {
+    display:block;
+    float:left;
+    margin-top:6px;
+}
+
+.path-mod-assign input#id_grpperpage_optimum {
+    margin-left:10px;
+}
+
+.path-mod-assign div.commands {
+    float:none;
+}
+
+.path-mod-assign table.flexible tr.r0 td {
+    background-color: #f0f0f0;
+    white-space:nowrap
+}
+
+.path-mod-assign table.flexible tr.r1 td {
+    background-color: #fafafa;
+    white-space:nowrap
+}
+
+.path-mod-assignment .scroll_forced {
+    margin-left:10px;
+    margin-right:10px;
+    padding:0px;
+    border:1px solid #dddddd;
+}
+
+.path-mod-assignment .scroll_forced .datapreviewtitle {
+    font-weight: bold;
+    margin-top:1em;
+    margin-left:1em;
+}
+
+.path-mod-assignment .scroll_forced .checkboxcontroller {
+    margin-top:1em;
+    margin-left: 1em;
+}
