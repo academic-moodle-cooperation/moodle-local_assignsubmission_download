@@ -37,24 +37,23 @@ function local_assignsubmission_download_extend_settings_navigation(settings_nav
     if (!$PAGE->course or $PAGE->course->id == SITEID) {
         return;
     }
-    
+
     if (!$PAGE->cm) {
         return;
     }
 
     // Only let users with the appropriate capability see this settings item.
+    // TODO ak: this does not work as expected ! ask Philipp for clarification; see workaround "if ($modulesetting)" below
     if (!has_capability('local/assignsubmission_download:view', context_course::instance($PAGE->course->id), $USER->id)) {
-        return;
+       return;
     }
 
     // This is super fast!
-    
     $modinfo = get_fast_modinfo($PAGE->course, -1)->cms[$PAGE->cm->id];
-    
     if ($modinfo->modname != 'assign') {
         return;
     }
-    
+
     // TODO ak: check if this does anything at all ? (was : printpreview'.$PAGE ... before
     if ($navref->find('assignsubmission_download'.$PAGE->course->id, navigation_node::TYPE_CUSTOM)) {
         // Already added!
@@ -65,12 +64,16 @@ function local_assignsubmission_download_extend_settings_navigation(settings_nav
     if ($CFG->assignsubmission_download_showfilerenaming) {
         $link = new moodle_url('/local/assignsubmission_download/view_filerenaming.php', array('id' => $PAGE->cm->id));
         $modulesettings = $navref->get('modulesettings');
-        $node = $modulesettings->add(get_string('pluginname_submissions', 'local_assignsubmission_download'), $link, navigation_node::TYPE_SETTING);
+        if ($modulesettings) {
+            $node = $modulesettings->add(get_string('pluginname_submissions', 'local_assignsubmission_download'), $link, navigation_node::TYPE_SETTING);
+        }
     }
 
     if ($CFG->assignsubmission_download_showexport) {
         $link = new moodle_url('/local/assignsubmission_download/view_printpreview.php', array('id' => $PAGE->cm->id));
         $modulesettings = $navref->get('modulesettings');
-        $node = $modulesettings->add(get_string('pluginname_print', 'local_assignsubmission_download'), $link, navigation_node::TYPE_SETTING);
+        if ($modulesettings) {
+            $node = $modulesettings->add(get_string('pluginname_print', 'local_assignsubmission_download'), $link, navigation_node::TYPE_SETTING);
+        }
     }
 }

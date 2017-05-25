@@ -51,40 +51,12 @@ $capabilities = array(
         'local/assignsubmission_download:view' => array(
                 'captype' => 'read',
                 'contextlevel' => CONTEXT_COURSE,
-                'legacy' => array(
-                        'student' => CAP_ALLOW,
+                'archetypes' => array(
+                        'student' => CAP_PREVENT,
                         'editingteacher' => CAP_ALLOW,
                         'teacher' => CAP_ALLOW,
                         'manager' => CAP_ALLOW,
                 )
-        ),
-
-        'local/assignsubmission_download:view_courseoverview' => array(
-                'captype' => 'read',
-                'contextlevel' => CONTEXT_COURSE,
-                'legacy' => array(
-                        'editingteacher' => CAP_ALLOW,
-                        'teacher' => CAP_ALLOW,
-                        'manager' => CAP_ALLOW,
-                )
-        ),
-
-        'local/assignsubmission_download:view_students_overview' => array(
-                'captype' => 'read',
-                'contextlevel' => CONTEXT_COURSE,
-                'legacy' => array(
-                        'editingteacher' => CAP_ALLOW,
-                        'teacher' => CAP_ALLOW,
-                        'manager' => CAP_ALLOW,
-                )
-        ),
-
-        'local/assignsubmission_download:view_own_overview' => array(
-                'captype' => 'read',
-                'contextlevel' => CONTEXT_COURSE,
-                'legacy' => array(
-                        'student' => CAP_ALLOW,
-                )
-        ),
+        )
 );
 

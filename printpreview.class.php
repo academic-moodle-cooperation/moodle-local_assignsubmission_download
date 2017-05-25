@@ -45,7 +45,7 @@ class printpreview extends assign {
      */
     protected function view_grading_page() {
         global $CFG, $SESSION, $PAGE;
-        
+
         $id = required_param('id', PARAM_INT);
         $o = '';
 
@@ -243,7 +243,7 @@ class printpreview extends assign {
             set_user_preference('assign_textsize', isset($data->textsize) ? $data->textsize : 0);
             set_user_preference('assign_pageorientation', isset($data->pageorientation) ? $data->pageorientation : 0);
             set_user_preference('assign_printheader', $data->printheader);
-            
+
             $SESSION->selectedusers = explode(',', $data->selectedusers);
             // Download submissions.
             if (isset($data->submittoprint)) {
@@ -279,8 +279,7 @@ class printpreview extends assign {
 
         return;
     }
-    
-    
+
         /**
      * Set the action and parameters that can be used to return to the current page.
      *

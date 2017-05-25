@@ -34,7 +34,7 @@ require_login($course, true, $cm);
 
 $context = context_module::instance($cm->id);
 
-require_capability('mod/assign:view', $context);
+require_capability('local/assignsubmission_download:view', $context);
 
 $filerenaming = new filerenaming($context, $cm, $course);
 
