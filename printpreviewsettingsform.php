@@ -91,7 +91,6 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $mform->setDefault('printheader', true);
 
         // Datasettings.
-        
         $mform->addElement('header', 'datasettings', get_string('datasettingstitle', 'local_assignsubmission_download'));
         
         $options = array('' => get_string('all', 'local_assignsubmission_download'),
@@ -107,9 +106,6 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $groupsactivitymenu = $mform->addElement('groupsactivitymenu', 'group');
         $groupsactivitymenu->setData($instance['cm'], $instance['currenturl']);
 
-
-        
-        
         // Hidden params.
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
         $mform->setType('contextid', PARAM_INT);

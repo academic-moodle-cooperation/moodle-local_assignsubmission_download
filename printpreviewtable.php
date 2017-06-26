@@ -914,4 +914,14 @@ class printpreview_table extends table_sql implements renderable {
         }
         return '';
     }
+    
+    /**
+     * This function is not part of the public api.
+     */
+    function start_html() {
+        global $OUTPUT;
+        $this->initialbars(true);
+        return parent::start_html();
+    }
+
 }
