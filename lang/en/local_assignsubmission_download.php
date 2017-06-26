@@ -63,7 +63,7 @@ $string['strpageorientation'] = 'Page orientation';
 $string['strportrait'] = 'portrait';
 $string['strlandscape'] = 'landscape';
 $string['strpapersizes'] = 'Papersize';
-$string['strprint'] = 'Download report';
+$string['strprint'] = 'Download file';
 $string['strprintheaderlong'] = 'print header and footer if checked';
 $string['strprintheader_help'] = 'Prints header and footer if checked';
 
