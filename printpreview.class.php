@@ -53,11 +53,11 @@ class printpreview extends assign {
         if (empty($SESSION->assignment)) {
             $SESSION->assignment = new stdClass();
         }
-        $ifirst = optional_param('tifirst', false, PARAM_ALPHA);
+        $ifirst = optional_param('sifirst', false, PARAM_ALPHA);
         if (!($ifirst === false)) {
             $SESSION->assignment->i_first = $ifirst;
         }
-        $ilast = optional_param('tilast', false, PARAM_ALPHA);
+        $ilast = optional_param('silast', false, PARAM_ALPHA);
         if (!($ilast === false)) {
             $SESSION->assignment->i_last = $ilast;
         }
@@ -98,7 +98,7 @@ class printpreview extends assign {
      * @return string
      */
     protected function view_printpreview_table() {
-        global $CFG, $PAGE, $USER, $OUTPUT;
+        global $CFG, $PAGE, $USER, $OUTPUT, $SESSION;
 
         $o = '';
         $cmid = $this->get_course_module()->id;
@@ -186,14 +186,25 @@ class printpreview extends assign {
         $o .= $this->get_renderer()->render($header);
 
         $o .= $this->get_renderer()->render(new assign_form('printpreviewsettingsform',
-                                                            $printpreviewsettingsform,
-                                                            'M.local_assignsubmission_download.init_printpreview_settings'));
+                                                           $printpreviewsettingsform,
+                                                           'M.local_assignsubmission_download.init_printpreview_settings'));
 
+        
         // Plagiarism update status apearring in the grading book.
         if (!empty($CFG->enableplagiarism)) {
             require_once($CFG->libdir . '/plagiarismlib.php');
             $o .= plagiarism_update_status($this->get_course(), $this->get_course_module());
         }
+
+        // User search
+        $url = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_printpreview.php', $urlparams);
+        $firstinitial = isset($SESSION->gradereport['filterfirstname']) ? $SESSION->gradereport['filterfirstname'] : '';
+        $lastinitial  = isset($SESSION->gradereport['filtersurname']) ? $SESSION->gradereport['filtersurname'] : '';
+        $totalusers = 2;
+        $numusers = 1;
+        $renderer = $PAGE->get_renderer('core_user');
+        $currentgroup = groups_get_group_name(groups_get_activity_group($this->get_course_module(), true));
+        $o .= $renderer->user_search($url, $firstinitial, $lastinitial, $numusers, $totalusers, $currentgroup);
 
         // Load and print the table of submissions.
         $o .= html_writer::start_tag('div', array('class' => 'table_printpreview'));
