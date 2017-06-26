@@ -28,17 +28,6 @@ require_once($CFG->dirroot . '/local/assignsubmission_download/printpreview.clas
 
 $id = required_param('id', PARAM_INT);
 
-$graderreportsifirst  = optional_param('sifirst', null, PARAM_NOTAGS);
-$graderreportsilast   = optional_param('silast', null, PARAM_NOTAGS);
-
-// The report object is recreated each time, save search information to SESSION object for future use.
-if (isset($graderreportsifirst)) {
-    $SESSION->gradereport['filterfirstname'] = $graderreportsifirst;
-}
-if (isset($graderreportsilast)) {
-    $SESSION->gradereport['filtersurname'] = $graderreportsilast;
-}
-
 list ($course, $cm) = get_course_and_cm_from_cmid($id, 'assign');
 
 require_login($course, true, $cm);
