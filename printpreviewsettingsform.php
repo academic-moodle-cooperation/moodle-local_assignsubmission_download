@@ -51,30 +51,6 @@ class mod_assign_printpreview_settings_form extends moodleform {
 
         $mform->disable_form_change_checker();
 
-        // Datasettings.
-        
-        $mform->addElement('header', 'datasettings', get_string('datasettingstitle', 'local_assignsubmission_download'));
-        
-        $options = array('' => get_string('all', 'local_assignsubmission_download'),
-                         ASSIGN_FILTER_SUBMITTED => get_string('filtersubmitted', 'assign'),
-                         ASSIGN_FILTER_REQUIRE_GRADING => get_string('filterrequiregrading', 'assign'));
-        if ($instance['submissionsenabled']) {
-            $mform->addElement('select', 'filter', get_string('show', 'local_assignsubmission_download'), $options, $dirtyclass);
-            $mform->setDefault('filter', get_user_preferences('assign_filter', ''));
-        }
-
-        MoodleQuickForm::registerElementType('groupsactivitymenu',
-            $CFG->dirroot.'/local/assignsubmission_download/groupsactivitymenu.php', 'MoodleQuickForm_groupsactivitymenu');
-        $groupsactivitymenu = $mform->addElement('groupsactivitymenu', 'group');
-        $groupsactivitymenu->setData($instance['cm'], $instance['currenturl']);
-
-        MoodleQuickForm::registerElementType('initialsbar',
-            $CFG->dirroot.'/local/assignsubmission_download/initialsbar.php', 'MoodleQuickForm_initialsbar');
-        $mform->addElement('html', '<br/>');
-        $mform->addElement('initialsbar', 'initialsbar', get_string('firstname'));
-        $mform->addElement('html', '<br/><br/>');
-        $mform->addElement('initialsbar', 'initialsbar', get_string('lastname'));
-        
         // Printsettings.
         $mform->addElement('header', 'printsettings', get_string('printsettingstitle', 'local_assignsubmission_download'));
 
@@ -114,6 +90,26 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $mform->addHelpButton('printheader', 'strprintheader', 'local_assignsubmission_download');
         $mform->setDefault('printheader', true);
 
+        // Datasettings.
+        
+        $mform->addElement('header', 'datasettings', get_string('datasettingstitle', 'local_assignsubmission_download'));
+        
+        $options = array('' => get_string('all', 'local_assignsubmission_download'),
+                         ASSIGN_FILTER_SUBMITTED => get_string('filtersubmitted', 'assign'),
+                         ASSIGN_FILTER_REQUIRE_GRADING => get_string('filterrequiregrading', 'assign'));
+        if ($instance['submissionsenabled']) {
+            $mform->addElement('select', 'filter', get_string('show', 'local_assignsubmission_download'), $options, $dirtyclass);
+            $mform->setDefault('filter', get_user_preferences('assign_filter', ''));
+        }
+
+        MoodleQuickForm::registerElementType('groupsactivitymenu',
+            $CFG->dirroot.'/local/assignsubmission_download/groupsactivitymenu.php', 'MoodleQuickForm_groupsactivitymenu');
+        $groupsactivitymenu = $mform->addElement('groupsactivitymenu', 'group');
+        $groupsactivitymenu->setData($instance['cm'], $instance['currenturl']);
+
+
+        
+        
         // Hidden params.
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
         $mform->setType('contextid', PARAM_INT);

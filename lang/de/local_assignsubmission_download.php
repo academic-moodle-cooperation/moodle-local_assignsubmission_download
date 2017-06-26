@@ -63,7 +63,7 @@ $string['strpageorientation'] = 'Seitenausrichtung';
 $string['strportrait'] = 'Hochformat';
 $string['strlandscape'] = 'Querformat';
 $string['strpapersizes'] = 'Papierformat';
-$string['strprint'] = 'Bericht herunterladen';
+$string['strprint'] = 'Datei herunterladen';
 $string['strprintheaderlong'] = 'inkludiere Kopf-/Fußzeilen';
 $string['strprintheader_help'] = 'inkludiert Kopf-/Fußzeilen wenn angekreuzt';
 
