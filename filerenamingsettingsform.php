@@ -54,18 +54,20 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         // Filerename-settings.
         $mform->addElement('header', 'filerenamesettings', get_string('filerenamesettingstitle', 'local_assignsubmission_download'));
 
-        $mform->addElement('html', $OUTPUT->notification(get_string('notreuploadable_hint', 'local_assignsubmission_download'), 'info'));
-        
+        if ($instance['show_notreuploadable_hint']) {
+            $mform->addElement('html', $OUTPUT->notification(get_string('notreuploadable_hint', 'local_assignsubmission_download'), 'info'));
+        }
+
         $mform->addElement('text', 'filerenamingpattern', get_string('filerenamingpattern', 'local_assignsubmission_download'), '', PARAM_RAW_TRIMMED, 100);
         $mform->setType('filerenamingpattern', PARAM_RAW_TRIMMED);
         $mform->setDefault('filerenamingpattern', get_string('defaultfilerenamingpattern', 'local_assignsubmission_download'));
         $mform->addElement('static', 'filerenamingpattern_help', '', get_string('rename_propertydescription', 'local_assignsubmission_download'));
         $mform->addHelpButton('filerenamingpattern', 'filerenamingpattern', 'local_assignsubmission_download');
-        
+
         $mform->addElement('advcheckbox', 'clean_filerenaming', get_string('clean_filerenaming', 'local_assignsubmission_download'), ' ');
         $mform->setDefault('clean_filerenaming', true);
         $mform->addHelpButton('clean_filerenaming', 'clean_filerenaming', 'local_assignsubmission_download');
-        
+
         // Hidden params.
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
         $mform->setType('contextid', PARAM_INT);

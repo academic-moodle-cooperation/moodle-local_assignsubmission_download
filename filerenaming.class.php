@@ -135,11 +135,15 @@ class filerenaming extends assign {
         $urlparams = array('id' => $this->get_course_module()->id, 'action' => 'grading');
         $currenturl = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_filerenaming.php', $urlparams);
 
+        $show_notreuploadable_hint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
+                                    || $this->get_feedback_plugin_by_type('file')->is_enabled();
+
         $filerenamingsettingsformparams = array('cm' => $this->get_course_module(),
                                                 'contextid' => $this->get_context()->id,
                                                 'currenturl' => $currenturl,
                                                 'userid' => $USER->id,
-                                                'submissionsenabled' => $this->is_any_submission_plugin_enabled());
+                                                'submissionsenabled' => $this->is_any_submission_plugin_enabled(),
+                                                'show_notreuploadable_hint' => $show_notreuploadable_hint);
 
         $classoptions = array('class' => 'gradingbatchoperationsform');
 
@@ -193,18 +197,22 @@ class filerenaming extends assign {
         $urlparams = array('id' => $this->get_course_module()->id, 'action' => 'grading');
         $currenturl = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_filerenaming.php', $urlparams);
 
+        $show_notreuploadable_hint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
+                                    || $this->get_feedback_plugin_by_type('file')->is_enabled();
+
         $filerenamingsettingsparams = array('cm' => $this->get_course_module(),
                                             'currenturl' => $currenturl,
                                             'contextid' => $this->get_context()->id,
                                             'userid' => $USER->id,
-                                            'submissionsenabled' => $this->is_any_submission_plugin_enabled());
+                                            'submissionsenabled' => $this->is_any_submission_plugin_enabled(),
+                                            'show_notreuploadable_hint' => $show_notreuploadable_hint);
 
         $mform = new mod_assign_filerenaming_settings_form(null, $filerenamingsettingsparams);
 
         if ($data = $mform->get_data()) {
             set_user_preference('filerenamingpattern', $data->filerenamingpattern);
             set_user_preference('clean_filerenaming', $data->clean_filerenaming);
-            
+
             $SESSION->selectedusers = explode(',', $data->selectedusers);
             // Download submissions.
             if (isset($data->submittodownload)) {
@@ -334,7 +342,7 @@ class filerenaming extends assign {
                                     } else {
                                         $pathfilename = $prefixedfilename . '/' . $zipfilename;
                                     }
-                                    
+
                                     // AMC moodle university code start
                                     $pathfilename = filerenaming_rename_file($pathfilename, $zipfilename, $student, $this, $submission, $groupname, $filesforzipping);
                                     // AMC moodle university code end
