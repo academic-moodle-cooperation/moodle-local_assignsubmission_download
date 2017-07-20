@@ -99,7 +99,7 @@ $string['filerenamesettingstitle'] = 'Download renamed submissions';
 $string['strfilerenaming'] = 'Download submissions';
 
 $string['filerenamingpattern'] = 'Naming scheme';
-$string['rename_propertydescription'] = 'Available tags: [filename] [firstname] [lastname] [fullname] [idnumber] [assignmentname] [group]';
+$string['rename_propertydescription'] = 'Available tags: {$a}';
 $string['filerenamingpattern_help'] = 'The parameter \'naming scheme\' determines the naming of the filenames. The following bracket terms (\'tags\') are available:<br>
     <br>
     [filename] original filename<br>

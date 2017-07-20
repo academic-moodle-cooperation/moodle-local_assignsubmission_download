@@ -99,7 +99,7 @@ $string['filerenamesettingstitle'] = 'Alle Abgaben umbenannt herunterladen';
 $string['strfilerenaming'] = 'Abgaben herunterladen';
 
 $string['filerenamingpattern'] = 'Namensschema';
-$string['rename_propertydescription'] = 'Verfügbare Tags: [filename] [firstname] [lastname] [fullname] [idnumber] [assignmentname] [group]';
+$string['rename_propertydescription'] = 'Verfügbare Tags: {$a}';
 $string['filerenamingpattern_help'] = 'Der Parameter \'Namensschema\' legt die Benennung der neuen Dateinamen fest. Für die Benennung stehen folgende Klammerausdrücke \'Tags\' zur Verfügung:<br>
     <br>
     [filename] ursprünglicher Dateiname<br>

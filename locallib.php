@@ -28,6 +28,9 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
+
+const FILERENAMING_TAGS = ['[idnumber]','[lastname]','[firstname]','[fullname]','[assignmentname]','[group]','[filename]'];
+
 /**
  * File rename function
  * Used by assign for renaming at upload or download of files
@@ -46,7 +49,7 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
     $placeholders = ['[idnumber]','[lastname]','[firstname]','[fullname]','[assignmentname]','[group]','[filename]'];
     $filerenaming_userpref = get_user_preferences('filerenamingpattern', '');
     $o = '';
-    if (ispatternvalid($placeholders, $filerenaming_userpref)) {
+    if (ispatternvalid(FILERENAMING_TAGS, $filerenaming_userpref)) {
         // use locally set filerenaming 
         $o = $filerenaming_userpref;
     } else {
