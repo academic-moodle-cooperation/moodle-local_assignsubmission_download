@@ -1,5 +1,5 @@
-RSS Player
-===============
+Assign Submission Download
+==========================
 
 This file is part of the local_assignsubmission_download plugin for Moodle - <http://moodle.org/>
 
