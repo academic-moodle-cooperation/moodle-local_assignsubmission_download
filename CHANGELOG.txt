@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-3.3.0 (2017-07-28)
+3.3.0 (2017-08-03)
 ------------------
 
 * Moodle 3.3 compatible version
@@ -10,3 +10,5 @@ CHANGELOG
 * [CHANGED] #4430 #4428 Move from local_printpreview to local_assignsubmission_download
 * [FIXED] #4496 Replace hard coded initialsbar with Moodle standard
 * [FEATURE] #4428 Clickable tags for file renaming pattern
+* [FIXED] #4638 Fix debug message after 'Download renamed submissions' when nothing has been
+ submitted for the assignment

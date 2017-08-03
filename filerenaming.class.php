@@ -389,6 +389,8 @@ class filerenaming extends assign {
                                                                     'action'=>'grading'));
             $result .= $this->get_renderer()->continue_button($url);
             $result .= $this->view_footer();
+            echo $result;
+            $result = '';
         } else if ($zipfile = $this->pack_files($filesforzipping)) {
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
             // Send file and delete after sending.
