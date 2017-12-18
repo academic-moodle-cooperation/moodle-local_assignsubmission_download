@@ -43,7 +43,7 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
     private $aag;
     private $groupmode;
 
-    public function moodlequickform_groupsactivitymenu($elementname = null,
+    public function __construct($elementname = null,
                                                        $elementlabel = null,
                                                        $options = null,
                                                        $attributes = null) {
