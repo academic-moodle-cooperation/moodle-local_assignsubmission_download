@@ -114,17 +114,17 @@ M.local_assignsubmission_download = {
     },
 
     change_in_perpage: function (e, combo) {
-        // Stop the event's default behavior
+        // Stop the event's default behavior.
         e.preventDefault();
-        // Stop the event from bubbling up the DOM tree
+        // Stop the event from bubbling up the DOM tree.
         e.stopPropagation();
 
         if(M.local_assignsubmission_download.Y.one(combo[1]).get('value') == 0) {
-            //check checkbox and disable text field
+            // Check checkbox and disable text field.
             M.local_assignsubmission_download.Y.one(combo[0]).set('checked', 'checked');
             M.local_assignsubmission_download.Y.one(combo[1]).setAttribute('disabled', 'disabled');
         } else {
-            //save last value, uncheck checkbox and enable textfield if checked/disabled
+            // Save last value, uncheck checkbox and enable textfield if checked/disabled.
             M.local_assignsubmission_download.stdperpage = M.local_assignsubmission_download.Y.one(combo[1]).get('value');
             M.local_assignsubmission_download.Y.one(combo[0]).set('checked', '');
             M.local_assignsubmission_download.Y.one(combo[1]).removeAttribute('disabled');
@@ -132,18 +132,18 @@ M.local_assignsubmission_download = {
     },
 
     change_in_optimum: function (e, combo) {
-        // Stop the event's default behavior
+        // Stop the event's default behavior.
         e.preventDefault();
-        // Stop the event from bubbling up the DOM tree
+        // Stop the event from bubbling up the DOM tree.
         e.stopPropagation();
 
         if(M.local_assignsubmission_download.Y.one(combo[0]).get('checked')) {
-            //save last value, set to 0 and disable textfield
+            // Save last value, set to 0 and disable textfield.
             M.local_assignsubmission_download.stdperpage = M.local_assignsubmission_download.Y.one(combo[1]).get('value');
             M.local_assignsubmission_download.Y.one(combo[1]).set('value', 0);
             M.local_assignsubmission_download.Y.one(combo[1]).setAttribute('disabled', 'disabled');
         } else {
-            //restore last value and enable again
+            // Restore last value and enable again.
             M.local_assignsubmission_download.Y.one(combo[1]).set('value', M.local_assignsubmission_download.stdperpage);
             M.local_assignsubmission_download.Y.one(combo[1]).removeAttribute('disabled');
         }

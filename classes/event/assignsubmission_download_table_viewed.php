@@ -58,7 +58,7 @@ class assignsubmission_download_table_viewed extends \mod_assign\event\base {
      * Create instance of event.
      *
      * @since Moodle 2.7
-     * 
+     *
      * @param \assign $assign
      * @return assignsubmission_download_table_viewed
      */
@@ -70,7 +70,6 @@ class assignsubmission_download_table_viewed extends \mod_assign\event\base {
             ),
         );
         self::$preventcreatecall = false;
-        // @var printpreview_table_viewed $event
         $event = self::create($data);
         self::$preventcreatecall = true;
         $event->set_assign($assign);

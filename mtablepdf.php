@@ -25,8 +25,6 @@
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// namespace mod_checkmark;
-
 require_once('../../config.php');
 
 require_once($CFG->libdir . '/pdflib.php');

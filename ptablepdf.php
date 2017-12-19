@@ -112,12 +112,12 @@ class table_pdf_export_format extends table_default_export_format_parent {
         $assignmentname = $assignment->name; // Aufgabe.
 
         $headerallowsubmissionfromdate = get_string('pdf_availablefrom', 'local_assignsubmission_download') . ':';
-        $allowsubmissionsfromdate = ($assignment->allowsubmissionsfromdate == 0) ?
-            get_string('pdf_notactive', 'local_assignsubmission_download') : userdate($assignment->allowsubmissionsfromdate);
+        $allowsubmissionsfromdate = ($assignment->allowsubmissionsfromdate == 0) ? get_string(
+                'pdf_notactive', 'local_assignsubmission_download') : userdate($assignment->allowsubmissionsfromdate);
 
         $headerduedate = get_string('pdf_duedate', 'local_assignsubmission_download') . ':';
-        $duedate = ($assignment->duedate == 0) ?
-            get_string('pdf_notactive', 'local_assignsubmission_download') : userdate($assignment->duedate);
+        $duedate = ($assignment->duedate == 0) ? get_string(
+                'pdf_notactive', 'local_assignsubmission_download') : userdate($assignment->duedate);
 
         $headerview = get_string('pdf_view', 'local_assignsubmission_download');
         $viewname = get_string('submissions', 'local_assignsubmission_download');

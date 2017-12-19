@@ -62,7 +62,6 @@ class assignsubmission_download_table_downloaded extends \mod_assign\event\base 
             'objectid' => $assign->get_instance()->id
         );
         self::$preventcreatecall = false;
-        // @var printpreview_table_downloaded $event
         $event = self::create($data);
         self::$preventcreatecall = true;
         $event->set_assign($assign);

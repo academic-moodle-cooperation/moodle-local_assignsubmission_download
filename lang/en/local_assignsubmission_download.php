@@ -94,7 +94,7 @@ $string['printpreviewtabledownloaded_description'] = 'The user with id {$a->user
     'with the course module id {$a->contextinstanceid}.';
 $string['downloadprintpreviewtable'] = 'Download submission export table.';
 
-// Filerenaming
+// Filerenaming.
 $string['filerenamesettingstitle'] = 'Download renamed submissions';
 $string['strfilerenaming'] = 'Download submissions';
 

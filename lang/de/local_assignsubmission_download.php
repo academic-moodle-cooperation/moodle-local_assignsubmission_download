@@ -94,7 +94,7 @@ $string['printpreviewtabledownloaded_description'] = 'Der Benutzer mit id {$a->u
     'mit der Kursmodul id {$a->contextinstanceid} herunter.';
 $string['downloadprintpreviewtable'] = 'Abgabentabelle herunterladen.';
 
-// Filerenaming
+// Filerenaming.
 $string['filerenamesettingstitle'] = 'Alle Abgaben umbenannt herunterladen';
 $string['strfilerenaming'] = 'Abgaben herunterladen';
 

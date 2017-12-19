@@ -60,16 +60,20 @@ class mod_assign_printpreview_settings_form extends moodleform {
                          MTablePDF::OUTPUT_FORMAT_ODS => 'ODS',
                          MTablePDF::OUTPUT_FORMAT_CSV_COMMA => 'CSV (;)',
                          MTablePDF::OUTPUT_FORMAT_CSV_TAB => 'CSV (tab)');
-        $mform->addElement('select', 'exportformat', get_string('exportformat', 'local_assignsubmission_download'), $options, $dirtyclass);
+        $mform->addElement('select', 'exportformat',
+                get_string('exportformat', 'local_assignsubmission_download'), $options, $dirtyclass);
 
-        $mform->addElement('html', html_writer::div(html_writer::span(get_string('onlypdf', 'local_assignsubmission_download'), null), 'bold'));
+        $mform->addElement('html', html_writer::div(html_writer::span(
+                get_string('onlypdf', 'local_assignsubmission_download'), null), 'bold'));
 
         $grpperpage = array();
-        $grpperpage[] =& $mform->createElement('text', 'perpage', get_string('perpage', 'local_assignsubmission_download'), 'size="3"');
+        $grpperpage[] =& $mform->createElement('text', 'perpage',
+                get_string('perpage', 'local_assignsubmission_download'), 'size="3"');
         $mform->setType('perpage', PARAM_INT);
         $mform->setDefault('perpage', get_user_preferences('assign_perpage', $CFG->assignmentpatch_perpage));
 
-        $grpperpage[] =& $mform->createElement('advcheckbox', 'optimum', '', get_string('optimum', 'local_assignsubmission_download'));
+        $grpperpage[] =& $mform->createElement('advcheckbox', 'optimum', '',
+                get_string('optimum', 'local_assignsubmission_download'));
         $mform->setDefault('optimum', get_user_preferences('assign_optimum', 0));
 
         $mform->addGroup($grpperpage, 'grpperpage', get_string('assignmentsperpage', 'assign'), array(''), true);
@@ -79,7 +83,8 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $options = array(0 => get_string('strsmall', 'local_assignsubmission_download'),
                          1 => get_string('strmedium', 'local_assignsubmission_download'),
                          2 => get_string('strlarge', 'local_assignsubmission_download'));
-        $mform->addElement('select', 'textsize', get_string('strtextsize', 'local_assignsubmission_download'), $options, $dirtyclass);
+        $mform->addElement('select', 'textsize',
+                get_string('strtextsize', 'local_assignsubmission_download'), $options, $dirtyclass);
 
         $options = array(0 => get_string('strportrait', 'local_assignsubmission_download'),
                          1 => get_string('strlandscape', 'local_assignsubmission_download'));
@@ -92,7 +97,7 @@ class mod_assign_printpreview_settings_form extends moodleform {
 
         // Datasettings.
         $mform->addElement('header', 'datasettings', get_string('datasettingstitle', 'local_assignsubmission_download'));
-        
+
         $options = array('' => get_string('all', 'local_assignsubmission_download'),
                          ASSIGN_FILTER_SUBMITTED => get_string('filtersubmitted', 'assign'),
                          ASSIGN_FILTER_REQUIRE_GRADING => get_string('filterrequiregrading', 'assign'));
@@ -121,5 +126,5 @@ class mod_assign_printpreview_settings_form extends moodleform {
         // Button.
         $mform->addElement('submit', 'submittoprint', get_string('strprint', 'local_assignsubmission_download'));
 
-        }
+    }
 }

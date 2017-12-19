@@ -53,10 +53,12 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->disable_form_change_checker();
 
         // Filerename-settings.
-        $mform->addElement('header', 'filerenamesettings', get_string('filerenamesettingstitle', 'local_assignsubmission_download'));
+        $mform->addElement('header', 'filerenamesettings',
+                get_string('filerenamesettingstitle', 'local_assignsubmission_download'));
 
         if ($instance['show_notreuploadable_hint']) {
-            $mform->addElement('html', $OUTPUT->notification(get_string('notreuploadable_hint', 'local_assignsubmission_download'), 'info'));
+            $mform->addElement('html', $OUTPUT->notification(
+                    get_string('notreuploadable_hint', 'local_assignsubmission_download'), 'info'));
         }
 
         $tags = array();
@@ -64,15 +66,18 @@ class mod_assign_filerenaming_settings_form extends moodleform {
             $tags[] = html_writer::tag('span', $tag, array('class' => 'nametag', 'data-nametag' => $tag));
         }
 
-        $mform->addElement('text', 'filerenamingpattern', get_string('filerenamingpattern', 'local_assignsubmission_download'),  array('size' => '100'));
+        $mform->addElement('text', 'filerenamingpattern',
+                get_string('filerenamingpattern', 'local_assignsubmission_download'),  array('size' => '100'));
         $mform->setType('filerenamingpattern', PARAM_RAW_TRIMMED);
         $mform->setDefault('filerenamingpattern', get_string('defaultfilerenamingpattern', 'local_assignsubmission_download'));
-        $mform->addElement('static', 'tags', '', get_string('rename_propertydescription', 'local_assignsubmission_download', implode("", $tags)));
+        $mform->addElement('static', 'tags', '',
+                get_string('rename_propertydescription', 'local_assignsubmission_download', implode("", $tags)));
         $mform->addHelpButton('filerenamingpattern', 'filerenamingpattern', 'local_assignsubmission_download');
 
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_tagsupport', 'initializer', array());
 
-        $mform->addElement('advcheckbox', 'clean_filerenaming', get_string('clean_filerenaming', 'local_assignsubmission_download'), ' ');
+        $mform->addElement('advcheckbox', 'clean_filerenaming',
+                get_string('clean_filerenaming', 'local_assignsubmission_download'), ' ');
         $mform->setDefault('clean_filerenaming', true);
         $mform->addHelpButton('clean_filerenaming', 'clean_filerenaming', 'local_assignsubmission_download');
 

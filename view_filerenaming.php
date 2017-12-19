@@ -52,7 +52,7 @@ $PAGE->navbar->add(get_string('pluginname_submissions', 'local_assignsubmission_
 
 $output = $PAGE->get_renderer('local_assignsubmission_download');
 
-$completion=new completion_info($course);
+$completion = new completion_info($course);
 $completion->set_module_viewed($cm);
 
 // Get the class to render the page.

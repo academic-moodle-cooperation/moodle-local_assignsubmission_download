@@ -40,7 +40,7 @@ class printpreview extends assign {
 
     /**
      * Main view setup
-     * 
+     *
      * @global type $SESSION
      */
     protected function view_grading_page() {
@@ -280,7 +280,7 @@ class printpreview extends assign {
         return;
     }
 
-        /**
+    /**
      * Set the action and parameters that can be used to return to the current page.
      *
      * @param string $action The action for the current page

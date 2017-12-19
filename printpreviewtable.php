@@ -826,17 +826,17 @@ class printpreview_table extends table_sql implements renderable {
      * @param $exportclass (optional) if passed, set the table to use this export class.
      * @return table_default_export_format_parent the export class in use (after any set).
      */
-    function export_class_instance($exportclass = null) {
+    public function export_class_instance($exportclass = null) {
         if (!is_null($exportclass)) {
             $this->started_output = true;
             $this->exportclass = $exportclass;
             $this->exportclass->table = $this;
         } else if (is_null($this->exportclass) && !empty($this->download)) {
-            // There is currently (3.1) no writer.php for pdf; we use our mtablepdf
+            // There is currently (3.1) no writer.php for pdf; we use our mtablepdf.
             if ($this->download === 'pdf') {
-               $this->exportclass = new table_pdf_export_format($this, $this->download);
+                $this->exportclass = new table_pdf_export_format($this, $this->download);
             } else {
-               $this->exportclass = new table_dataformat_export_format($this, $this->download);
+                $this->exportclass = new table_dataformat_export_format($this, $this->download);
             }
             if (!$this->exportclass->document_started()) {
                 $this->exportclass->start_document($this->filename);
@@ -914,11 +914,11 @@ class printpreview_table extends table_sql implements renderable {
         }
         return '';
     }
-    
+
     /**
      * This function is not part of the public api.
      */
-    function start_html() {
+    public function start_html() {
         global $OUTPUT;
         $this->initialbars(true);
         return parent::start_html();

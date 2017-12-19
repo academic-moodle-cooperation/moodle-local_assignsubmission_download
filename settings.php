@@ -29,19 +29,23 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
-    $settings = new admin_settingpage('local_assignsubmission_download', get_string('pluginname', 'local_assignsubmission_download'));
+    $settings = new admin_settingpage('local_assignsubmission_download',
+            get_string('pluginname', 'local_assignsubmission_download'));
     $ADMIN->add('localplugins', $settings);
 
-    $settings->add(new admin_setting_configtext('assignmentpatch_perpage', get_string('perpage_propertyname', 'local_assignsubmission_download'),
-                get_string('perpage_propertydescription', 'local_assignsubmission_download'), 100, PARAM_INT , 10));
+    $settings->add(new admin_setting_configtext('assignmentpatch_perpage',
+            get_string('perpage_propertyname', 'local_assignsubmission_download'),
+            get_string('perpage_propertydescription', 'local_assignsubmission_download'), 100, PARAM_INT , 10));
 
     $a = new \stdClass();
     $a->entrytoshow = get_string('pluginname_submissions', 'local_assignsubmission_download');
-    $settings->add(new admin_setting_configcheckbox('assignsubmission_download_showfilerenaming', get_string('show_propertyname', 'local_assignsubmission_download', $a),
-                get_string('show_propertydescription', 'local_assignsubmission_download', $a), true));
+    $settings->add(new admin_setting_configcheckbox('assignsubmission_download_showfilerenaming',
+            get_string('show_propertyname', 'local_assignsubmission_download', $a),
+            get_string('show_propertydescription', 'local_assignsubmission_download', $a), true));
 
     $a->entrytoshow = get_string('pluginname_print', 'local_assignsubmission_download');
-    $settings->add(new admin_setting_configcheckbox('assignsubmission_download_showexport', get_string('show_propertyname', 'local_assignsubmission_download', $a),
-                get_string('show_propertydescription', 'local_assignsubmission_download', $a), true));
+    $settings->add(new admin_setting_configcheckbox('assignsubmission_download_showexport',
+            get_string('show_propertyname', 'local_assignsubmission_download', $a),
+            get_string('show_propertydescription', 'local_assignsubmission_download', $a), true));
 
 }

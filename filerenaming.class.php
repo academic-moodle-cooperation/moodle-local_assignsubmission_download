@@ -40,12 +40,12 @@ class filerenaming extends assign {
 
     /**
      * Main view setup
-     * 
+     *
      * @global type $SESSION
      */
     protected function view_grading_page() {
         global $CFG, $SESSION, $PAGE;
-        
+
         $id = required_param('id', PARAM_INT);
         $o = '';
 
@@ -127,7 +127,7 @@ class filerenaming extends assign {
 
         $pattern = get_user_preferences('filerenamingpattern', '');
         $cleanfilename = get_user_preferences('clean_filerenaming', '');
-        
+
         $controller = $gradingmanager->get_active_controller();
         $showquickgrading = empty($controller);
         $quickgrading = get_user_preferences('assign_quickgrading', false);
@@ -135,7 +135,7 @@ class filerenaming extends assign {
         $urlparams = array('id' => $this->get_course_module()->id, 'action' => 'grading');
         $currenturl = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_filerenaming.php', $urlparams);
 
-        $show_notreuploadable_hint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
+        $shownotreuploadablehint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
                                     || $this->get_feedback_plugin_by_type('file')->is_enabled();
 
         $filerenamingsettingsformparams = array('cm' => $this->get_course_module(),
@@ -143,7 +143,7 @@ class filerenaming extends assign {
                                                 'currenturl' => $currenturl,
                                                 'userid' => $USER->id,
                                                 'submissionsenabled' => $this->is_any_submission_plugin_enabled(),
-                                                'show_notreuploadable_hint' => $show_notreuploadable_hint);
+                                                'show_notreuploadable_hint' => $shownotreuploadablehint);
 
         $classoptions = array('class' => 'gradingbatchoperationsform');
 
@@ -157,7 +157,6 @@ class filerenaming extends assign {
         $filerenamingsettingsdata->clean_filerenaming = $cleanfilename;
         $filerenamingsettingsform->set_data($filerenamingsettingsdata);
 
-        // $actionformtext = $this->get_renderer()->render($gradingactions);
         $actionformtext = "";
         $header = new assign_header($this->get_instance(),
                                     $this->get_context(),
@@ -197,7 +196,7 @@ class filerenaming extends assign {
         $urlparams = array('id' => $this->get_course_module()->id, 'action' => 'grading');
         $currenturl = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_filerenaming.php', $urlparams);
 
-        $show_notreuploadable_hint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
+        $shownotreuploadablehint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
                                     || $this->get_feedback_plugin_by_type('file')->is_enabled();
 
         $filerenamingsettingsparams = array('cm' => $this->get_course_module(),
@@ -205,7 +204,7 @@ class filerenaming extends assign {
                                             'contextid' => $this->get_context()->id,
                                             'userid' => $USER->id,
                                             'submissionsenabled' => $this->is_any_submission_plugin_enabled(),
-                                            'show_notreuploadable_hint' => $show_notreuploadable_hint);
+                                            'show_notreuploadable_hint' => $shownotreuploadablehint);
 
         $mform = new mod_assign_filerenaming_settings_form(null, $filerenamingsettingsparams);
 
@@ -222,7 +221,7 @@ class filerenaming extends assign {
         }
     }
 
-    
+
     /**
      * Set the action and parameters that can be used to return to the current page.
      *
@@ -242,7 +241,7 @@ class filerenaming extends assign {
         $currenturl->params($params);
         $PAGE->set_url($currenturl);
     }
-    
+
     /**
      * Download a zip file of all assignment submissions.
      *
@@ -254,7 +253,7 @@ class filerenaming extends assign {
 
         // More efficient to load this here.
         require_once($CFG->libdir.'/filelib.php');
-        require_once($CFG->dirroot.'/local/assignsubmission_download/locallib.php'); // // AMC moodle university code one line
+        require_once($CFG->dirroot.'/local/assignsubmission_download/locallib.php'); // AMC moodle university code one line.
 
         // Increase the server timeout to handle the creation and sending of large zip files.
         core_php_time_limit::raise();
@@ -279,7 +278,7 @@ class filerenaming extends assign {
         }
 
         // Construct the zip file name.
-        $filename = filerenaming_clean_custom($this->get_course()->shortname . '-' . // AMC moodle university code one line
+        $filename = filerenaming_clean_custom($this->get_course()->shortname . '-' . // AMC moodle university code one line.
                                    $this->get_instance()->name . '-' .
                                    $groupname.$this->get_course_module()->id . '.zip');
 
@@ -343,9 +342,10 @@ class filerenaming extends assign {
                                         $pathfilename = $prefixedfilename . '/' . $zipfilename;
                                     }
 
-                                    // AMC moodle university code start
-                                    $pathfilename = filerenaming_rename_file($pathfilename, $zipfilename, $student, $this, $submission, $groupname, $filesforzipping);
-                                    // AMC moodle university code end
+                                    // AMC moodle university code start.
+                                    $pathfilename = filerenaming_rename_file($pathfilename, $zipfilename, $student,
+                                            $this, $submission, $groupname, $filesforzipping);
+                                    // AMC moodle university code end.
 
                                     $pathfilename = clean_param($pathfilename, PARAM_PATH);
                                     $filesforzipping[$pathfilename] = $file;
@@ -365,9 +365,10 @@ class filerenaming extends assign {
                                                                        $type .
                                                                        '_' .
                                                                        $zipfilename);
-                                    // AMC moodle university code start
-                                    $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student, $this, $submission, $groupname, $filesforzipping);
-                                    // AMC moodle university code end
+                                    // AMC moodle university code start.
+                                    $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
+                                            $this, $submission, $groupname, $filesforzipping);
+                                    // AMC moodle university code end.
                                     $filesforzipping[$prefixedfilename] = $file;
                                 }
                             }
@@ -385,8 +386,8 @@ class filerenaming extends assign {
                                         get_string('downloadall', 'assign'));
             $result .= $this->get_renderer()->render($header);
             $result .= $this->get_renderer()->notification(get_string('nosubmission', 'assign'));
-            $url = new moodle_url('/mod/assign/view.php', array('id'=>$this->get_course_module()->id,
-                                                                    'action'=>'grading'));
+            $url = new moodle_url('/mod/assign/view.php', array('id' => $this->get_course_module()->id,
+                                                                    'action' => 'grading'));
             $result .= $this->get_renderer()->continue_button($url);
             $result .= $this->view_footer();
             echo $result;
@@ -400,7 +401,4 @@ class filerenaming extends assign {
         return $result;
     }
 
-    
-    
-    
 }

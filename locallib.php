@@ -29,12 +29,12 @@
 defined('MOODLE_INTERNAL') || die();
 
 
-const FILERENAMING_TAGS = ['[idnumber]','[lastname]','[firstname]','[fullname]','[assignmentname]','[group]','[filename]'];
+const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]'];
 
 /**
  * File rename function
  * Used by assign for renaming at upload or download of files
- * 
+ *
  * @param String $original original filename
  * @param stdClass $user owner of the file
  * @param assign $assign assign instance the file belongs to
@@ -45,38 +45,38 @@ const FILERENAMING_TAGS = ['[idnumber]','[lastname]','[firstname]','[fullname]',
 function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, $submission, $groupname, $zipfiles = null) {
     global $CFG;
 
-    // select filerenaming pattern out of (session|moodle default) in this order
-    $placeholders = ['[idnumber]','[lastname]','[firstname]','[fullname]','[assignmentname]','[group]','[filename]'];
-    $filerenaming_userpref = get_user_preferences('filerenamingpattern', '');
+    // Select filerenaming pattern out of (session|moodle default) in this order.
+    $placeholders = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]'];
+    $filerenaminguserpref = get_user_preferences('filerenamingpattern', '');
     $o = '';
-    if (ispatternvalid(FILERENAMING_TAGS, $filerenaming_userpref)) {
-        // use locally set filerenaming 
-        $o = $filerenaming_userpref;
+    if (ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
+        // Use locally set filerenaming.
+        $o = $filerenaminguserpref;
     } else {
         // Nothing to replace.
         return clean_custom($prefixedfilename);
     }
-    
+
     // Reduce to a length of max 256, reserve three digits for existing files (max 999 equal filenames in db).
     $maxlength = 252;
 
     // Get filename and extension.
     $filename  = pathinfo($original, PATHINFO_FILENAME);
     $extension = pathinfo($original, PATHINFO_EXTENSION);
-    
+
     $extension = ($extension != '') ? '.'.$extension : $extension;
-    
-    // Handle special double extension 'tar.gz' (ie. do not split it during file renaming)
-    if ($extension == '.gz') { 
-        $tmp_extension = pathinfo($filename, PATHINFO_EXTENSION);
-        $tmp_extension = ($tmp_extension != '') ? '.'.$tmp_extension : $tmp_extension;
-        $tmp_filename = pathinfo($filename, PATHINFO_FILENAME);
-        if ($tmp_extension == '.tar') {
+
+    // Handle special double extension 'tar.gz' (ie. do not split it during file renaming).
+    if ($extension == '.gz') {
+        $tmpextension = pathinfo($filename, PATHINFO_EXTENSION);
+        $tmpextension = ($tmpextension != '') ? '.'.$tmpextension : $tmpextension;
+        $tmpfilename = pathinfo($filename, PATHINFO_FILENAME);
+        if ($tmpextension == '.tar') {
             $extension = '.tar.gz';
-            $filename = $tmp_filename;
+            $filename = $tmpfilename;
         }
     }
-    
+
     // Declare some variables.
     $assignmentname = $assign->get_instance()->name;
     $coursemodule   = $assign->get_course_module();
@@ -133,7 +133,7 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
     return $o;
 }
 
-// helper function to check if the given filerenaming string contains any acceptable pattern
+// Helper function to check if the given filerenaming string contains any acceptable pattern.
 function ispatternvalid($acceptedplaceholders, $teststring) {
     $isvalidpattern = false;
     foreach ($acceptedplaceholders as $placeholder) {
@@ -164,10 +164,10 @@ function replace_custom($o, $maxlength, $pattern, $string) {
 
 function clean_custom($filename) {
     global $CFG;
-    
-    $cleanfilename_userpref = get_user_preferences('clean_filerenaming', '');
 
-    if ((isset($cleanfilename_userpref) && $cleanfilename_userpref)) {
+    $cleanfilenameuserpref = get_user_preferences('clean_filerenaming', '');
+
+    if ((isset($cleanfilenameuserpref) && $cleanfilenameuserpref)) {
         $replace = array(
             'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 's', ' ' => '_'
         );
