@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+3.4.0 (2017-12-19)
+------------------
+* Moodle 3.4 compatible verions
+* [FIXED] #5000 Fixed codechecker issues
+
+
 3.3.0 (2017-08-03)
 ------------------
 
