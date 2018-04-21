@@ -124,3 +124,5 @@ $string['defaultfilerenamingpattern'] = '[filename]';
 
 $string['show_propertyname'] = '\'{$a->entrytoshow}\' anzeigen';
 $string['show_propertydescription'] = 'Bestimmt, ob der \'{$a->entrytoshow}\' Menüeintrag in der Aufgabe angezeigt werden soll';
+
+$string['userfilter'] = 'Benutzerfilter';
