@@ -126,3 +126,5 @@ $string['show_propertyname'] = '\'{$a->entrytoshow}\' anzeigen';
 $string['show_propertydescription'] = 'Bestimmt, ob der \'{$a->entrytoshow}\' Menüeintrag in der Aufgabe angezeigt werden soll';
 
 $string['userfilter'] = 'Benutzerfilter';
+
+$string['assignsubmission_download:view'] = 'Gewähre Zugriff zu Dateiumbenennung und Abgaben-Export';

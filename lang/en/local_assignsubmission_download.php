@@ -126,3 +126,5 @@ $string['show_propertyname'] = 'Show \'{$a->entrytoshow}\'';
 $string['show_propertydescription'] = 'Used to show or hide the \'{$a->entrytoshow}\' menu entry';
 
 $string['userfilter'] = 'User filter';
+
+$string['assignsubmission_download:view'] = 'Grant access to file renaming and submission export';
