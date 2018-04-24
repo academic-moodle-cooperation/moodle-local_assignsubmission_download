@@ -6,6 +6,7 @@ CHANGELOG
 * Moodle 3.4 compatible verions
 * [FIXED] #5000 Fixed codechecker issues
 * [FIXED] #5301 Fix invalid get_string() identifier for access/view rights
+* [FEATURE] #5389 Remove german lang strings from master (moved to moodledata dir)
 
 
 3.3.0 (2017-08-03)
