@@ -55,7 +55,7 @@ class provider implements
         $collection->add_user_preference('asd_textsize',
             get_string('strtextsize', 'local_assignsubmission_download'));
         $collection->add_user_preference('asd_pageorientation',
-            get_string('strpageorientation', 'local_assignsubmission_download', );
+            get_string('strpageorientation', 'local_assignsubmission_download'));
         $collection->add_user_preference('asd_printheader',
             get_string('strprintheader', 'local_assignsubmission_download'));
             
