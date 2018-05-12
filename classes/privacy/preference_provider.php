@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The local_assignsubmission_download privacy preference provider.
+ * This file contains the privacy preference provider class.
  *
  * @package       local
  * @subpackage    assignsubmission_download
@@ -26,86 +26,87 @@
 
 namespace local_assignsubmission_download\privacy;
 
-class preference_provider implements 
-        // This plugin does store personal user data.
-        \core_privacy\local\metadata\preference_provider {
-    
+defined('MOODLE_INTERNAL') || die();
+
+/**
+ * The privacy preference provider.
+ *
+ * @package       local
+ * @subpackage    assignsubmission_download
+ * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class preference_provider implements  \core_privacy\local\metadata\preference_provider {
+// This plugin does store personal user data.
+
     /**
-    * Export all user preferences for the plugin.
-    *
-    * @param   int         $userid The userid of the user whose data is to be exported.
-    */
-   public static function export_user_preferences(int $userid) {
-       $filerenamingpattern = get_user_preferences('filerenamingpattern', null, $userid);
-       if (null !== $filerenamingpattern) {
-           $filerenamingpatterndescription =
-                   get_string('filerenamingpattern', 'assignsubmission_download');
-           writer::export_user_preference('local_assignsubmission_download', 'filerenamingpattern',
-                   $filerenamingpattern, $filerenamingpatterndescription);
-       }
+     * Export all user preferences for the plugin.
+     *
+     * @param   int         $userid The userid of the user whose data is to be exported.
+     */
+    public static function export_user_preferences(int $userid) {
+        $filerenamingpattern = get_user_preferences('filerenamingpattern', null, $userid);
+        if (null !== $filerenamingpattern) {
+            $filerenamingpatterndescription = get_string('filerenamingpattern', 'assignsubmission_download');
+            writer::export_user_preference('local_assignsubmission_download', 'filerenamingpattern',
+                    $filerenamingpattern, $filerenamingpatterndescription);
+        }
 
-       $clean_filerenaming = get_user_preferences('clean_filerenaming', null, $userid);
-       if (null !== $clean_filerenaming) {
-           $clean_filerenamingdescription =
-                   get_string('clean_filerenaming', 'assignsubmission_download');
-           writer::export_user_preference('local_assignsubmission_download', 'clean_filerenaming',
-                   $clean_filerenaming, $clean_filerenamingdescription);
-       }
+        $cleanfilerenameing = get_user_preferences('clean_filerenaming', null, $userid);
+        if (null !== $cleanfilerenameing) {
+            $cleanfilerenamingdescription = get_string('clean_filerenaming', 'assignsubmission_download');
+            writer::export_user_preference('local_assignsubmission_download', 'clean_filerenaming',
+                    $cleanfilerenameing, $cleanfilerenamingdescription);
+        }
 
-       $assign_filter = get_user_preferences('assign_filter', null, $userid);
-       if (null !== $assign_filter) {
-           $assign_filterdescription =
-                   get_string('userfilter', 'assignsubmission_download');
-           writer::export_user_preference('local_assignsubmission_download', 'assign_filter',
-                   $assign_filter, $assign_filterdescription);
-       }
+        $userfilter = get_user_preferences('assign_filter', null, $userid);
+        if (null !== $userfilter) {
+            $userfilterdescription = get_string('userfilter', 'assignsubmission_download');
+            writer::export_user_preference('local_assignsubmission_download', 'assign_filter',
+                    $userfilter, $userfilterdescription);
+        }
 
-       $assign_exportformat = get_user_preferences('assign_exportformat', null, $userid);
-       if (null !== $assign_exportformat) {
-           $assign_exportformatdescription =
-                   get_string('exportformat', 'assignsubmission_download');
-           writer::export_user_preference('local_assignsubmission_download', 'assign_exportformat',
-                   $assign_exportformat, $assign_exportformatdescription);
-       }
+        $exportformat = get_user_preferences('assign_exportformat', null, $userid);
+        if (null !== $exportformat) {
+            $exportformatdescription = get_string('exportformat', 'assignsubmission_download');
+            writer::export_user_preference('local_assignsubmission_download', 'assign_exportformat',
+                    $exportformat, $exportformatdescription);
+        }
 
-       $assign_perpage = get_user_preferences('assign_perpage', null, $userid);
-       if (null !== $assign_perpage) {
-           $assign_perpagedescription =
-                   get_string('perpage', 'assignsubmission_download');
-           writer::export_user_preference('local_assignsubmission_download', 'assign_perpage',
-                   $assign_perpage, $assign_perpagedescription);
-       }
+        $perpage = get_user_preferences('assign_perpage', null, $userid);
+        if (null !== $perpage) {
+            $perpagedescription = get_string('perpage', 'assignsubmission_download');
+            writer::export_user_preference('local_assignsubmission_download', 'assign_perpage',
+                    $perpage, $perpagedescription);
+        }
 
-       $assign_optimum = get_user_preferences('assign_optimum', null, $userid);
-       if (null !== $assign_optimum) {
-           $assign_optimumdescription =
-                   get_string('optimum', 'assignsubmission_download');
-           writer::export_user_preference('local_assignsubmission_download', 'assign_optimum',
-                   $assign_optimum, $assign_optimumdescription);
-       }
+        $optimum = get_user_preferences('assign_optimum', null, $userid);
+        if (null !== $optimum) {
+            $optimumdescription = get_string('optimum', 'assignsubmission_download');
+            writer::export_user_preference('local_assignsubmission_download', 'assign_optimum',
+                    $optimum, $optimumdescription);
+        }
 
-       $assign_textsize = get_user_preferences('assign_textsize', null, $userid);
-       if (null !== $assign_textsize) {
-           $assign_textsizedescription =
-                   get_string('strtextsize', 'assignsubmission_download');
-           writer::export_user_preference('local_assignsubmission_download', 'assign_textsize',
-                   $assign_textsize, $assign_textsizedescription);
-       }
+        $textsize = get_user_preferences('assign_textsize', null, $userid);
+        if (null !== $textsize) {
+            $textsizedescription = get_string('strtextsize', 'assignsubmission_download');
+            writer::export_user_preference('local_assignsubmission_download', 'assign_textsize',
+                    $textsize, $textsizedescription);
+        }
 
-       $assign_pageorientation = get_user_preferences('assign_pageorientation', null, $userid);
-       if (null !== $assign_pageorientation) {
-           $assign_pageorientationdescription =
-                   get_string('strpageorientation', 'assignsubmission_download');
-           writer::export_user_preference('local_assignsubmission_download', 'assign_pageorientation',
-                   $assign_pageorientation, $assign_pageorientationdescription);
-       }
+        $pageorientation = get_user_preferences('assign_pageorientation', null, $userid);
+        if (null !== $pageorientation) {
+            $pageorientationdescription = get_string('strpageorientation', 'assignsubmission_download');
+            writer::export_user_preference('local_assignsubmission_download', 'assign_pageorientation',
+                    $pageorientation, $pageorientationdescription);
+        }
 
-       $assign_printheader = get_user_preferences('assign_printheader', null, $userid);
-       if (null !== $assign_printheader) {
-           $assign_printheaderdescription =
-                   get_string('strprintheader', 'assignsubmission_download');
-           writer::export_user_preference('local_assignsubmission_download', 'assign_printheader',
-                   $assign_printheader, $assign_printheaderdescription);
-       }
-   }
+        $printheader = get_user_preferences('assign_printheader', null, $userid);
+        if (null !== $printheader) {
+            $printheaderdescription = get_string('strprintheader', 'assignsubmission_download');
+            writer::export_user_preference('local_assignsubmission_download', 'assign_printheader',
+                    $printheader, $printheaderdescription);
+        }
+    }
+
 }

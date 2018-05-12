@@ -15,13 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Assign class extending assign_base
+ * Printpreview class extending assign
  *
  * @package       local
  * @subpackage    assignsubmission_download
- * @author        Andreas Hruska (andreas.hruska@tuwien.ac.at)
- * @author        Katarzyna Potocka (katarzyna.potocka@tuwien.ac.at)
  * @author        Günther Bernsteiner
+ * @author        Andreas Krieger
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -29,13 +28,13 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Extending TSC assign class for mod_assign (assignment types).
+ * The printpreview class, extending assign.
  *
- * @package   local_assignsubmission_download
- * @copyright 2012 NetSpot {@link http://www.netspot.com.au}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package       local
+ * @subpackage    assignsubmission_download
+ * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class printpreview extends assign {
 
     /**

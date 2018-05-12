@@ -15,12 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Adaptor to hand over the information from printpreview table to table export class
+ * This file contains an adaptor from printpreview table to table export class
  *
  * @package       local
  * @subpackage    assignsubmission_download
- * @author        Andreas Hruska (andreas.hruska@tuwien.ac.at)
- * @author        Katarzyna Potocka (katarzyna.potocka@tuwien.ac.at)
  * @author        Günther Bernsteiner
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -31,10 +29,14 @@ defined('MOODLE_INTERNAL') || die();
 require_once('mtablepdf.php');
 require_once('printpreviewsettingsform.php');
 
+
 /**
- * @package   moodlecore
- * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Adaptor to hand over the information from printpreview table to table export class
+ *
+ * @package       local
+ * @subpackage    assignsubmission_download
+ * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class table_pdf_export_format extends table_default_export_format_parent {
 

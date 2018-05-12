@@ -15,19 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Function to rename files during zip download
+ * Functions to rename files during zip download
  *
  * @package       local
  * @subpackage    assignsubmission_download
- * @author        Andreas Hruska (andreas.hruska@tuwien.ac.at)
- * @author        Katarzyna Potocka (katarzyna.potocka@tuwien.ac.at)
- * @author        2012 Alwin Weninger
- * @author        2013 onwards Günther Bernsteiner
+ * @author        Alwin Weninger
+ * @author        Günther Bernsteiner
+ * @author        Andreas Krieger
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
-
 
 const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]'];
 
@@ -35,12 +33,14 @@ const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname
  * File rename function
  * Used by assign for renaming at upload or download of files
  *
+ * @param String $prefixedfilename prefixed filename
  * @param String $original original filename
  * @param stdClass $user owner of the file
  * @param assign $assign assign instance the file belongs to
  * @param stdClass $submission submission containing the file
  * @param String $groupname assign team submission groupname
  * @param optional array $zipfiles array of filenames that must not be used in the same download
+ * @return String The renamed filename
  */
 function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, $submission, $groupname, $zipfiles = null) {
     global $CFG;

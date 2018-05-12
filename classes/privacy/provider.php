@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The local_assignsubmission_download privacy metadata provider.
+ * This file contains the privacy provider class.
  *
  * @package       local
  * @subpackage    assignsubmission_download
@@ -27,18 +27,31 @@
 namespace local_assignsubmission_download\privacy;
 
 use core_privacy\local\metadata\collection;
- 
-class provider implements 
+
+defined('MOODLE_INTERNAL') || die();
+
+/**
+ * The privacy provider.
+ *
+ * @package       local
+ * @subpackage    assignsubmission_download
+ * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class provider implements
         // This plugin does store personal user data.
         \core_privacy\local\metadata\provider
+                           {
 
-        // This plugin is a subplugin of assign and must meet that contract.
-        // \mod_assign\privacy\assign_provider 
-                            {
- 
+    /**
+     * Add the user preferences to the metadata collection
+     *
+     * @param collection $collection Metadata hitherto collected
+     * @return Collection Metadata with added user preferences
+     */
     public static function get_metadata(collection $collection) : collection {
- 
-        // Here you will add more items into the collection.
+
+        // Add all user preferences into the collection.
         $collection->add_user_preference('asd_filerenamingpattern',
             get_string('filerenamingpattern', 'local_assignsubmission_download'));
         $collection->add_user_preference('asd_clean_filerenaming',
@@ -58,7 +71,7 @@ class provider implements
             get_string('strpageorientation', 'local_assignsubmission_download'));
         $collection->add_user_preference('asd_printheader',
             get_string('strprintheader', 'local_assignsubmission_download'));
-            
+
         return $collection;
     }
 }

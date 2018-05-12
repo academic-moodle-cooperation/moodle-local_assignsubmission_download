@@ -20,8 +20,6 @@
  *
  * @package       local
  * @subpackage    assignsubmission_download
- * @author        Andreas Hruska (andreas.hruska@tuwien.ac.at)
- * @author        Katarzyna Potocka (katarzyna.potocka@tuwien.ac.at)
  * @author        Günther Bernsteiner
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -33,6 +31,14 @@ require_once($CFG->libdir.'/tablelib.php');
 require_once($CFG->libdir.'/gradelib.php');
 require_once($CFG->dirroot.'/mod/assign/locallib.php');
 
+/**
+ * Printpreview table definition
+ *
+ * @package       local
+ * @subpackage    assignsubmission_download
+ * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class printpreview_table extends table_sql implements renderable {
     /** @var assign $assignment */
     private $assignment = null;
