@@ -185,8 +185,8 @@ class printpreview extends assign {
         $o .= $this->get_renderer()->render($header);
 
         $o .= $this->get_renderer()->render(new assign_form('printpreviewsettingsform',
-                                                            $printpreviewsettingsform,
-                                                            'M.local_assignsubmission_download.init_printpreview_settings'));
+                                                            $printpreviewsettingsform
+                                                            ));
 
         // Plagiarism update status apearring in the grading book.
         if (!empty($CFG->enableplagiarism)) {

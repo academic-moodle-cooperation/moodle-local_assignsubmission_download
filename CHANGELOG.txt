@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+3.5.0 (2018-06-01)
+------------------
+* Moodle 3.5 compatible verions
+* #5391 Check & Rewrite use of YUI and analyze rewrite to JQuery/Javascript Modules
+
+
 3.4.0 (2018-04-24)
 ------------------
 * Moodle 3.4 compatible verions

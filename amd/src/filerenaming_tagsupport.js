@@ -23,17 +23,17 @@
  */
 
 /**
- * @module local_assignsubmission_download/groupcreation
+ * @module local_assignsubmission_download/filerenaming_tagsupport
  */
-define(['jquery', 'core/config', 'core/str', 'core/log'], function($, config, str, log) {
+define(['jquery', 'core/log'], function($, log) {
     /**
      * @contructor
-     * @alias module:local_assignsubmission_download/groupcreation
+     * @alias module:local_assignsubmission_download/filerenaming_tagsupport
      */
-    var Groupcreation = function() {
+    var Tagsupport = function() {
     };
 
-    Groupcreation.prototype.add_tag = function(e) {
+    Tagsupport.prototype.add_tag = function(e) {
         e.stopPropagation();
         e.preventDefault();
 
@@ -58,7 +58,7 @@ define(['jquery', 'core/config', 'core/str', 'core/log'], function($, config, st
         targetfield[0].selectionEnd = postpos;
     };
 
-    var instance = new Groupcreation();
+    var instance = new Tagsupport();
 
     instance.initializer = function() {
         log.info('Initialise filerenaming tag handling js...', 'local_assignsubmission_download');
@@ -68,5 +68,5 @@ define(['jquery', 'core/config', 'core/str', 'core/log'], function($, config, st
         $('[data-nametag]').css('cursor', 'pointer');
     };
 
-    return instance;
+   return instance;
 });

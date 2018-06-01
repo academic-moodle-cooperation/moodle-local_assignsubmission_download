@@ -37,7 +37,7 @@ defined('MOODLE_INTERNAL') || die();
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class preference_provider implements  \core_privacy\local\metadata\preference_provider {
-// This plugin does store personal user data.
+    // This plugin does store personal user data.
 
     /**
      * Export all user preferences for the plugin.

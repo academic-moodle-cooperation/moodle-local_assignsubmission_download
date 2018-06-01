@@ -42,7 +42,7 @@ class mod_assign_printpreview_settings_form extends moodleform {
      * Define this form - called from the parent constructor
      */
     public function definition() {
-        global $CFG;
+        global $CFG, $PAGE;
 
         $mform = $this->_form;
         $instance = $this->_customdata;
@@ -110,6 +110,9 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $groupsactivitymenu = $mform->addElement('groupsactivitymenu', 'group');
         $groupsactivitymenu->setData($instance['cm'], $instance['currenturl']);
 
+        $params = new stdClass();
+        $PAGE->requires->js_call_amd('local_assignsubmission_download/printpreviewer', 'initializer', array($params));
+        
         // Hidden params.
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
         $mform->setType('contextid', PARAM_INT);

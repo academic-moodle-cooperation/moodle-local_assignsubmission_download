@@ -53,7 +53,7 @@ class filerenaming extends assign {
             $SESSION->assignment = new stdClass();
         }
 
-        $o .= $this->view_printpreview_page();
+        $o .= $this->view_filerenaming_page();
 
         return $o;
     }
@@ -63,7 +63,7 @@ class filerenaming extends assign {
      *
      * @return string
      */
-    protected function view_printpreview_page() {
+    protected function view_filerenaming_page() {
         global $CFG;
 
         $o = '';
@@ -73,8 +73,8 @@ class filerenaming extends assign {
 
         // Only load this if it is.
 
-        $this->process_save_printpreview_settings();
-        $o .= $this->view_printpreview_table();
+        $this->process_save_filerenaming_settings();
+        $o .= $this->view_filerenaming_table();
         $o .= $this->view_footer();
 
         \local_assignsubmission_download\event\assignsubmission_download_table_viewed::create_from_assign($this)->trigger();
@@ -87,7 +87,7 @@ class filerenaming extends assign {
      *
      * @return string
      */
-    protected function view_printpreview_table() {
+    protected function view_filerenaming_table() {
         global $CFG, $PAGE, $USER, $OUTPUT;
 
         $o = '';
@@ -166,9 +166,10 @@ class filerenaming extends assign {
         $o .= $this->get_renderer()->render($header);
 
         $o .= $this->get_renderer()->render(new assign_form('filerenamingsettingsform',
-                                                            $filerenamingsettingsform,
-                                                            'M.local_assignsubmssion_download.init_filerenaming_settings'));
+                                                            $filerenamingsettingsform
+                                                            ));
 
+        
         // Plagiarism update status apearring in the grading book.
         if (!empty($CFG->enableplagiarism)) {
             require_once($CFG->libdir . '/plagiarismlib.php');
@@ -183,7 +184,7 @@ class filerenaming extends assign {
      *
      * @return void
      */
-    protected function process_save_printpreview_settings() {
+    protected function process_save_filerenaming_settings() {
         global $CFG, $USER, $SESSION;
 
         // Include grading options form.
