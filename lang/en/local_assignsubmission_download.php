@@ -127,3 +127,13 @@ $string['show_propertydescription'] = 'Used to show or hide the \'{$a->entrytosh
 $string['userfilter'] = 'User filter';
 
 $string['assignsubmission_download:view'] = 'Grant access to file renaming and submission export';
+
+$string['privacy:metadata:preference:filerenamingpattern'] = 'Preference for the naming scheme used for file renaming on downloaded submissions.';
+$string['privacy:metadata:preference:clean_filerenaming'] = 'Preference on whether to additionaly clean file names from special chars in downloaded submissions.';
+$string['privacy:metadata:preference:userfilter'] = 'Preference on which users are filtered for when exporting to a file.';
+$string['privacy:metadata:preference:exportformat'] = 'Preference on which format to use when exporting to a file.';
+$string['privacy:metadata:preference:perpage'] = 'Preference on how many submissions to display per page when exporting to a pdf file.';
+$string['privacy:metadata:preference:optimum'] = 'Preference on whether to automatically decide how many sumbissions to display per page when exporting to a pdf file.';
+$string['privacy:metadata:preference:textsize'] = 'Preference on which text size to use when exporting to a pdf file.';
+$string['privacy:metadata:preference:pageorientation'] = 'Preference on which page orientation to use when exporting to a pdf file.';
+$string['privacy:metadata:preference:printheader'] = 'Preference on whether to print header and footer when exporting to a pdf file.';
