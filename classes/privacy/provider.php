@@ -26,9 +26,11 @@
 
 namespace local_assignsubmission_download\privacy;
 
-use core_privacy\local\metadata\collection;
-
 defined('MOODLE_INTERNAL') || die();
+
+use \core_privacy\local\metadata\collection;
+use \core_privacy\local\request\user_preference_provider;
+use \core_privacy\local\request\writer;
 
 /**
  * The privacy preference provider.
@@ -41,7 +43,7 @@ defined('MOODLE_INTERNAL') || die();
 class provider implements
     \core_privacy\local\request\user_preference_provider,
     \core_privacy\local\metadata\provider {
-    // This plugin does store personal user data.
+    // This plugin does store personal user data, even if its just user preferences.
 
     public static function get_metadata(collection $collection) : collection {
 
