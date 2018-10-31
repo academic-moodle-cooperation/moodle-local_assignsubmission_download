@@ -33,7 +33,6 @@ define(['jquery', 'core/log'], function($, log) {
     var Printpreviewer = function() {
     };
 
-
     Printpreviewer.prototype.change_in_perpage = function(e) {
         // Stop the event's default behavior.
         e.preventDefault();
@@ -65,29 +64,10 @@ define(['jquery', 'core/log'], function($, log) {
             $(window.combo[1]).prop('disabled', true);
         } else {
             // Restore last value and enable again.
-            //$(window.combo[1]).val(window.stdperpage);
             $(window.combo[1]).val(window.stdperpage);
             $(window.combo[1]).prop('disabled', false);
         }
     };
-
-/*
-    Printpreview.prototype.init_tree = function(Y, expand_all, htmlid) {
-        Y.use('yui2-treeview', function(Y) {
-            var tree = new Y.YUI2.widget.TreeView(htmlid);
-
-            tree.subscribe("clickEvent", function(node, event) {
-                // We want normal clicking which redirects to url.
-                return false;
-            });
-
-            if (expand_all) {
-                tree.expandAll();
-            }
-            tree.render();
-        });
-    };
-*/
 
     var instance = new Printpreviewer();
 

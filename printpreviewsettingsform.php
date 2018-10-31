@@ -112,7 +112,7 @@ class mod_assign_printpreview_settings_form extends moodleform {
 
         $params = new stdClass();
         $PAGE->requires->js_call_amd('local_assignsubmission_download/printpreviewer', 'initializer', array($params));
-        
+
         // Hidden params.
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
         $mform->setType('contextid', PARAM_INT);

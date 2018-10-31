@@ -133,7 +133,14 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
     return $o;
 }
 
-// Helper function to check if the given filerenaming string contains any acceptable pattern.
+
+/**
+ * Helper function to check if the given filerenaming string contains any acceptable pattern.
+ *
+ * @param String $acceptedplaceholders accepted placeholder patterns to test string against
+ * @param String $teststring tested filerenaming string
+ * @return Boolean True if the pattern is valid, false otherwise
+ */
 function ispatternvalid($acceptedplaceholders, $teststring) {
     $isvalidpattern = false;
     foreach ($acceptedplaceholders as $placeholder) {
@@ -147,10 +154,26 @@ function ispatternvalid($acceptedplaceholders, $teststring) {
     return $isvalidpattern;
 }
 
+/**
+ * Helper function to create a clean filename.
+ *
+ * @param String $filename original filename which to clean
+ * @return String the clean filename
+ */
 function filerenaming_clean_custom($filename) {
     return clean_custom($filename);
 }
 
+/**
+ * Helper function to replace a pattern with a string up to a certain lenght 
+ * due to file name length restricstions.
+ *
+ * @param String $o full string
+ * @param String $o replace up to maxlength
+ * @param String $pattern pattern which to replace
+ * @param String $string string to replace pattern against
+ * @return String the full string with pattern replaced by string, up to maxlength
+ */
 function replace_custom($o, $maxlength, $pattern, $string) {
     $temp = str_replace($pattern, $string, $o);
     if (strlen($temp) < $maxlength) {
@@ -162,6 +185,12 @@ function replace_custom($o, $maxlength, $pattern, $string) {
     return $o;
 }
 
+/**
+ * Helper function to replace "special" characters with regular ones in filenames.
+ *
+ * @param String $filename filename which to clean up
+ * @return String the clean filename, without special characters
+ */
 function clean_custom($filename) {
     global $CFG;
 

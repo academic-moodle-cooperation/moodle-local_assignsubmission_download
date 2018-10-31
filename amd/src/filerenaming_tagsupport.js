@@ -68,5 +68,5 @@ define(['jquery', 'core/log'], function($, log) {
         $('[data-nametag]').css('cursor', 'pointer');
     };
 
-   return instance;
+    return instance;
 });

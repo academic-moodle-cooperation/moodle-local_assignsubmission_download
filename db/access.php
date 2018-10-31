@@ -53,10 +53,9 @@ $capabilities = array(
                 'captype' => 'read',
                 'contextlevel' => CONTEXT_COURSE,
                 'archetypes' => array(
-                        'student' => CAP_PREVENT,
                         'editingteacher' => CAP_ALLOW,
                         'teacher' => CAP_ALLOW,
-                        'manager' => CAP_ALLOW,
+                        'manager' => CAP_ALLOW
                 )
         )
 );

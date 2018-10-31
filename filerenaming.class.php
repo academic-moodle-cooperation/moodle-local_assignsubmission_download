@@ -169,7 +169,6 @@ class filerenaming extends assign {
                                                             $filerenamingsettingsform
                                                             ));
 
-        
         // Plagiarism update status apearring in the grading book.
         if (!empty($CFG->enableplagiarism)) {
             require_once($CFG->libdir . '/plagiarismlib.php');
