@@ -65,18 +65,18 @@ function local_assignsubmission_download_extend_settings_navigation(settings_nav
     if ($CFG->assignsubmission_download_showfilerenaming) {
         $link = new moodle_url('/local/assignsubmission_download/view_filerenaming.php', array('id' => $PAGE->cm->id));
         $modulesettings = $navref->get('modulesettings');
-        // if ($modulesettings) {
+        if ($modulesettings) {
             $node = $modulesettings->add(
                     get_string('pluginname_submissions', 'local_assignsubmission_download'), $link, navigation_node::TYPE_SETTING);
-        // }
+        }
     }
 
     if ($CFG->assignsubmission_download_showexport) {
         $link = new moodle_url('/local/assignsubmission_download/view_printpreview.php', array('id' => $PAGE->cm->id));
         $modulesettings = $navref->get('modulesettings');
-        // if ($modulesettings) {
+        if ($modulesettings) {
             $node = $modulesettings->add(
                     get_string('pluginname_print', 'local_assignsubmission_download'), $link, navigation_node::TYPE_SETTING);
-        // }
+        }
     }
 }

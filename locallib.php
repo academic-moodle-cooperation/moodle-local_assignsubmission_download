@@ -165,8 +165,8 @@ function filerenaming_clean_custom($filename) {
 }
 
 /**
- * Helper function to replace a pattern with a string up to a certain lenght 
- * due to file name length restricstions.
+ * Helper function to replace a pattern with a string up to a certain lenght
+ * due to file name length restrictions.
  *
  * @param String $o full string
  * @param String $o replace up to maxlength

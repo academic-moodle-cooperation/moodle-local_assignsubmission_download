@@ -49,7 +49,7 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
         parent::__construct($elementname, $elementlabel, $attributes);
     }
 
-    public function getValue() {
+    public function getvalue() {
         return null;
     }
 
@@ -78,7 +78,7 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
         }
     }
 
-    public function toHtml() {
+    public function tohtml() {
         global $USER, $OUTPUT;
 
         if (!($this->url instanceof moodle_url)) {
