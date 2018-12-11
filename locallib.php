@@ -92,7 +92,7 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
     } else {
         $groupname = substr($groupname, 0, -1);
     }
-
+    
     // Replace pattern.
     if ($assign->is_blind_marking()) {
         $blind = get_string('hiddenuser', 'local_filerenaming').'_'.$assign->get_uniqueid_for_user($user->id);

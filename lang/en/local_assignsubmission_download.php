@@ -126,6 +126,8 @@ $string['show_propertydescription'] = 'Used to show or hide the \'{$a->entrytosh
 
 $string['userfilter'] = 'User filter';
 
+$string['labelgroup'] = 'Focus download on group';
+
 $string['assignsubmission_download:view'] = 'Grant access to file renaming and submission export';
 
 $string['privacy:metadata:preference:filerenamingpattern'] = 'Preference for the naming scheme used for file renaming on downloaded submissions.';
