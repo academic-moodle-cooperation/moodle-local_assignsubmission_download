@@ -214,7 +214,10 @@ class filerenaming extends assign {
             $SESSION->selectedusers = explode(',', $data->selectedusers);
             // Download submissions.
             if (isset($data->submittodownload)) {
-                $this->download_submissions();
+                if (!isset($data->coursegroup)) {
+                    $data->coursegroup = 0;
+                }
+                $this->download_submissions($data->coursegroup);
             }
 
         }
@@ -247,12 +250,12 @@ class filerenaming extends assign {
      * @param array $userids Array of user ids to download assignment submissions in a zip file
      * @return string - If an error occurs, this will contain the error page.
      */
-    protected function download_submissions($userids = false) {
+    protected function download_submissions($coursegroup = false) {
         global $CFG, $DB;
 
         // More efficient to load this here.
         require_once($CFG->libdir.'/filelib.php');
-        require_once($CFG->dirroot.'/local/assignsubmission_download/locallib.php'); // AMC moodle university code one line.
+        require_once($CFG->dirroot.'/local/assignsubmission_download/locallib.php');
 
         // Increase the server timeout to handle the creation and sending of large zip files.
         core_php_time_limit::raise();
@@ -260,7 +263,7 @@ class filerenaming extends assign {
         $this->require_view_grades();
 
         // Load all users with submit.
-        $students = get_enrolled_users($this->get_context(), "mod/assign:submit", null, 'u.*', null, null, null,
+        $students = get_enrolled_users($this->get_context(), "mod/assign:submit", $coursegroup, 'u.*', null, null, null,
                         $this->show_only_active_users());
 
         // Build a list of files to zip.
@@ -270,30 +273,27 @@ class filerenaming extends assign {
         $groupmode = groups_get_activity_groupmode($this->get_course_module());
         // All users.
         $groupid = 0;
+        $groupid = $coursegroup;
         $groupname = '';
         if ($groupmode) {
-            $groupid = groups_get_activity_group($this->get_course_module(), true);
+            //$groupid = groups_get_activity_group($this->get_course_module(), true);
             $groupname = groups_get_group_name($groupid).'-';
         }
 
         // Construct the zip file name.
         $filename = filerenaming_clean_custom($this->get_course()->shortname . '-' . // AMC moodle university code one line.
                                    $this->get_instance()->name . '-' .
-                                   $groupname.$this->get_course_module()->id . '.zip');
+                                   $groupname . $this->get_course_module()->id . '.zip');
 
         // Get all the files for each student.
         foreach ($students as $student) {
             $userid = $student->id;
-            // Download all assigments submission or only selected users.
-            if ($userids and !in_array($userid, $userids)) {
-                continue;
-            }
-
+            
             if ((groups_is_member($groupid, $userid) or !$groupmode or !$groupid)) {
                 // Get the plugins to add their own files to the zip.
 
                 $submissiongroup = false;
-                $groupname = '';
+                //$groupname = '';
                 if ($this->get_instance()->teamsubmission) {
                     $submission = $this->get_group_submission($userid, 0, false);
                     $submissiongroup = $this->get_submission_group($userid);

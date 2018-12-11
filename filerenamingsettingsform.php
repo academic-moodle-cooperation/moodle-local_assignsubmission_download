@@ -80,6 +80,19 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->setDefault('clean_filerenaming', true);
         $mform->addHelpButton('clean_filerenaming', 'clean_filerenaming', 'local_assignsubmission_download');
 
+        $cm = $PAGE->cm;
+        $groupmode = groups_get_activity_groupmode($cm);
+        $activitygroups = groups_get_activity_allowed_groups($cm);
+        
+        if (($groupmode != NOGROUPS)) {
+            $selectgroup = $mform->createElement('select', 'coursegroup', get_string('labelgroup', 'gradereport_gradedist'));
+            $selectgroup->addOption(get_string('allparticipants'), 0);
+            foreach ($activitygroups as $index => $curgroup) {
+                $selectgroup->addOption($curgroup->name, $index, null);
+            }
+            $mform->addElement($selectgroup);
+        }
+        
         // Hidden params.
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
         $mform->setType('contextid', PARAM_INT);
