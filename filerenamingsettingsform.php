@@ -100,8 +100,6 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'userid', $instance['userid']);
         $mform->setType('userid', PARAM_INT);
-        $mform->addElement('hidden', 'selectedusers', '', array('class' => 'selectedusers'));
-        $mform->setType('selectedusers', PARAM_SEQUENCE);
         $mform->addElement('hidden', 'action', 'grading');
         $mform->setType('action', PARAM_ALPHA);
 

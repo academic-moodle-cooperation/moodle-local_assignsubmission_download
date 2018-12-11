@@ -88,7 +88,7 @@ class filerenaming extends assign {
      * @return string
      */
     protected function view_filerenaming_table() {
-        global $CFG, $PAGE, $USER, $OUTPUT;
+        global $CFG, $USER;
 
         $o = '';
         $cmid = $this->get_course_module()->id;
@@ -122,14 +122,9 @@ class filerenaming extends assign {
         }
         $gradingactions = new url_select($links);
         $gradingactions->set_label(get_string('choosegradingaction', 'assign'));
-        $gradingmanager = get_grading_manager($this->get_context(), 'mod_assign', 'submissions');
 
         $pattern = get_user_preferences('filerenamingpattern', '');
         $cleanfilename = get_user_preferences('clean_filerenaming', '');
-
-        $controller = $gradingmanager->get_active_controller();
-        $showquickgrading = empty($controller);
-        $quickgrading = get_user_preferences('assign_quickgrading', false);
 
         $urlparams = array('id' => $this->get_course_module()->id, 'action' => 'grading');
         $currenturl = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_filerenaming.php', $urlparams);
@@ -211,12 +206,11 @@ class filerenaming extends assign {
             set_user_preference('filerenamingpattern', $data->filerenamingpattern);
             set_user_preference('clean_filerenaming', $data->clean_filerenaming);
 
-            $SESSION->selectedusers = explode(',', $data->selectedusers);
             // Download submissions.
+            if (!isset($data->coursegroup)) {
+                $data->coursegroup = 0;
+            }
             if (isset($data->submittodownload)) {
-                if (!isset($data->coursegroup)) {
-                    $data->coursegroup = 0;
-                }
                 $this->download_submissions($data->coursegroup);
             }
 
@@ -268,15 +262,12 @@ class filerenaming extends assign {
 
         // Build a list of files to zip.
         $filesforzipping = array();
-        $fs = get_file_storage();
 
         $groupmode = groups_get_activity_groupmode($this->get_course_module());
         // All users.
-        $groupid = 0;
         $groupid = $coursegroup;
         $groupname = '';
         if ($groupmode) {
-            //$groupid = groups_get_activity_group($this->get_course_module(), true);
             $groupname = groups_get_group_name($groupid).'-';
         }
 
