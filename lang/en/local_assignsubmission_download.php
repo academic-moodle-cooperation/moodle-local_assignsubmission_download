@@ -127,6 +127,7 @@ $string['show_propertydescription'] = 'Used to show or hide the \'{$a->entrytosh
 $string['userfilter'] = 'User filter';
 
 $string['labelgroup'] = 'Focus download on group';
+$string['labelgroup_help'] = 'Download assignments of students from a specific group only.';
 
 $string['assignsubmission_download:view'] = 'Grant access to file renaming and submission export';
 

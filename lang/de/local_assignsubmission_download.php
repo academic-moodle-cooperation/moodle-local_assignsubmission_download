@@ -128,5 +128,6 @@ $string['show_propertydescription'] = 'Bestimmt, ob der \'{$a->entrytoshow}\' Me
 $string['userfilter'] = 'Benutzerfilter';
 
 $string['labelgroup'] = 'Download auf Gruppe fokusieren';
+$string['labelgroup_help'] = 'Es werden nur die Abgaben der Studierenden aus dieser Gruppe inkludiert.';
 
 $string['assignsubmission_download:view'] = 'Gewähre Zugriff zu Dateiumbenennung und Abgaben-Export';

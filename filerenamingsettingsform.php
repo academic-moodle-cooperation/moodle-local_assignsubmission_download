@@ -85,12 +85,13 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $activitygroups = groups_get_activity_allowed_groups($cm);
         
         if (($groupmode != NOGROUPS)) {
-            $selectgroup = $mform->createElement('select', 'coursegroup', get_string('labelgroup', 'gradereport_gradedist'));
+            $selectgroup = $mform->createElement('select', 'coursegroup', get_string('labelgroup', 'local_assignsubmission_download'));
             $selectgroup->addOption(get_string('allparticipants'), 0);
             foreach ($activitygroups as $index => $curgroup) {
                 $selectgroup->addOption($curgroup->name, $index, null);
             }
             $mform->addElement($selectgroup);
+            $mform->addHelpButton('coursegroup', 'labelgroup', 'local_assignsubmission_download');
         }
         
         // Hidden params.
