@@ -38,12 +38,13 @@ Example of usage
  current position.
 * In the "Clean filenames" checkbox, specify whether or not you want to clean up special
  characters in the file names.
+* Additionally, if the activity allows groups, you can restrict the downloaded elements by groups or groupings.
 
 
 Requirements
 ------------
 The plugin/s were available including core patches for Moodle 2.5+.  
-This core patch free version is for Moodle 3.6.
+This core patch free version is for Moodle 3.7.
 
 
 Installation

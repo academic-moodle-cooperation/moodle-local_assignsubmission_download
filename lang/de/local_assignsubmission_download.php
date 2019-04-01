@@ -130,4 +130,7 @@ $string['userfilter'] = 'Benutzerfilter';
 $string['labelgroup'] = 'Download auf Gruppe fokusieren';
 $string['labelgroup_help'] = 'Es werden nur die Abgaben der Studierenden aus dieser Gruppe inkludiert.';
 
+$string['labelgrouping'] = 'Download auf Gruppierung fokusieren';
+$string['labelgrouping_help'] = 'Es werden nur die Abgaben der Studierenden aus dieser Gruppierung inkludiert.';
+
 $string['assignsubmission_download:view'] = 'Gewähre Zugriff zu Dateiumbenennung und Abgaben-Export';

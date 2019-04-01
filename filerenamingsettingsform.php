@@ -74,6 +74,7 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->addHelpButton('filerenamingpattern', 'filerenamingpattern', 'local_assignsubmission_download');
 
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_tagsupport', 'initializer', array());
+        $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_grouptoggle', 'initializer', array());
 
         $mform->addElement('advcheckbox', 'clean_filerenaming',
                 get_string('clean_filerenaming', 'local_assignsubmission_download'), ' ');
@@ -83,15 +84,29 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $cm = $PAGE->cm;
         $groupmode = groups_get_activity_groupmode($cm);
         $activitygroups = groups_get_activity_allowed_groups($cm);
-        
+
         if (($groupmode != NOGROUPS)) {
-            $selectgroup = $mform->createElement('select', 'coursegroup', get_string('labelgroup', 'local_assignsubmission_download'));
+            $selectgroup = $mform->createElement('select', 'coursegroup',
+                get_string('labelgroup', 'local_assignsubmission_download'));
             $selectgroup->addOption(get_string('allparticipants'), 0);
             foreach ($activitygroups as $index => $curgroup) {
                 $selectgroup->addOption($curgroup->name, $index, null);
             }
             $mform->addElement($selectgroup);
             $mform->addHelpButton('coursegroup', 'labelgroup', 'local_assignsubmission_download');
+        }
+
+        $course = $PAGE->course;
+        $activitygroupings = groups_get_all_groupings($course->id);
+        if (($groupmode != NOGROUPS)) {
+            $selectgrouping = $mform->createElement('select', 'coursegrouping',
+                get_string('labelgrouping', 'local_assignsubmission_download'));
+            $selectgrouping->addOption(get_string('allparticipants'), 0);
+            foreach ($activitygroupings as $index => $curgrouping) {
+                $selectgrouping->addOption($curgrouping->name, $index, null);
+            }
+            $mform->addElement($selectgrouping);
+            $mform->addHelpButton('coursegrouping', 'labelgrouping', 'local_assignsubmission_download');
         }
         
         // Hidden params.

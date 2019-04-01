@@ -210,8 +210,11 @@ class filerenaming extends assign {
             if (!isset($data->coursegroup)) {
                 $data->coursegroup = 0;
             }
+            if (!isset($data->coursegrouping)) {
+                $data->coursegrouping = 0;
+            }
             if (isset($data->submittodownload)) {
-                $this->download_submissions($data->coursegroup);
+                $this->download_submissions($data->coursegroup, $data->coursegrouping);
             }
 
         }
@@ -244,7 +247,7 @@ class filerenaming extends assign {
      * @param array $userids Array of user ids to download assignment submissions in a zip file
      * @return string - If an error occurs, this will contain the error page.
      */
-    protected function download_submissions($coursegroup = false) {
+    protected function download_submissions($coursegroup = false, $coursegrouping = false) {
         global $CFG, $DB;
 
         // More efficient to load this here.
@@ -266,6 +269,7 @@ class filerenaming extends assign {
         $groupmode = groups_get_activity_groupmode($this->get_course_module());
         // All users.
         $groupid = $coursegroup;
+        $groupingid = $coursegrouping;
         $groupname = '';
         if ($groupmode) {
             $groupname = groups_get_group_name($groupid).'-';
@@ -280,11 +284,25 @@ class filerenaming extends assign {
         foreach ($students as $student) {
             $userid = $student->id;
             
-            if ((groups_is_member($groupid, $userid) or !$groupmode or !$groupid)) {
+            $isuseringrouping = false;
+            $groupsforuser = groups_get_all_groups($this->get_course()->id, $userid, $groupingid);
+            if (sizeof($groupsforuser)  > 0)  {
+                $isuseringrouping = true;
+            }
+            $isuseringroup = false;
+            if ((groups_is_member($groupid, $userid)))  {
+                $isuseringrouping = false; // This is because "in group" has priority over "in grouping".
+                $isuseringroup = true;
+            }
+            $nogrouprestriction = false;
+            if (!$groupmode or (!$groupid and !$groupingid)) {
+                $nogrouprestriction = true;
+            }
+            
+            if ($isuseringroup or $isuseringrouping or $nogrouprestriction) {
                 // Get the plugins to add their own files to the zip.
 
                 $submissiongroup = false;
-                //$groupname = '';
                 if ($this->get_instance()->teamsubmission) {
                     $submission = $this->get_group_submission($userid, 0, false);
                     $submissiongroup = $this->get_submission_group($userid);

@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+3.7.0 (2019-04-01)
+------------------
+* [FEATURE] #5831 Add grouping selector to submission downloads
+
+
 3.6.0 (2018-12-11)
 ------------------
 * #5581 Moodle 3.6 compatible version
