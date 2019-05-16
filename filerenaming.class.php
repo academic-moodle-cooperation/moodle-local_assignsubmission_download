@@ -285,6 +285,7 @@ class filerenaming extends assign {
         foreach ($students as $student) {
             if ($resetgroupname) {
                $groupname = $defaultgroupname;
+               $resetgroupname = false;
             } else {
                 $defaultgroupname = $groupname;
             }
@@ -325,6 +326,7 @@ class filerenaming extends assign {
                     } else {
                         $groupname = get_string('defaultteam', 'assign') . '-';
                     }
+                    $resetgroupname = true;
                 } else {
                     $submission = $this->get_user_submission($userid, false);
                 }
