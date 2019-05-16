@@ -281,14 +281,28 @@ class filerenaming extends assign {
                                    $groupname . $this->get_course_module()->id . '.zip');
 
         // Get all the files for each student.
+        $resetgroupname = false;
         foreach ($students as $student) {
+            if ($resetgroupname) {
+               $groupname = $defaultgroupname;
+            } else {
+                $defaultgroupname = $groupname;
+            }
+
             $userid = $student->id;
             
             $isuseringrouping = false;
-            $groupsforuser = groups_get_all_groups($this->get_course()->id, $userid, $groupingid);
-            if (sizeof($groupsforuser)  > 0)  {
+            $groupinggroupsforuser = groups_get_all_groups($this->get_course()->id, $userid, $groupingid);
+            if (sizeof($groupinggroupsforuser)  > 0)  {
                 $isuseringrouping = true;
             }
+            
+            $groupsforuser = groups_get_all_groups($this->get_course()->id, $userid);
+            if (sizeof($groupsforuser) == 1) {
+                $groupname = array_values($groupsforuser)[0]->name."-";
+                $resetgroupname = true;
+            }
+            
             $isuseringroup = false;
             if ((groups_is_member($groupid, $userid)))  {
                 $isuseringrouping = false; // This is because "in group" has priority over "in grouping".

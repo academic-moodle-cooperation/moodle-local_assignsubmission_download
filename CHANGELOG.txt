@@ -1,9 +1,10 @@
 CHANGELOG
 =========
 
-3.7.0 (2019-04-01)
+3.7.0 (2019-05-15)
 ------------------
 * [FEATURE] #5831 Add grouping selector to submission downloads
+* [FEATURE] #6074 Add group name in filename unconditionally if user belongs to only one group
 
 
 3.6.0 (2018-12-11)
