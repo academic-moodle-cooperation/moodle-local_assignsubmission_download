@@ -1,14 +1,15 @@
 CHANGELOG
 =========
 
-3.7.0 (2019-05-15)
+3.7.0 (2019-06-04)
 ------------------
+* #5967 Moodle 3.7 compatible version
 * [FEATURE] #5831 Add grouping selector to submission downloads
 * [FEATURE] #6074 Add group name in filename unconditionally if user belongs to only one group
 
 
 3.6.0 (2018-12-11)
-------------------
+------------------v
 * #5581 Moodle 3.6 compatible version
 * #5297 Code cleanup activities
 * #5798 Re-Add german langstrings to master branch

@@ -25,7 +25,7 @@ Example of usage
 
 "Export"-Feature:
 
-* In the "Export settings" choose your export format settings (pdf, xls, csv). 
+* In the "Export settings" choose your export format settings (pdf, xlsx, csv). 
 * In the "Data settings" choose the filters.
 * On the "Data preview" block filter for initials of (surname|first name).
 * Press the "Download file" button to get the report.
