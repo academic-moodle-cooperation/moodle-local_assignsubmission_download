@@ -55,7 +55,6 @@ class mod_assign_printpreview_settings_form extends moodleform {
 
         $options = array(MTablePDF::OUTPUT_FORMAT_PDF => 'PDF',
                          MTablePDF::OUTPUT_FORMAT_XLSX => 'XLSX',
-                         MTablePDF::OUTPUT_FORMAT_XLS => 'XLS',
                          MTablePDF::OUTPUT_FORMAT_ODS => 'ODS',
                          MTablePDF::OUTPUT_FORMAT_CSV_COMMA => 'CSV (;)',
                          MTablePDF::OUTPUT_FORMAT_CSV_TAB => 'CSV (tab)');
