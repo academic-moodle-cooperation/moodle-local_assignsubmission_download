@@ -74,7 +74,6 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->addHelpButton('filerenamingpattern', 'filerenamingpattern', 'local_assignsubmission_download');
 
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_tagsupport', 'initializer', array());
-        $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_grouptoggle', 'initializer', array());
 
         $mform->addElement('advcheckbox', 'clean_filerenaming',
                 get_string('clean_filerenaming', 'local_assignsubmission_download'), ' ');
@@ -98,18 +97,34 @@ class mod_assign_filerenaming_settings_form extends moodleform {
 
         $course = $PAGE->course;
         $activitygroupings = groups_get_all_groupings($course->id);
+        $jsgroupings = array();
         if (($groupmode != NOGROUPS)) {
             $selectgrouping = $mform->createElement('select', 'coursegrouping',
                 get_string('labelgrouping', 'local_assignsubmission_download'));
             $selectgrouping->addOption(get_string('allparticipants'), 0);
+            $jsgroupings[0] = new stdClass();
+            $jsgroupings[0]->name = get_string('allparticipants');
+            $jsgroupings[0]->id = 0;
+            $jsgroupings[0]->groups = groups_get_all_groups($course->id, null, 0);
             foreach ($activitygroupings as $index => $curgrouping) {
                 $selectgrouping->addOption($curgrouping->name, $index, null);
+                $jsgroupings[$index] = new stdClass();
+                $jsgroupings[$index]->name = $curgrouping->name;
+                $jsgroupings[$index]->id = $index;
+                $jsgroupings[$index]->groups = groups_get_all_groups($course->id, null, $index);
             }
             $mform->addElement($selectgrouping);
             $mform->addHelpButton('coursegrouping', 'labelgrouping', 'local_assignsubmission_download');
         }
         
+        var_dump($jsgroupings);
+
+        $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_groupingtoggle', 'initializer', array($jsgroupings));
+
         // Hidden params.
+        // $mform->addElement('hidden', 'mydata', '');
+        // $mform->setAttributes('mydata', 'data-groupings', array($jsgroupings));
+        
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
         $mform->setType('contextid', PARAM_INT);
         $mform->addElement('hidden', 'id', $instance['cm']->id);
