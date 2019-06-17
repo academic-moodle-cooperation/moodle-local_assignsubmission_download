@@ -216,7 +216,6 @@ class filerenaming extends assign {
             if (isset($data->submittodownload)) {
                 $this->download_submissions($data->coursegroup, $data->coursegrouping);
             }
-
         }
     }
 
@@ -270,6 +269,7 @@ class filerenaming extends assign {
         // All users.
         $groupid = $coursegroup;
         $groupingid = $coursegrouping;
+
         $groupname = '';
         if ($groupmode) {
             $groupname = groups_get_group_name($groupid).'-';
@@ -283,11 +283,11 @@ class filerenaming extends assign {
         // Get all the files for each student.
         $resetgroupname = false;
         foreach ($students as $student) {
-            if ($resetgroupname) {
+            if (!$resetgroupname) {
+               $defaultgroupname = $groupname;
+            } else {
                $groupname = $defaultgroupname;
                $resetgroupname = false;
-            } else {
-                $defaultgroupname = $groupname;
             }
 
             $userid = $student->id;

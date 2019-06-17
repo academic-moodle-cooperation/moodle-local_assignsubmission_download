@@ -38,7 +38,6 @@ define(['jquery', 'core/log'], function($, log) {
     instance.initializer = function(groupings) {
         log.info('Initialise filerenaming grouping taggling ...', 'local_assignsubmission_download');
 
-
         var coursegroupsSelector = "#id_coursegroup";
         var coursegroups = $(coursegroupsSelector).first();
 
@@ -52,19 +51,14 @@ define(['jquery', 'core/log'], function($, log) {
                 }
 
                 var curgrouping = $(this).children("option:selected").val();
-
                 if (coursegroups) {
                     $('#id_coursegroup').empty();
-                    //var groupings = $("#mydata").attr('data-groupings');
-                    alert(JSON.stringify(groupings));
                     $.each(groupings, function (groupingid, groupingitem) {
                         if (groupingid == curgrouping) {
                             $.each(groupingitem, function (i, item) {
-//                                alert(JSON.stringify(i));
-//                                alert(JSON.stringify(item));
                                 if (i == "groups") {
-                                    $.each(item, function (gid, ginfo) {
-                                        $('#id_coursegroup').append($('<option>', {value: gid, text: ginfo.name}));
+                                    $.each(item, function (unused, ginfo) {
+                                        $('#id_coursegroup').append($('<option>', {value: ginfo.gid, text: ginfo.name}));
                                     });
                                 }
 
@@ -74,7 +68,7 @@ define(['jquery', 'core/log'], function($, log) {
                 }
             });
         }
-    }
+    };
 
     return instance;
 });

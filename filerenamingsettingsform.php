@@ -97,27 +97,39 @@ class mod_assign_filerenaming_settings_form extends moodleform {
 
         $course = $PAGE->course;
         $activitygroupings = groups_get_all_groupings($course->id);
+
+        $groupingallparticipants = new stdClass();
+        $groupingallparticipants->name = get_string('allparticipants');
+        $groupingallparticipants->id = "0";
+
+        $groupallparticipants = new stdClass();
+        $groupallparticipants->name = get_string('allparticipants');
+        $groupallparticipants->id = "0";
+
+        array_unshift($activitygroupings, $groupingallparticipants);
         $jsgroupings = array();
         if (($groupmode != NOGROUPS)) {
             $selectgrouping = $mform->createElement('select', 'coursegrouping',
                 get_string('labelgrouping', 'local_assignsubmission_download'));
-            $selectgrouping->addOption(get_string('allparticipants'), 0);
-            $jsgroupings[0] = new stdClass();
-            $jsgroupings[0]->name = get_string('allparticipants');
-            $jsgroupings[0]->id = 0;
-            $jsgroupings[0]->groups = groups_get_all_groups($course->id, null, 0);
             foreach ($activitygroupings as $index => $curgrouping) {
-                $selectgrouping->addOption($curgrouping->name, $index, null);
-                $jsgroupings[$index] = new stdClass();
-                $jsgroupings[$index]->name = $curgrouping->name;
-                $jsgroupings[$index]->id = $index;
-                $jsgroupings[$index]->groups = groups_get_all_groups($course->id, null, $index);
+                $selectgrouping->addOption($curgrouping->name, $curgrouping->id, null);
+                $jsgroupings[$curgrouping->id] = new stdClass();
+                $jsgroupings[$curgrouping->id]->name = $curgrouping->name;
+                $jsgroupings[$curgrouping->id]->id = $curgrouping->id;
+                
+                $jsgroupings[$curgrouping->id]->groups = array();
+                $groupsingrouping = groups_get_all_groups($course->id, null, $curgrouping->id);
+                array_unshift($groupsingrouping, $groupallparticipants);
+                foreach ($groupsingrouping as $gindex => $curgroup) {
+                    $groupinginfo = new stdClass();
+                    $groupinginfo->gid = $curgroup->id;
+                    $groupinginfo->name = $curgroup->name;
+                    array_push($jsgroupings[$curgrouping->id]->groups, $groupinginfo);
+                }
             }
             $mform->addElement($selectgrouping);
             $mform->addHelpButton('coursegrouping', 'labelgrouping', 'local_assignsubmission_download');
         }
-        
-        var_dump($jsgroupings);
 
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_groupingtoggle', 'initializer', array($jsgroupings));
 

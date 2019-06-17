@@ -1,0 +1,108 @@
+a6x0y_Gruppe A-Eva Maria Karall_6a6x0y_Gruppe A-Alice Muster_7a6x0y_Gruppe A-Bob Muster_5a7x0y_Gruppe B-Alice Muster_7a7x0y_Gruppe B-Bob Muster_5a7x0y_Gruppe B-Alice Muster_7
+a7x0y_Gruppe B-Bob Muster_5
+a6x0y_Gruppe A-Eva Maria Karall_6
+a6x0y_Gruppe A-Alice Muster_7
+a6x0y_Gruppe A-Bob Muster_5
+a8x0y_Messagining Gruppe-Alice Muster_7
+a8x0y_Messagining Gruppe-Bob Muster_5
+a7x0y_Gruppe B-Alice Muster_7
+a7x0y_Gruppe B-Bob Muster_5
+a0x0y_Gruppe A-Eva Maria Karall_6
+a0x0y_-Alice Muster_7
+a0x0y_-Bob Muster_5
+a0x0y_-Gergely Rakoczi_8
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+
+
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+
+
+a6x0y_Gruppe A-Eva Maria Karall_6
+a6x0y_Gruppe A-Alice Muster_7
+
+a7x0y_Gruppe B-Bob Muster_5
+
+a8x0y_Messagining Gruppe-Alice Muster_7
+a8x0y_Messagining Gruppe-Bob Muster_5
+
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a0x4y
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+
+
+a0x4y
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a0x4y
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+
+
+a0x4y
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+aO:8:"stdClass":9:{s:19:"filerenamingpattern";s:79:"[group][lastname][firstname][lastname]aÄa[filename]tname][lastname][firstname]";s:18:"clean_filerenaming";s:1:"1";s:14:"coursegrouping";s:1:"4";s:9:"contextid";i:102;s:2:"id";i:48;s:6:"userid";i:2;s:6:"action";s:7:"grading";s:16:"submittodownload";s:21:"Abgaben herunterladen";s:11:"coursegroup";i:0;}xy
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+aO:8:"stdClass":9:{s:19:"filerenamingpattern";s:79:"[group][lastname][firstname][lastname]aÄa[filename]tname][lastname][firstname]";s:18:"clean_filerenaming";s:1:"1";s:14:"coursegrouping";s:1:"4";s:9:"contextid";i:102;s:2:"id";i:48;s:6:"userid";i:2;s:6:"action";s:7:"grading";s:16:"submittodownload";s:21:"Abgaben herunterladen";s:11:"coursegroup";i:0;}xy
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a6x4y_Gruppe A-Eva Maria Karall_6
+a6x4y_Gruppe A-Alice Muster_7
+a7x4y_Gruppe B-Bob Muster_5
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a0x0y_Gruppe A-Eva Maria Karall_6
+a0x0y_-Alice Muster_7
+a0x0y_-Bob Muster_5
+a0x0y_-Gergely Rakoczi_8
+a0x4y_Gruppe A-Eva Maria Karall_6
+a0x4y_-Alice Muster_7
+a0x4y_-Bob Muster_5
+a6x4y_Gruppe A-Eva Maria Karall_6
+a6x4y_Gruppe A-Alice Muster_7

@@ -1,11 +1,11 @@
 CHANGELOG
 =========
 
-3.7.0 (2019-06-04)
+3.7.0 (2019-06-16)
 ------------------
 * #5967 Moodle 3.7 compatible version
 * [FEATURE] #5831 Add grouping selector to submission downloads
-* [FEATURE] #6074 Add group name in filename unconditionally if user belongs to only one group
+* [FEATURE] #6074 Add group name in filename unconditionally if user belongs to only one group or a group is selected
 
 
 3.6.0 (2018-12-11)
