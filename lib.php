@@ -34,7 +34,6 @@ defined('MOODLE_INTERNAL') || die();
  */
 function local_assignsubmission_download_extend_settings_navigation(settings_navigation $navref, context $context) {
     global $PAGE, $USER, $SESSION, $CFG;
-
     // Only add this settings item on non-site course pages.
     if (!$PAGE->course or $PAGE->course->id == SITEID) {
         return;
@@ -45,7 +44,7 @@ function local_assignsubmission_download_extend_settings_navigation(settings_nav
     }
 
     // Only let users with the appropriate capability see this settings item.
-    if (!has_capability('local/assignsubmission_download:view', context_course::instance($PAGE->course->id), 2)) {
+    if (!has_capability('local/assignsubmission_download:view', context_course::instance($PAGE->course->id))) {
         return;
     }
 
