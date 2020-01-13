@@ -5,7 +5,7 @@ This file is part of the local_assignsubmission_download plugin for Moodle - <ht
 
 *Author:*    Andreas Krieger
 
-*Copyright:* 2014 [Academic Moodle Cooperation](http://www.academic-moodle-cooperation.org)
+*Copyright:* 2019 [Academic Moodle Cooperation](http://www.academic-moodle-cooperation.org)
 
 *License:*   [GNU GPL v3 or later](http://www.gnu.org/copyleft/gpl.html)
 
@@ -44,7 +44,7 @@ Example of usage
 Requirements
 ------------
 The plugin/s were available including core patches for Moodle 2.5+.  
-This core patch free version is for Moodle 3.7.
+This core patch free version is for Moodle 3.8.
 
 
 Installation
