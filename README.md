@@ -43,7 +43,8 @@ Example of usage
 
 Requirements
 ------------
-This version is for Moodle 3.8.
+The plugin/s were available including core patches for Moodle 2.5+.  
+This core patch free version is for Moodle 3.9.0
 
 
 Installation
