@@ -76,12 +76,23 @@ Admin Settings
 
 Documentation
 -------------
-See above.
+You can find further information to the plugin on the [AMC website](https://www.academic-moodle-cooperation.org/en/)
 
 
 Bug Reports / Support
 ---------------------
-None.
+
+We try our best to deliver bug-free plugins, but we can not test the plugin for every platform,
+database, PHP and Moodle version. If you find any bug please report it on
+[GitHub](https://github.com/academic-moodle-cooperation/moodle-local_assignsubmission_download/issues/). Please
+provide a detailed bug description, including the plugin and Moodle version and, if applicable, a
+screenshot.
+
+You may also file a request for enhancement on GitHub. If we consider the request generally useful
+and if it can be implemented with reasonable effort we might implement it in a future version.
+
+You may also post general questions on the plugin on GitHub, but note that we do not have the
+resources to provide detailed support.
 
 
 License
