@@ -134,6 +134,8 @@ $string['assignsubmission_download:view'] = 'Grant access to file renaming and s
 $string['labelgrouping'] = 'Focus download on grouping';
 $string['labelgrouping_help'] = 'Download assignments of students from a specific group only.';
 
+$string['submissionneweras'] = 'Submission newer as';
+
 $string['privacy:metadata:preference:filerenamingpattern'] = 'Preference for the naming scheme used for file renaming on downloaded submissions.';
 $string['privacy:metadata:preference:clean_filerenaming'] = 'Preference on whether to additionaly clean file names from special chars in downloaded submissions.';
 $string['privacy:metadata:preference:userfilter'] = 'Preference on which users are filtered for when exporting to a file.';

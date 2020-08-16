@@ -213,8 +213,11 @@ class filerenaming extends assign {
             if (!isset($data->coursegrouping)) {
                 $data->coursegrouping = 0;
             }
+            if (!isset($data->submissionneweras)) {
+                $data->submissionneweras = 0;
+            }
             if (isset($data->submittodownload)) {
-                $this->download_submissions($data->coursegroup, $data->coursegrouping);
+                $this->download_submissions($data->coursegroup, $data->coursegrouping, $data->submissionneweras);
             }
         }
     }
@@ -246,7 +249,7 @@ class filerenaming extends assign {
      * @param array $userids Array of user ids to download assignment submissions in a zip file
      * @return string - If an error occurs, this will contain the error page.
      */
-    protected function download_submissions($coursegroup = false, $coursegrouping = false) {
+    protected function download_submissions($coursegroup = false, $coursegrouping = false, $submissionneweras = 0) {
         global $CFG, $DB;
 
         // More efficient to load this here.
@@ -291,19 +294,19 @@ class filerenaming extends assign {
             }
 
             $userid = $student->id;
-            
+
             $isuseringrouping = false;
             $groupinggroupsforuser = groups_get_all_groups($this->get_course()->id, $userid, $groupingid);
             if (sizeof($groupinggroupsforuser)  > 0)  {
                 $isuseringrouping = true;
             }
-            
+
             $groupsforuser = groups_get_all_groups($this->get_course()->id, $userid);
             if (sizeof($groupsforuser) == 1) {
                 $groupname = array_values($groupsforuser)[0]->name."-";
                 $resetgroupname = true;
             }
-            
+
             $isuseringroup = false;
             if ((groups_is_member($groupid, $userid)))  {
                 $isuseringrouping = false; // This is because "in group" has priority over "in grouping".
@@ -313,7 +316,7 @@ class filerenaming extends assign {
             if (!$groupmode or (!$groupid and !$groupingid)) {
                 $nogrouprestriction = true;
             }
-            
+
             if ($isuseringroup or $isuseringrouping or $nogrouprestriction) {
                 // Get the plugins to add their own files to the zip.
 
@@ -339,7 +342,7 @@ class filerenaming extends assign {
                     $prefix = clean_filename($prefix . '_' . $this->get_uniqueid_for_user($userid));
                 }
 
-                if ($submission) {
+                if ($submission && $submission->timemodified >= $submissionneweras) {
                     $downloadasfolders = get_user_preferences('assign_downloadasfolders', 1);
                     foreach ($this->get_submission_plugins() as $plugin) {
                         if ($plugin->is_enabled() && $plugin->is_visible()) {
