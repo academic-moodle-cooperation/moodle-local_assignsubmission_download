@@ -134,6 +134,8 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         // Datetimepicker for including only files submitted past a given time.
         $mform->addElement('date_time_selector', 'submissionneweras',
                 get_string('submissionneweras', 'local_assignsubmission_download'), ['optional' => true]);
+        $mform->addHelpButton('submissionneweras', 'submissionneweras',
+                'local_assignsubmission_download');
 
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_groupingtoggle', 'initializer', array($jsgroupings));
 
