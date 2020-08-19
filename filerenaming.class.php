@@ -342,7 +342,7 @@ class filerenaming extends assign {
                     $prefix = clean_filename($prefix . '_' . $this->get_uniqueid_for_user($userid));
                 }
 
-                if ($submission && $submission->timemodified >= $submissionneweras) {
+                if ($submission) {
                     $downloadasfolders = get_user_preferences('assign_downloadasfolders', 1);
                     foreach ($this->get_submission_plugins() as $plugin) {
                         if ($plugin->is_enabled() && $plugin->is_visible()) {
@@ -352,51 +352,69 @@ class filerenaming extends assign {
                                 $submission->exportfullpath = true;
                                 $pluginfiles = $plugin->get_files($submission, $student);
                                 foreach ($pluginfiles as $zipfilepath => $file) {
-                                    $subtype = $plugin->get_subtype();
-                                    $type = $plugin->get_type();
-                                    $zipfilename = basename($zipfilepath);
-                                    $prefixedfilename = clean_filename($prefix .
-                                                                       '_' .
-                                                                       $subtype .
-                                                                       '_' .
-                                                                       $type .
-                                                                       '_');
-                                    if ($type == 'file') {
-                                        $pathfilename = $prefixedfilename . $file->get_filepath() . $zipfilename;
-                                    } else if ($type == 'onlinetext') {
-                                        $pathfilename = $prefixedfilename . '/' . $zipfilename;
-                                    } else {
-                                        $pathfilename = $prefixedfilename . '/' . $zipfilename;
+                                    //todo Kick out files out of the cut off date here if they have there own time stamp
+                                    if (!empty($file->file_record)) {
+
                                     }
+                                    $type = $plugin->get_type();
+                                    // Compare $submissionneweras against the file timestamp if type is file.
+                                    // Otherwise compare against the timestamp of the submission.
+                                    if (($type == 'file'
+                                                    && $file->get_timemodified() >= $submissionneweras)
+                                            || ($type != 'file' &&
+                                                    $submission->timemodified >= $submissionneweras)) {
+                                        $subtype = $plugin->get_subtype();
+                                        $zipfilename = basename($zipfilepath);
+                                        $prefixedfilename = clean_filename($prefix .
+                                                '_' .
+                                                $subtype .
+                                                '_' .
+                                                $type .
+                                                '_');
+                                        if ($type == 'file') {
+                                            $pathfilename = $prefixedfilename . $file->get_filepath() . $zipfilename;
+                                        } else if ($type == 'onlinetext') {
+                                            $pathfilename = $prefixedfilename . '/' . $zipfilename;
+                                        } else {
+                                            $pathfilename = $prefixedfilename . '/' . $zipfilename;
+                                        }
 
-                                    // AMC moodle university code start.
-                                    $pathfilename = filerenaming_rename_file($pathfilename, $zipfilename, $student,
-                                            $this, $submission, $groupname, $filesforzipping);
-                                    // AMC moodle university code end.
+                                        // AMC moodle university code start.
+                                        $pathfilename = filerenaming_rename_file($pathfilename, $zipfilename, $student,
+                                                $this, $submission, $groupname, $filesforzipping);
+                                        // AMC moodle university code end.
 
-                                    $pathfilename = clean_param($pathfilename, PARAM_PATH);
-                                    $filesforzipping[$pathfilename] = $file;
+                                        $pathfilename = clean_param($pathfilename, PARAM_PATH);
+                                        $filesforzipping[$pathfilename] = $file;
+                                    }
                                 }
                             } else {
                                 // Create a single folder for all users of all assignment plugins.
                                 // This was the default behavior for version of Moodle < 3.1.
                                 $submission->exportfullpath = false;
                                 $pluginfiles = $plugin->get_files($submission, $student);
+                                $type = $plugin->get_type();
                                 foreach ($pluginfiles as $zipfilename => $file) {
-                                    $subtype = $plugin->get_subtype();
-                                    $type = $plugin->get_type();
-                                    $prefixedfilename = clean_filename($prefix .
-                                                                       '_' .
-                                                                       $subtype .
-                                                                       '_' .
-                                                                       $type .
-                                                                       '_' .
-                                                                       $zipfilename);
-                                    // AMC moodle university code start.
-                                    $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
-                                            $this, $submission, $groupname, $filesforzipping);
-                                    // AMC moodle university code end.
-                                    $filesforzipping[$prefixedfilename] = $file;
+                                    // Compare $submissionneweras against the file timestamp if type is file.
+                                    // Otherwise compare against the timestamp of the submission.
+                                    if (($type == 'file'
+                                                    && $file->get_timemodified() >= $submissionneweras)
+                                            || ($type != 'file' &&
+                                                    $submission->timemodified >= $submissionneweras)) {
+                                        $subtype = $plugin->get_subtype();
+                                        $prefixedfilename = clean_filename($prefix .
+                                                '_' .
+                                                $subtype .
+                                                '_' .
+                                                $type .
+                                                '_' .
+                                                $zipfilename);
+                                        // AMC moodle university code start.
+                                        $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
+                                                $this, $submission, $groupname, $filesforzipping);
+                                        // AMC moodle university code end.
+                                        $filesforzipping[$prefixedfilename] = $file;
+                                    }
                                 }
                             }
                         }
