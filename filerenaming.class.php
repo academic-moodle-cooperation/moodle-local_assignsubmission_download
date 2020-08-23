@@ -430,7 +430,16 @@ class filerenaming extends assign {
                                         $this->get_course_module()->id,
                                         get_string('downloadall', 'assign'));
             $result .= $this->get_renderer()->render($header);
-            $result .= $this->get_renderer()->notification(get_string('nosubmission', 'assign'));
+
+            // Print nosubmissionneweras warning if files were found and $submissionneweras was set.
+            // Otherwise print nosubmission warning.
+            if (count($pluginfiles) > 0 || $submissionneweras > 0) {
+                $result .= $this->get_renderer()->notification(get_string('nosubmissionneweras',
+                        'local_assignsubmission_download', userdate($submissionneweras)));
+            } else {
+                $result .= $this->get_renderer()->notification(get_string('nosubmission', 'assign'));
+            }
+
             $url = new moodle_url('/mod/assign/view.php', array('id' => $this->get_course_module()->id,
                                                                     'action' => 'grading'));
             $result .= $this->get_renderer()->continue_button($url);

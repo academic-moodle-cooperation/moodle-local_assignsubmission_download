@@ -137,6 +137,8 @@ $string['labelgrouping_help'] = 'Download assignments of students from a specifi
 $string['submissionneweras'] = 'Submission newer as';
 $string['submissionneweras_help'] = 'Only download files that were modified after a given time. If a submissiontype does not have
                                      a timestamp (like onlinetext), the timestamp of the submission is used.';
+$string['nosubmissionneweras'] = 'No submission was made after {$a}';
+$string['dateinthefutureerror'] = 'Submission newer as cannot be in the future';
 
 $string['privacy:metadata:preference:filerenamingpattern'] = 'Preference for the naming scheme used for file renaming on downloaded submissions.';
 $string['privacy:metadata:preference:clean_filerenaming'] = 'Preference on whether to additionaly clean file names from special chars in downloaded submissions.';
