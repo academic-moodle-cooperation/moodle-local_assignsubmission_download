@@ -104,7 +104,7 @@ class mod_assign_filerenaming_settings_form extends moodleform {
                 $jsgroupings[$curgrouping->id] = new stdClass();
                 $jsgroupings[$curgrouping->id]->name = $curgrouping->name;
                 $jsgroupings[$curgrouping->id]->id = $curgrouping->id;
-                
+
                 $jsgroupings[$curgrouping->id]->groups = array();
                 $groupsingrouping = groups_get_all_groups($course->id, null, $curgrouping->id);
                 array_unshift($groupsingrouping, $groupallparticipants);
@@ -131,12 +131,18 @@ class mod_assign_filerenaming_settings_form extends moodleform {
             $mform->addHelpButton('coursegroup', 'labelgroup', 'local_assignsubmission_download');
         }
 
+        // Datetimepicker for including only files submitted past a given time.
+        $mform->addElement('date_time_selector', 'submissionneweras',
+                get_string('submissionneweras', 'local_assignsubmission_download'), ['optional' => true]);
+        $mform->addHelpButton('submissionneweras', 'submissionneweras',
+                'local_assignsubmission_download');
+
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_groupingtoggle', 'initializer', array($jsgroupings));
 
         // Hidden params.
         // $mform->addElement('hidden', 'mydata', '');
         // $mform->setAttributes('mydata', 'data-groupings', array($jsgroupings));
-        
+
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
         $mform->setType('contextid', PARAM_INT);
         $mform->addElement('hidden', 'id', $instance['cm']->id);
