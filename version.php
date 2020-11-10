@@ -19,18 +19,18 @@
  *
  * @package       local
  * @subpackage    assignsubmission_download
- * @author        Andreas Krieger
- * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @author        Andreas Krieger, Daniel Binder
+ * @copyright     2020 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2020061501;
-$plugin->requires  = 2020061501;           // Requires this Moodle version!
+$plugin->version   = 2020111000;
+$plugin->requires  = 2020110300;           // Requires this Moodle version!
 $plugin->component = 'local_assignsubmission_download';    // To check on upgrade, that module sits in correct place.
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = "v3.9.1";            // User-friendly version number.
+$plugin->release   = "v3.10.0";            // User-friendly version number.
 
 $plugin->dependencies = array(
     'mod_assign' => 2020061500
