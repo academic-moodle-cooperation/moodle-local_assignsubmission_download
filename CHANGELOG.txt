@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+3.10.0 (2020-11-10)
+------------------
+* Moodle 3.10.0 compatible version
+
 3.9.1 (2020-08-23)
 ------------------
 * [FEATURE] #6259 Add option to filter for submissions newer as a given date to file renaming
