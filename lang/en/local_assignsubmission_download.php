@@ -108,6 +108,7 @@ $string['filerenamingpattern_help'] = 'The parameter \'naming scheme\' determine
     [idnumber] matriculation number<br>
     [assignmentname] name of the assignment<br>
     [group] group, in case the participant is enroled into a group<br>
+    [filenumber] sequential number for files uploaded by a single student<br>
     <br>
     If you add any alphanumeric characters (without brackets), these characters will be added to all the uploaded/downloaded assignments<br>
     <br>

@@ -351,6 +351,7 @@ class filerenaming extends assign {
                                 // This is the default behavior for version of Moodle >= 3.1.
                                 $submission->exportfullpath = true;
                                 $pluginfiles = $plugin->get_files($submission, $student);
+                                $sequence = 1;
                                 foreach ($pluginfiles as $zipfilepath => $file) {
                                     //todo Kick out files out of the cut off date here if they have there own time stamp
                                     if (!empty($file->file_record)) {
@@ -381,7 +382,7 @@ class filerenaming extends assign {
 
                                         // AMC moodle university code start.
                                         $pathfilename = filerenaming_rename_file($pathfilename, $zipfilename, $student,
-                                                $this, $submission, $groupname, $filesforzipping);
+                                                $this, $submission, $groupname, $sequence++, $filesforzipping);
                                         // AMC moodle university code end.
 
                                         $pathfilename = clean_param($pathfilename, PARAM_PATH);
@@ -394,6 +395,7 @@ class filerenaming extends assign {
                                 $submission->exportfullpath = false;
                                 $pluginfiles = $plugin->get_files($submission, $student);
                                 $type = $plugin->get_type();
+                                $sequence = 1;
                                 foreach ($pluginfiles as $zipfilename => $file) {
                                     // Compare $submissionneweras against the file timestamp if type is file.
                                     // Otherwise compare against the timestamp of the submission.
@@ -411,7 +413,7 @@ class filerenaming extends assign {
                                                 $zipfilename);
                                         // AMC moodle university code start.
                                         $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
-                                                $this, $submission, $groupname, $filesforzipping);
+                                                $this, $submission, $groupname, $sequence++, $filesforzipping);
                                         // AMC moodle university code end.
                                         $filesforzipping[$prefixedfilename] = $file;
                                     }
