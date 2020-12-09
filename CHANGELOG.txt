@@ -3,7 +3,8 @@ CHANGELOG
 
 3.10.0 (2020-11-10)
 ------------------
-* Moodle 3.10.0 compatible version
+* [FEATURE] #6626 Add [filenumber] placeholder. It sequentially labels the submissions of a single student.
+                  A hint about using it will be shown if more than one file can be submitted.
 
 3.9.1 (2020-08-23)
 ------------------
