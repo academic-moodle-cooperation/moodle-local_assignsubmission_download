@@ -88,10 +88,11 @@ class filerenaming extends assign {
      * @return string
      */
     protected function view_filerenaming_table() {
-        global $CFG, $USER;
+        global $CFG, $USER, $OUTPUT;
 
         $o = '';
         $cmid = $this->get_course_module()->id;
+        $filenumberinfo = false;
 
         $links = array();
         if (has_capability('gradereport/grader:view', $this->get_course_context()) &&
@@ -120,6 +121,14 @@ class filerenaming extends assign {
                 }
             }
         }
+        // Check if a file submission type is activated with a file submission count higher than one.
+        foreach ($this->get_submission_plugins() as $plugin) {
+            if ($plugin->is_enabled() && $plugin->get_config('maxfilesubmissions') > 1) {
+                $filenumberinfo = true;
+                break;
+            }
+        }
+
         $gradingactions = new url_select($links);
         $gradingactions->set_label(get_string('choosegradingaction', 'assign'));
 
@@ -159,7 +168,11 @@ class filerenaming extends assign {
                                     get_string('grading', 'assign'),
                                     $actionformtext);
         $o .= $this->get_renderer()->render($header);
-
+        // Show info dialogue if more than one file can be uploaded.
+        if ($filenumberinfo) {
+            $o .= $OUTPUT->box($OUTPUT->notification(get_string('filenumberinfo',
+                    'local_assignsubmission_download'), 'info'), 'generalbox', 'nogroupsinfo');
+        }
         $o .= $this->get_renderer()->render(new assign_form('filerenamingsettingsform',
                                                             $filerenamingsettingsform
                                                             ));
@@ -351,6 +364,7 @@ class filerenaming extends assign {
                                 // This is the default behavior for version of Moodle >= 3.1.
                                 $submission->exportfullpath = true;
                                 $pluginfiles = $plugin->get_files($submission, $student);
+                                $sequence = 1;
                                 foreach ($pluginfiles as $zipfilepath => $file) {
                                     //todo Kick out files out of the cut off date here if they have there own time stamp
                                     if (!empty($file->file_record)) {
@@ -381,7 +395,7 @@ class filerenaming extends assign {
 
                                         // AMC moodle university code start.
                                         $pathfilename = filerenaming_rename_file($pathfilename, $zipfilename, $student,
-                                                $this, $submission, $groupname, $filesforzipping);
+                                                $this, $submission, $groupname, $sequence++, $filesforzipping);
                                         // AMC moodle university code end.
 
                                         $pathfilename = clean_param($pathfilename, PARAM_PATH);
@@ -394,6 +408,7 @@ class filerenaming extends assign {
                                 $submission->exportfullpath = false;
                                 $pluginfiles = $plugin->get_files($submission, $student);
                                 $type = $plugin->get_type();
+                                $sequence = 1;
                                 foreach ($pluginfiles as $zipfilename => $file) {
                                     // Compare $submissionneweras against the file timestamp if type is file.
                                     // Otherwise compare against the timestamp of the submission.
@@ -411,7 +426,7 @@ class filerenaming extends assign {
                                                 $zipfilename);
                                         // AMC moodle university code start.
                                         $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
-                                                $this, $submission, $groupname, $filesforzipping);
+                                                $this, $submission, $groupname, $sequence++, $filesforzipping);
                                         // AMC moodle university code end.
                                         $filesforzipping[$prefixedfilename] = $file;
                                     }

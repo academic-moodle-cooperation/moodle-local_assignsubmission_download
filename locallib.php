@@ -27,7 +27,7 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]'];
+const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]', '[filenumber]'];
 
 /**
  * File rename function
@@ -42,11 +42,11 @@ const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname
  * @param optional array $zipfiles array of filenames that must not be used in the same download
  * @return String The renamed filename
  */
-function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, $submission, $groupname, $zipfiles = null) {
+function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, $submission, $groupname, $sequence, $zipfiles = null) {
     global $CFG;
 
     // Select filerenaming pattern out of (session|moodle default) in this order.
-    $placeholders = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]'];
+    $placeholders = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]', '[filenumber]'];
     $filerenaminguserpref = get_user_preferences('filerenamingpattern', '');
     $o = '';
     if (ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
@@ -109,6 +109,7 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
     }
 
     $o = replace_custom($o, $maxlength, '[assignmentname]', $assignmentname);
+    $o = replace_custom($o, $maxlength, '[filenumber]', sprintf('%02d',$sequence));
 
     if (!$groupname || empty($groupname) || strcmp($groupname, '-') == 0) {
         $o = str_replace('[group]', '', $o);
