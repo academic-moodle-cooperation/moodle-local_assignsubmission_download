@@ -88,10 +88,11 @@ class filerenaming extends assign {
      * @return string
      */
     protected function view_filerenaming_table() {
-        global $CFG, $USER;
+        global $CFG, $USER, $OUTPUT;
 
         $o = '';
         $cmid = $this->get_course_module()->id;
+        $filenumberinfo = false;
 
         $links = array();
         if (has_capability('gradereport/grader:view', $this->get_course_context()) &&
@@ -120,6 +121,14 @@ class filerenaming extends assign {
                 }
             }
         }
+        // Check if a file submission type is activated with a file submission count higher than one.
+        foreach ($this->get_submission_plugins() as $plugin) {
+            if ($plugin->is_enabled() && $plugin->get_config('maxfilesubmissions') > 1) {
+                $filenumberinfo = true;
+                break;
+            }
+        }
+
         $gradingactions = new url_select($links);
         $gradingactions->set_label(get_string('choosegradingaction', 'assign'));
 
@@ -159,7 +168,11 @@ class filerenaming extends assign {
                                     get_string('grading', 'assign'),
                                     $actionformtext);
         $o .= $this->get_renderer()->render($header);
-
+        // Show info dialogue if more than one file can be uploaded.
+        if ($filenumberinfo) {
+            $o .= $OUTPUT->box($OUTPUT->notification(get_string('filenumberinfo',
+                    'local_assignsubmission_download'), 'info'), 'generalbox', 'nogroupsinfo');
+        }
         $o .= $this->get_renderer()->render(new assign_form('filerenamingsettingsform',
                                                             $filerenamingsettingsform
                                                             ));

@@ -46,7 +46,7 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
     global $CFG;
 
     // Select filerenaming pattern out of (session|moodle default) in this order.
-    $placeholders = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]', '[filenumbr]'];
+    $placeholders = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]', '[filenumber]'];
     $filerenaminguserpref = get_user_preferences('filerenamingpattern', '');
     $o = '';
     if (ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {

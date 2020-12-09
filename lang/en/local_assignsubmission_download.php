@@ -119,6 +119,7 @@ $string['clean_filerenaming_help'] = 'Removes white spaces and special character
 $string['onlinetext_defaultfilename'] = 'Onlinetext';
 $string['hiddenuser'] = 'Participant';
 $string['notreuploadable_hint'] = 'Note, if one of the feedback types \'Feedback files\' or \'Offline grading worksheet\' is checked, the renamed download files of this page cannot be uploaded anymore.';
+$string['filenumberinfo'] = 'Maximum number of uploaded files is larger than 1. Consider using [filenumber] to number all uploads of a student in order to improve sorting.';
 
 $string['defaultfilerenamingpattern'] = '[filename]';
 
