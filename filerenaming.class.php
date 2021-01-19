@@ -448,7 +448,7 @@ class filerenaming extends assign {
 
             // Print nosubmissionneweras warning if files were found and $submissionneweras was set.
             // Otherwise print nosubmission warning.
-            if (count($pluginfiles) > 0 || $submissionneweras > 0) {
+            if ((isset($pluginfiles) && count($pluginfiles) > 0) || $submissionneweras > 0) {
                 $result .= $this->get_renderer()->notification(get_string('nosubmissionneweras',
                         'local_assignsubmission_download', userdate($submissionneweras)));
             } else {
