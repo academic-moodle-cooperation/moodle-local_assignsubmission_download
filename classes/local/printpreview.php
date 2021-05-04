@@ -25,7 +25,21 @@
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_assignsubmission_download\local;
+
+use assign;
+use assign_form;
+use assign_header;
+use help_icon;
+use html_writer;
+use mod_assign_printpreview_settings_form;
+use moodle_url;
+use printpreview_table;
+use stdClass;
+use url_select;
+
 defined('MOODLE_INTERNAL') || die();
+
 
 /**
  * The printpreview class, extending assign.

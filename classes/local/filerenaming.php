@@ -25,6 +25,16 @@
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_assignsubmission_download\local;
+use assign;
+use assign_form;
+use assign_header;
+use core_php_time_limit;
+use mod_assign_filerenaming_settings_form;
+use stdClass;
+use url_select;
+use moodle_url;
+
 defined('MOODLE_INTERNAL') || die();
 
 /**
