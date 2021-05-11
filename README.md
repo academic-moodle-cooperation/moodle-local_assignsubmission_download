@@ -18,6 +18,8 @@ The Assign Submission Download plugin (local_assignsubmission_download) allows t
 Example of usage
 ----------------
 
+Access the plugin's features via the assignment settings drop-down menu.
+
 "Export"-Feature:
 
 * In the "Export settings" choose your export format settings (pdf, xlsx, csv). 
