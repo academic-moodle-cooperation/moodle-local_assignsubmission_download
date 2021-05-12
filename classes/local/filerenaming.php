@@ -471,6 +471,7 @@ class filerenaming extends assign {
             $result .= $this->view_footer();
             echo $result;
             $result = '';
+            die;
         } else if ($zipfile = $this->pack_files($filesforzipping)) {
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
             // Send file and delete after sending.
