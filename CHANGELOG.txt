@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+
+3.11.0 (2021-05-18)
+------------------
+* Moodle 3.11.0 compatible version
+* [FIXED] #6881 - fix invalid settings storage names
+* [FIXED] #6899 - remove concatenation from lang strings
+* [FIXED] #6883 - fix errors when assignment is empty
+* [FIXED] #6880 - refactor class names
+
 3.10.0 (2020-11-10)
 ------------------
 * [FEATURE] #6626 Add [filenumber] placeholder. It sequentially labels the submissions of a single student.
