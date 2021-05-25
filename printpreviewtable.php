@@ -125,9 +125,17 @@ class printpreview_table extends table_sql implements renderable {
         $params['assignmentid4'] = (int)$this->assignment->get_instance()->id;
         $params['assignmentid5'] = (int)$this->assignment->get_instance()->id;
 
-        $extrauserfields = get_extra_user_fields($this->assignment->get_context());
 
-        $fields = user_picture::fields('u', $extrauserfields) . ', ';
+
+        $fields = \core_user\fields::for_identity($this->assignment->get_context(), false);
+        $extrauserfields = $fields->get_required_fields();
+
+        $userfields = \core_user\fields::for_userpic();
+        $userfields->including(...$extrauserfields);
+        $selects = $userfields->get_sql('u', false, '', 'id', false)->selects;
+        $selects = str_replace(', ', ',', $selects);
+
+        $fields = $selects . ', ';
         $fields .= 'u.id as userid, ';
         $fields .= 's.status as status, ';
         $fields .= 's.id as submissionid, ';
@@ -270,7 +278,7 @@ class printpreview_table extends table_sql implements renderable {
 
         // Grade.
         $columns[] = 'grade';
-        $headers[] = get_string('grade');
+        $headers[] = get_string('grade', 'grades');
 
         // Time marked.
         $columns[] = 'timemarked';
