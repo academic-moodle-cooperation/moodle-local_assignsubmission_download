@@ -26,6 +26,7 @@
  */
 
 namespace local_assignsubmission_download\local;
+
 use assign;
 use assign_form;
 use assign_header;
@@ -34,6 +35,8 @@ use mod_assign_filerenaming_settings_form;
 use stdClass;
 use url_select;
 use moodle_url;
+use zip_packer;
+
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -479,6 +482,27 @@ class filerenaming extends assign {
             // We will not get here - send_temp_file calls exit.
         }
         return $result;
+    }
+
+    /**
+     * Generate zip file from array of given files - copied from mod_assign 3.10
+     *
+     * @param array $filesforzipping - array of files to pass into archive_to_pathname.
+     *                                 This array is indexed by the final file name and each
+     *                                 element in the array is an instance of a stored_file object.
+     * @return path of temp file - note this returned file does
+     *         not have a .zip extension - it is a temp file.
+     */
+    protected function pack_files($filesforzipping) {
+        global $CFG;
+        // Create path for new zip file.
+        $tempzip = tempnam($CFG->tempdir . '/', 'assignment_');
+        // Zip files.
+        $zipper = new zip_packer();
+        if ($zipper->archive_to_pathname($filesforzipping, $tempzip)) {
+            return $tempzip;
+        }
+        return false;
     }
 
 }
