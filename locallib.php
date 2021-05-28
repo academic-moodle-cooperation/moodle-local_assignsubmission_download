@@ -95,7 +95,7 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
 
     // Replace pattern.
     if ($assign->is_blind_marking()) {
-        $blind = get_string('hiddenuser', 'local_filerenaming').'_'.$assign->get_uniqueid_for_user($user->id);
+        $blind = get_string('hiddenuser', 'local_assignsubmission_download').'_'.$assign->get_uniqueid_for_user($user->id);
 
         $o = str_replace('[idnumber]', $blind, $o);
         $o = (strpos($o, $blind) === false) ? str_replace('[fullname]',  $blind, $o) : str_replace('[fullname]',  '', $o);
