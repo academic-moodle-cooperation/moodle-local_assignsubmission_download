@@ -192,7 +192,8 @@ class printpreview_table extends table_sql implements renderable {
                 $params['submitted'] = ASSIGN_SUBMISSION_STATUS_SUBMITTED;
 
             } else if (strpos($filter, ASSIGN_FILTER_SINGLE_USER) === 0) {
-                $userfilter = (int) array_pop(explode('=', $filter));
+                $filters = explode('=', $filter);
+                $userfilter = (int) array_pop($filters);
                 $where .= ' AND (u.id = :userid)';
                 $params['userid'] = $userfilter;
             }
@@ -252,7 +253,7 @@ class printpreview_table extends table_sql implements renderable {
 
             foreach ($extrauserfields as $extrafield) {
                 $columns[] = $extrafield;
-                $headers[] = get_user_field_name($extrafield);
+                $headers[] = \core_user\fields::get_display_name($extrafield);
             }
         } else {
             // Record ID.
@@ -514,7 +515,7 @@ class printpreview_table extends table_sql implements renderable {
 
         if (!$this->assignment->is_active_user($row->id)) {
             $suspendedstring = get_string('userenrolmentsuspended', 'grades');
-            $fullname .= ' ' . html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/enrolmentsuspended'),
+            $fullname .= ' ' . html_writer::empty_tag('img', array('src' => $this->output->image_url('i/enrolmentsuspended'),
                 'title' => $suspendedstring, 'alt' => $suspendedstring, 'class' => 'usersuspendedicon'));
             $fullname = html_writer::tag('span', $fullname, array('class' => 'usersuspended'));
         }
