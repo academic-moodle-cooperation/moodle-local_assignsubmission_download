@@ -31,8 +31,8 @@ $string['pluginname_print'] = 'Export';
 $string['pluginname_submissions'] = 'Download renamed submissions';
 
 $string['perpage_propertyname'] = 'Default - Displayed Submissions';
-$string['perpage_propertydescription'] = 'This sets the number of submissions which are displayed per page, when teachers are viewing assignment submissions.'.
-    '<br>It is overwritten by the teacher\'s individual preferences. Input will be absolute-valued.';
+$string['perpage_propertydescription'] = 'This sets the number of submissions which are displayed per page, when teachers are viewing assignment submissions. 
+<br>It is overwritten by the teacher\'s individual preferences. Input will be absolute-valued.';
 $string['perpage_propertydefault'] = '100';
 
 // Print preview assignment.
@@ -84,13 +84,11 @@ $string['pdf_nogroup'] = 'keine Gruppe';
 
 // Event.
 $string['printpreviewtableviewed'] = 'Export table viewed';
-$string['printpreviewtableviewed_description'] = 'The user with id {$a->userid} viewed the export table for the assignment '.
-    'with the course module id {$a->contextinstanceid}.';
+$string['printpreviewtableviewed_description'] = 'The user with id {$a->userid} viewed the export table for the assignment with the course module id {$a->contextinstanceid}.';
 $string['viewprintpreviewtable'] = 'View submission export table.';
 
 $string['printpreviewtabledownloaded'] = 'Export table downloaded';
-$string['printpreviewtabledownloaded_description'] = 'The user with id {$a->userid} downloaded the export table for the assignment '.
-    'with the course module id {$a->contextinstanceid}.';
+$string['printpreviewtabledownloaded_description'] = 'The user with id {$a->userid} downloaded the export table for the assignment with the course module id {$a->contextinstanceid}.';
 $string['downloadprintpreviewtable'] = 'Download submission export table.';
 
 // Filerenaming.

@@ -25,6 +25,19 @@
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_assignsubmission_download\local;
+
+use assign;
+use assign_form;
+use assign_header;
+use core_php_time_limit;
+use mod_assign_filerenaming_settings_form;
+use stdClass;
+use url_select;
+use moodle_url;
+use zip_packer;
+
+
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -461,6 +474,7 @@ class filerenaming extends assign {
             $result .= $this->view_footer();
             echo $result;
             $result = '';
+            die;
         } else if ($zipfile = $this->pack_files($filesforzipping)) {
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
             // Send file and delete after sending.

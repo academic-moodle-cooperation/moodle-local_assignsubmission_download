@@ -25,7 +25,21 @@
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_assignsubmission_download\local;
+
+use assign;
+use assign_form;
+use assign_header;
+use help_icon;
+use html_writer;
+use mod_assign_printpreview_settings_form;
+use moodle_url;
+use printpreview_table;
+use stdClass;
+use url_select;
+
 defined('MOODLE_INTERNAL') || die();
+
 
 /**
  * The printpreview class, extending assign.
@@ -134,9 +148,9 @@ class printpreview extends assign {
         $gradingmanager = get_grading_manager($this->get_context(), 'mod_assign', 'submissions');
 
         $filter  = get_user_preferences('assign_filter', '');
-        $perpage = get_user_preferences('assign_perpage', $CFG->assignmentpatch_perpage);
+        $perpage = get_user_preferences('assign_perpage', get_config('local_assignsubmission_download', 'assignmentpatch_perpage'));
         $optimum = get_user_preferences('assign_optimum', 0);
-        $perpage = ($perpage <= 0 || $optimum) ? $CFG->assignmentpatch_perpage : $perpage;
+        $perpage = ($perpage <= 0 || $optimum) ? get_config('local_assignsubmission_download', 'assignmentpatch_perpage') : $perpage;
         $optimum = ($perpage == 0 || $perpage == '') ? 1 : 0;
 
         $textsize = get_user_preferences('assign_textsize', 0);
@@ -237,7 +251,7 @@ class printpreview extends assign {
             set_user_preference('assign_filter', $data->filter);
             set_user_preference('assign_exportformat', $data->exportformat);
             set_user_preference('assign_perpage',
-                    isset($data->grpperpage['perpage']) ? $data->grpperpage['perpage'] : $CFG->assignmentpatch_perpage);
+                    isset($data->grpperpage['perpage']) ? $data->grpperpage['perpage'] : get_config('local_assignsubmission_download', 'assignmentpatch_perpage'));
             set_user_preference('assign_optimum', $data->grpperpage['optimum']);
             set_user_preference('assign_textsize', isset($data->textsize) ? $data->textsize : 0);
             set_user_preference('assign_pageorientation', isset($data->pageorientation) ? $data->pageorientation : 0);
@@ -264,9 +278,9 @@ class printpreview extends assign {
         $PAGE->set_pagelayout('popup');
 
         $filter  = get_user_preferences('assign_filter', '');
-        $perpage = get_user_preferences('assign_perpage', $CFG->assignmentpatch_perpage);
+        $perpage = get_user_preferences('assign_perpage', get_config('local_assignsubmission_download', 'assignmentpatch_perpage'));
         $optimum = get_user_preferences('assign_optimum', 0);
-        $perpage = ($perpage <= 0 || $optimum) ? $CFG->assignmentpatch_perpage : $perpage;
+        $perpage = ($perpage <= 0 || $optimum) ? get_config('local_assignsubmission_download', 'assignmentpatch_perpage') : $perpage;
         $optimum = ($perpage == 0 || $perpage == '') ? 1 : 0;
         $selectedusers = $SESSION->selectedusers;
 

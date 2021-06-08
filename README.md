@@ -3,7 +3,7 @@ Assign Submission Download
 
 This file is part of the local_assignsubmission_download plugin for Moodle - <http://moodle.org/>
 
-*Author:*    Andreas Krieger, Daniel Binder
+*Author:*    Andreas Krieger, Daniel Binder, Simeon Naydenov
 
 *Copyright:* 2020 [Academic Moodle Cooperation](http://www.academic-moodle-cooperation.org)
 
@@ -12,16 +12,13 @@ This file is part of the local_assignsubmission_download plugin for Moodle - <ht
 
 Description
 -----------
-
-Basically, this project adds two assign extensions for download options.  
-1. Download renamed submissions - you can download the submission files after they have been
- renamed according to the instance settings of the assignment.  
-2. Export - download the table info for the assignment in different formats and settings  
-Both menu items can be toggled show/hide in the admin settings of the plugin.
+The Assign Submission Download plugin (local_assignsubmission_download) allows to rename file submissions on download and to export a submission overview in various formats.
 
 
 Example of usage
 ----------------
+
+Access the plugin's features via the assignment settings drop-down menu.
 
 "Export"-Feature:
 
@@ -43,8 +40,7 @@ Example of usage
 
 Requirements
 ------------
-The plugin/s were available including core patches for Moodle 2.5+.  
-This core patch free version is for Moodle 3.10.0.
+The plugin/s were available including core patches for Moodle 2.5+.
 
 
 Installation

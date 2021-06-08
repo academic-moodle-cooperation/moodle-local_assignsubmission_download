@@ -157,8 +157,8 @@ class table_pdf_export_format extends table_default_export_format_parent {
         $this->pdf->setoutputformat($exportformat);
 
         $optimum = get_user_preferences('assign_optimum', 0);
-        $perpage = get_user_preferences('assign_perpage', $CFG->assignmentpatch_perpage);
-        $perpage = ($optimum) ? $CFG->assignmentpatch_perpage : $perpage;
+        $perpage = get_user_preferences('assign_perpage', get_config('local_assignsubmission_download', 'assignmentpatch_perpage'));
+        $perpage = ($optimum) ? get_config('local_assignsubmission_download', 'assignmentpatch_perpage') : $perpage;
         $this->pdf->setrowsperpage($perpage);
 
         $textsize = get_user_preferences('assign_textsize', 0);
