@@ -26,7 +26,6 @@
 
 require_once('../../config.php');
 require_once($CFG->dirroot . '/mod/assign/locallib.php');
-require_once($CFG->dirroot . '/local/assignsubmission_download/printpreview.class.php');
 
 $id = required_param('id', PARAM_INT);
 
@@ -38,7 +37,7 @@ $context = context_module::instance($cm->id);
 
 require_capability('local/assignsubmission_download:view', $context);
 
-$printpreview = new printpreview($context, $cm, $course);
+$printpreview = new \local_assignsubmission_download\local\printpreview($context, $cm, $course);
 
 $urlparams = array('id' => $id,
                   'action' => optional_param('action', '', PARAM_TEXT),

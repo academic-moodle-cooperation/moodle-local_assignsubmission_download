@@ -68,7 +68,7 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $grpperpage[] =& $mform->createElement('text', 'perpage',
                 get_string('perpage', 'local_assignsubmission_download'), 'size="3"');
         $mform->setType('perpage', PARAM_INT);
-        $mform->setDefault('perpage', get_user_preferences('assign_perpage', $CFG->assignmentpatch_perpage));
+        $mform->setDefault('perpage', get_user_preferences('assign_perpage', get_config('local_assignsubmission_download', 'assignmentpatch_perpage')));
 
         $grpperpage[] =& $mform->createElement('advcheckbox', 'optimum', '',
                 get_string('optimum', 'local_assignsubmission_download'));
