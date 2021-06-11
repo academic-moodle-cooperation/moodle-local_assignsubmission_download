@@ -68,7 +68,7 @@ $string['strprintheader_help'] = 'Prints header and footer if checked';
 
 $string['data_preview'] = 'Data preview';
 $string['data_preview_help'] = 'Click on [+] or [-] for showing or hiding columns in the print-preview.';
-$string['datapreviewtitle'] = 'Datenvorschau';
+$string['datapreviewtitle'] = 'Data preview';
 $string['datasettingstitle'] = 'Data settings';
 $string['strrefreshdata'] = 'Update data preview';
 
