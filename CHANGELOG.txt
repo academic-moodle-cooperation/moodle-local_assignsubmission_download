@@ -2,7 +2,7 @@ CHANGELOG
 =========
 3.11.1 (2021-07-08)
 ------------------
-* [FIXED] fixed an issue with upgrading to version 3.11
+* [FIXED] fixed an issue with upgrading to version 3.11.0
 
 3.11.0 (2021-05-18)
 ------------------
