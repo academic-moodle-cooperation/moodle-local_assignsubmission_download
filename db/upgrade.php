@@ -27,7 +27,11 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
                 $newconfig->plugin = 'local_assignsubmission_download';
                 $newconfig->name = $newname;
                 $newconfig->value = $config->value;
-                $DB->insert_record('config_plugins', $newconfig);
+                if (!$DB->record_exists('config_plugins',
+                   ['plugin' => 'local_assignsubmission_download',
+                    'name' => $newname])) {
+                    $DB->insert_record('config_plugins', $newconfig);
+                }
                 $DB->delete_records('config', ['id' => $config->id]);
             }
         }
