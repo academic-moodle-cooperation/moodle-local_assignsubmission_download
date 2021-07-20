@@ -1,12 +1,10 @@
 CHANGELOG
 =========
-3.11.1 (2021-07-08)
-------------------
-* [FIXED] #6964 fixed an issue with upgrading to version 3.11.0
 
 3.11.0 (2021-05-18)
 ------------------
 * Moodle 3.11.0 compatible version
+* [FIXED] #6964 - fixed an issue with upgrading to version 3.11.0
 * [FIXED] #6881 - fix invalid settings storage names
 * [FIXED] #6899 - remove concatenation from lang strings
 * [FIXED] #6883 - fix errors when assignment is empty
