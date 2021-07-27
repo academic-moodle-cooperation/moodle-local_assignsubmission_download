@@ -38,4 +38,5 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         // Assignsubmission Download savepoint reached.
         upgrade_plugin_savepoint(true, 2021051800, 'local', 'assignsubmission_download');
     }
+    return true;
 }
