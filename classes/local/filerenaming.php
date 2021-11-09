@@ -380,9 +380,6 @@ class filerenaming extends assign {
                                 $sequence = 1;
                                 foreach ($pluginfiles as $zipfilepath => $file) {
                                     // Todo Kick out files out of the cutoff date here if they have there own timestamp!
-                                    if (!empty($file->file_record)) {
-
-                                    }
                                     $type = $plugin->get_type();
                                     // Compare $submissionneweras against the file timestamp if type is file.
                                     // Otherwise compare against the timestamp of the submission.
