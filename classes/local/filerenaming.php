@@ -154,12 +154,14 @@ class filerenaming extends assign {
         $shownotreuploadablehint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
                                     || $this->get_feedback_plugin_by_type('file')->is_enabled();
 
+        $lastdownloaded = $this->get_lastdownloaded_date($this->get_course_module()->id, $USER->id);
         $filerenamingsettingsformparams = array('cm' => $this->get_course_module(),
                                                 'contextid' => $this->get_context()->id,
                                                 'currenturl' => $currenturl,
                                                 'userid' => $USER->id,
                                                 'submissionsenabled' => $this->is_any_submission_plugin_enabled(),
-                                                'show_notreuploadable_hint' => $shownotreuploadablehint);
+                                                'show_notreuploadable_hint' => $shownotreuploadablehint,
+                                                'lastdownloaded' => $lastdownloaded);
 
         $classoptions = array('class' => 'gradingbatchoperationsform');
 
@@ -218,13 +220,15 @@ class filerenaming extends assign {
 
         $shownotreuploadablehint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
                                     || $this->get_feedback_plugin_by_type('file')->is_enabled();
+        $lastdownloaded = $this->get_lastdownloaded_date($this->get_course_module()->id, $USER->id);
 
         $filerenamingsettingsparams = array('cm' => $this->get_course_module(),
                                             'currenturl' => $currenturl,
                                             'contextid' => $this->get_context()->id,
                                             'userid' => $USER->id,
                                             'submissionsenabled' => $this->is_any_submission_plugin_enabled(),
-                                            'show_notreuploadable_hint' => $shownotreuploadablehint);
+                                            'show_notreuploadable_hint' => $shownotreuploadablehint,
+                                            'lastdownloaded' => $lastdownloaded);
 
         $mform = new mod_assign_filerenaming_settings_form(null, $filerenamingsettingsparams);
 
@@ -248,6 +252,44 @@ class filerenaming extends assign {
         }
     }
 
+    /**
+     * Returns the last downloaded date for module and user as string
+     * @param $cmid int coursemodule id
+     * @param $userid int user id
+     * @return \lang_string|string
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    protected function get_lastdownloaded_date($cmid, $userid) {
+        global $DB;
+        $lastdownload = $DB->get_record('local_assignsubm_download', ['userid' => $userid, 'cmid' => $cmid]);
+        if ($lastdownload) {
+            return userdate($lastdownload->lastdownloaded);
+        } else {
+            return get_string('nodownloadsyet', 'local_assignsubmission_download');
+        }
+    }
+
+    /**
+     * Updates the last downloaded date for module and user
+     * @param $cmid int course module id
+     * @param $userid int user id
+     * @throws \dml_exception
+     */
+    protected function update_lastdownloaded_date($cmid, $userid) {
+        global $DB;
+        $lastdownload = $DB->get_record('local_assignsubm_download', ['userid' => $userid, 'cmid' => $cmid]);
+        if ($lastdownload) {
+            $lastdownload->lastdownloaded = time();
+            $DB->update_record('local_assignsubm_download', $lastdownload);
+        } else {
+            $lastdownload = new stdClass();
+            $lastdownload->cmid = $cmid;
+            $lastdownload->userid = $userid;
+            $lastdownload->lastdownloaded = time();
+            $DB->insert_record('local_assignsubm_download', $lastdownload);
+        }
+    }
 
     /**
      * Set the action and parameters that can be used to return to the current page.
@@ -276,7 +318,7 @@ class filerenaming extends assign {
      * @return string - If an error occurs, this will contain the error page.
      */
     protected function download_submissions($coursegroup = false, $coursegrouping = false, $submissionneweras = 0) {
-        global $CFG, $DB;
+        global $CFG, $DB, $USER;
 
         // More efficient to load this here.
         require_once($CFG->libdir.'/filelib.php');
@@ -476,6 +518,7 @@ class filerenaming extends assign {
             $result = '';
             die;
         } else if ($zipfile = $this->pack_files($filesforzipping)) {
+            $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id);
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
             // Send file and delete after sending.
             send_temp_file($zipfile, $filename);

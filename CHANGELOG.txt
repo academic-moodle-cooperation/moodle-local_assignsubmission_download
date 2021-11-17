@@ -3,6 +3,7 @@ CHANGELOG
 WIP:
 -------------------
 * [FIXED] #6985 Fix download buttons getting disabled after pressing them
+* [FEATURE] #6884 Implement last downloaded date 
 
 3.11.1 (2021-07-08)
 -------------------
