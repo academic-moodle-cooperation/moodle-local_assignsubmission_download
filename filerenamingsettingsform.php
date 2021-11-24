@@ -145,8 +145,6 @@ class mod_assign_filerenaming_settings_form extends moodleform {
                 'local_assignsubmission_download');
         }
 
-
-
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_groupingtoggle', 'initializer', array($jsgroupings));
 
         // Hidden params.
