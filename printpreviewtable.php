@@ -125,8 +125,6 @@ class printpreview_table extends table_sql implements renderable {
         $params['assignmentid4'] = (int)$this->assignment->get_instance()->id;
         $params['assignmentid5'] = (int)$this->assignment->get_instance()->id;
 
-
-
         $fields = \core_user\fields::for_identity($this->assignment->get_context(), false);
         $extrauserfields = $fields->get_required_fields();
 

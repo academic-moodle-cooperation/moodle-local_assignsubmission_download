@@ -31,7 +31,7 @@ $string['pluginname_print'] = 'Export';
 $string['pluginname_submissions'] = 'Download renamed submissions';
 
 $string['perpage_propertyname'] = 'Default - Displayed Submissions';
-$string['perpage_propertydescription'] = 'This sets the number of submissions which are displayed per page, when teachers are viewing assignment submissions. 
+$string['perpage_propertydescription'] = 'This sets the number of submissions which are displayed per page, when teachers are viewing assignment submissions.
 <br>It is overwritten by the teacher\'s individual preferences. Input will be absolute-valued.';
 $string['perpage_propertydefault'] = '100';
 
