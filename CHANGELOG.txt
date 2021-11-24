@@ -2,7 +2,8 @@ CHANGELOG
 =========
 WIP:
 -------------------
-* [FIXED] #6985 - Fix download buttons getting disabled after pressing them
+* [FIXED] #6985 Fix download buttons getting disabled after pressing them
+* [FIXED] #7022 Fix bug with strong element in assignment editor
 
 3.11.1 (2021-07-08)
 -------------------

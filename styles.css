@@ -67,8 +67,8 @@
     padding:12px;
 }
 
-.path-mod-assign .felement a,
-.path-mod-assign .felement strong {
+.path-mod-assign .felement:not([data-fieldtype="editor"]) a,
+.path-mod-assign .felement:not([data-fieldtype="editor"]) strong {
     display:block;
     float:left;
     margin-top:6px;
