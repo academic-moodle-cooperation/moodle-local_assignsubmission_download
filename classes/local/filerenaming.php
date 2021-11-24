@@ -355,28 +355,28 @@ class filerenaming extends assign {
         $resetgroupname = false;
         foreach ($students as $student) {
             if (!$resetgroupname) {
-               $defaultgroupname = $groupname;
+                $defaultgroupname = $groupname;
             } else {
-               $groupname = $defaultgroupname;
-               $resetgroupname = false;
+                $groupname = $defaultgroupname;
+                $resetgroupname = false;
             }
 
             $userid = $student->id;
 
             $isuseringrouping = false;
             $groupinggroupsforuser = groups_get_all_groups($this->get_course()->id, $userid, $groupingid);
-            if (sizeof($groupinggroupsforuser)  > 0)  {
+            if (count($groupinggroupsforuser) > 0) {
                 $isuseringrouping = true;
             }
 
             $groupsforuser = groups_get_all_groups($this->get_course()->id, $userid);
-            if (sizeof($groupsforuser) == 1) {
+            if (count($groupsforuser) == 1) {
                 $groupname = array_values($groupsforuser)[0]->name."-";
                 $resetgroupname = true;
             }
 
             $isuseringroup = false;
-            if ((groups_is_member($groupid, $userid)))  {
+            if ((groups_is_member($groupid, $userid))) {
                 $isuseringrouping = false; // This is because "in group" has priority over "in grouping".
                 $isuseringroup = true;
             }
@@ -421,10 +421,7 @@ class filerenaming extends assign {
                                 $pluginfiles = $plugin->get_files($submission, $student);
                                 $sequence = 1;
                                 foreach ($pluginfiles as $zipfilepath => $file) {
-                                    //todo Kick out files out of the cut off date here if they have there own time stamp
-                                    if (!empty($file->file_record)) {
-
-                                    }
+                                    // Todo Kick out files out of the cutoff date here if they have there own timestamp!
                                     $type = $plugin->get_type();
                                     // Compare $submissionneweras against the file timestamp if type is file.
                                     // Otherwise compare against the timestamp of the submission.
