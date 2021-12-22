@@ -137,6 +137,14 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->addHelpButton('submissionneweras', 'submissionneweras',
                 'local_assignsubmission_download');
 
+        if (!empty($this->_customdata['lastdownloaded'])) {
+            $mform->addElement('static', 'lastdownloaded',
+                get_string('lastdownloaded_title', 'local_assignsubmission_download'),
+                $this->_customdata['lastdownloaded']);
+            $mform->addHelpButton('lastdownloaded', 'lastdownloaded_title',
+                'local_assignsubmission_download');
+        }
+
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_groupingtoggle', 'initializer', array($jsgroupings));
 
         // Hidden params.

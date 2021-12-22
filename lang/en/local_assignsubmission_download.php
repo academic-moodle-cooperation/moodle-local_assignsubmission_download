@@ -139,6 +139,9 @@ $string['submissionneweras_help'] = 'Only download files that were modified afte
                                      a timestamp (like onlinetext), the timestamp of the submission is used.';
 $string['nosubmissionneweras'] = 'No submission was made after {$a}';
 $string['dateinthefutureerror'] = 'Submission newer as cannot be in the future';
+$string['nodownloadsyet'] = 'no downloads yet';
+$string['lastdownloaded_title'] = 'User\'s last download';
+$string['lastdownloaded_title_help'] = 'The date shows the last download of the user.';
 
 $string['privacy:metadata:preference:filerenamingpattern'] = 'Preference for the naming scheme used for file renaming on downloaded submissions.';
 $string['privacy:metadata:preference:clean_filerenaming'] = 'Preference on whether to additionaly clean file names from special chars in downloaded submissions.';
