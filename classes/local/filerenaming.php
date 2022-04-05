@@ -514,35 +514,30 @@ class filerenaming extends assign {
             echo $result;
             $result = '';
             die;
-        } else if ($zipfile = $this->pack_files($filesforzipping)) {
+        } else {
             $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id);
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
-            // Send file and delete after sending.
-            send_temp_file($zipfile, $filename);
+
+            $zipwriter = \core_files\archive_writer::get_stream_writer($filename, \core_files\archive_writer::ZIP_WRITER);
+
+            foreach ($filesforzipping as $pathinzip => $file) {
+                if ($file instanceof \stored_file) {
+                    // Most of cases are \stored_file.
+                    $zipwriter->add_file_from_stored_file($pathinzip, $file);
+                } else if (is_array($file)) {
+                    // Save $file as contents, from onlinetext subplugin.
+                    $content = reset($file);
+                    $zipwriter->add_file_from_string($pathinzip, $content);
+                } else if (is_string($file)) {
+                    $zipwriter->add_file_from_filepath($pathinzip, $file);
+                }
+            }
+
+            // Finish the archive.
+            $zipwriter->finish();
+            die;
             // We will not get here - send_temp_file calls exit.
         }
         return $result;
     }
-
-    /**
-     * Generate zip file from array of given files - copied from mod_assign 3.10
-     *
-     * @param array $filesforzipping - array of files to pass into archive_to_pathname.
-     *                                 This array is indexed by the final file name and each
-     *                                 element in the array is an instance of a stored_file object.
-     * @return path of temp file - note this returned file does
-     *         not have a .zip extension - it is a temp file.
-     */
-    protected function pack_files($filesforzipping) {
-        global $CFG;
-        // Create path for new zip file.
-        $tempzip = tempnam($CFG->tempdir . '/', 'assignment_');
-        // Zip files.
-        $zipper = new zip_packer();
-        if ($zipper->archive_to_pathname($filesforzipping, $tempzip)) {
-            return $tempzip;
-        }
-        return false;
-    }
-
 }
