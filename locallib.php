@@ -109,7 +109,7 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
     }
 
     $o = replace_custom($o, $maxlength, '[assignmentname]', $assignmentname);
-    $o = replace_custom($o, $maxlength, '[filenumber]', sprintf('%02d',$sequence));
+    $o = replace_custom($o, $maxlength, '[filenumber]', sprintf('%02d', $sequence));
 
     if (!$groupname || empty($groupname) || strcmp($groupname, '-') == 0) {
         $o = str_replace('[group]', '', $o);

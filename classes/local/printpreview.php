@@ -173,13 +173,13 @@ class printpreview extends assign {
                                                 'pageorientation' => $pageorientation,
                                                 'printheader' => $printheader);
 
-        $classoptions = array('class' => 'gradingbatchoperationsform');
+        $formoptions = array('class' => 'gradingbatchoperationsform', 'data-double-submit-protection' => 'off');
         // Print options for changing the filter and changing the number of results per page.
         $printpreviewsettingsform = new mod_assign_printpreview_settings_form(null,
                                                                   $printpreviewsettingsformparams,
                                                                   'post',
                                                                   '',
-                                                                  $classoptions);
+                                                                  $formoptions);
         $printpreviewsettingsdata = new stdClass();
         $printpreviewsettingsdata->filter = $filter;
         $printpreviewsettingsdata->grpperpage['perpage'] = $perpage;
@@ -245,7 +245,8 @@ class printpreview extends assign {
                                             'userid' => $USER->id,
                                             'submissionsenabled' => $this->is_any_submission_plugin_enabled());
 
-        $mform = new mod_assign_printpreview_settings_form(null, $printpreviewsettingsparams);
+        $mform = new mod_assign_printpreview_settings_form(null, $printpreviewsettingsparams,
+                'post', '', ['data-double-submit-protection' => 'off']);
 
         if ($data = $mform->get_data()) {
             set_user_preference('assign_filter', $data->filter);
