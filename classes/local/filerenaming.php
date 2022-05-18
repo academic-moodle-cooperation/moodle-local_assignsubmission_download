@@ -163,7 +163,7 @@ class filerenaming extends assign {
                                                 'show_notreuploadable_hint' => $shownotreuploadablehint,
                                                 'lastdownloaded' => $lastdownloaded);
 
-        $classoptions = array('class' => 'gradingbatchoperationsform');
+        $classoptions = array('class' => 'gradingbatchoperationsform', 'data-double-submit-protection' => 'off');
 
         $filerenamingsettingsform = new mod_assign_filerenaming_settings_form(null,
                                                                   $filerenamingsettingsformparams,
@@ -230,7 +230,8 @@ class filerenaming extends assign {
                                             'show_notreuploadable_hint' => $shownotreuploadablehint,
                                             'lastdownloaded' => $lastdownloaded);
 
-        $mform = new mod_assign_filerenaming_settings_form(null, $filerenamingsettingsparams);
+        $classoptions = ['data-double-submit-protection' => 'off'];
+        $mform = new mod_assign_filerenaming_settings_form(null, $filerenamingsettingsparams, 'post', '', $classoptions);
 
         if ($data = $mform->get_data()) {
             set_user_preference('filerenamingpattern', $data->filerenamingpattern);
