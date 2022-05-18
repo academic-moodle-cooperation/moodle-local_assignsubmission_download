@@ -518,6 +518,9 @@ class filerenaming extends assign {
             $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id);
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
 
+            // Close the session to avoid tab block.
+            \core\session\manager::write_close();
+
             $zipwriter = \core_files\archive_writer::get_stream_writer($filename, \core_files\archive_writer::ZIP_WRITER);
 
             foreach ($filesforzipping as $pathinzip => $file) {
