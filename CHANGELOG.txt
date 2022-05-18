@@ -6,6 +6,7 @@ CHANGELOG
 * Moodle 4.0 compatible version
 * [BUG] #7907 Fix debug messages caused by class rename
 * [FEATURE] #6963 Implement stream zip for downloading
+* [BUG] #7188 - fix position of download and export links
 
 3.11.2 (2021-11-23)
 -------------------
