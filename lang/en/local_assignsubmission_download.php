@@ -140,8 +140,19 @@ $string['submissionneweras_help'] = 'Only download files that were modified afte
 $string['nosubmissionneweras'] = 'No submission was made after {$a}';
 $string['dateinthefutureerror'] = 'Submission newer as cannot be in the future';
 $string['nodownloadsyet'] = 'no downloads yet';
-$string['lastdownloaded_title'] = 'User\'s last download';
-$string['lastdownloaded_title_help'] = 'The date shows the last download of the user.';
+$string['lastdownloaded_title'] = 'User\'s last download submissions';
+$string['lastdownloaded_title_help'] = 'The date shows the last download of the user of submissions from students.';
+$string['lastdownloadedfeedbacks_title'] = 'User\'s last download feedback files';
+$string['lastdownloadedfeedbacks_title_help'] = 'The date shows the last download of the user of feedback files from teachers.';
+$string['downloadtype:submissions'] = 'All file submissions from students';
+$string['downloadtype:feedbacks'] = 'All feedback files from teachers';
+$string['downloadtype'] = 'Download';
+$string['downloadtype_help'] = 'Some help comes here.. TBD';
+$string['downloadtype:error'] = 'Please select at least one option';
+
+
+
+
 
 $string['privacy:metadata:preference:filerenamingpattern'] = 'Preference for the naming scheme used for file renaming on downloaded submissions.';
 $string['privacy:metadata:preference:clean_filerenaming'] = 'Preference on whether to additionaly clean file names from special chars in downloaded submissions.';
