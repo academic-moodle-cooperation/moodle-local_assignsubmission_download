@@ -60,7 +60,6 @@ class mod_assign_filerenaming_settings_form extends moodleform {
                     get_string('notreuploadable_hint', 'local_assignsubmission_download'), 'info'));
         }
 
-
         $downloadtypegroup = [];
 
         $downloadtypegroup[] =&
