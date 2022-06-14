@@ -148,7 +148,6 @@ class filerenaming extends assign {
         $pattern = get_user_preferences('filerenamingpattern', '');
         $cleanfilename = get_user_preferences('clean_filerenaming', '');
 
-
         $filerenamingsettingsform = $this->get_filenrenaming_form();
         $filerenamingsettingsdata = new stdClass();
         $filerenamingsettingsdata->filerenamingpattern = $pattern;
@@ -533,7 +532,7 @@ class filerenaming extends assign {
                                     $comments = $feedbackplugin->get_editor_text('comments', $feedback->grade->id);
                                     $comments = str_replace('@@PLUGINFILE@@/', '', $comments);
                                     if (mb_strlen(trim($comments)) > 0) {
-                                       // $comments = self::convert_content_to_html_doc($feedbackplugin->get_name(), $comments); //TODO
+                                        $comments = self::convert_content_to_html_doc($feedbackplugin->get_name(), $comments);
                                         $zipfilename = $feedbackplugin->get_name() . '.html';
                                         $prefixedfilename = clean_filename($prefix .
                                             '_' .
@@ -614,5 +613,21 @@ class filerenaming extends assign {
             // We will not get here - send_temp_file calls exit.
         }
         return $result;
+    }
+
+    public static function convert_content_to_html_doc($title, $content, $additionalhead = '') {
+        return <<<HTML
+<!doctype html>
+<html>
+<head>
+    <title>$title</title>
+    <meta charset="utf-8">
+    $additionalhead
+</head>
+<body>
+$content
+</body>
+</html>
+HTML;
     }
 }
