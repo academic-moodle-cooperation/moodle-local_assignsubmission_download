@@ -414,7 +414,7 @@ class filerenaming extends assign {
                 if ($submission) {
                     // TODO is this ever been used / when did it last work?
                     $downloadasfolders = get_user_preferences('assign_downloadasfolders', 1);
-
+                    $downloadasfolders = false; // TBD whether it will be used - 15.06.2022
                     if ($downloadsubmissions) {
                         foreach ($this->get_submission_plugins() as $plugin) {
                             if ($plugin->is_enabled() && $plugin->is_visible()) {
@@ -475,9 +475,7 @@ class filerenaming extends assign {
                                                 '_' .
                                                 $subtype .
                                                 '_' .
-                                                $type .
-                                                '_' .
-                                                $zipfilename);
+                                                $type);
                                             // AMC moodle university code start.
                                             $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
                                                 $this, $submission, $groupname, $sequence++, $filesforzipping);
@@ -517,9 +515,7 @@ class filerenaming extends assign {
                                                 '_' .
                                                 $subtype .
                                                 '_' .
-                                                $type .
-                                                '_' .
-                                                $zipfilename);
+                                                $type);
                                             // AMC moodle university code start.
                                             $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
                                                 $this, $submission, $groupname, $sequence++, $filesforzipping);
@@ -538,9 +534,7 @@ class filerenaming extends assign {
                                             '_' .
                                             $subtype .
                                             '_' .
-                                            $type .
-                                            '_' .
-                                            $zipfilename);
+                                            $type);
                                         // AMC moodle university code start.
                                         $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
                                             $this, $submission, $groupname, $sequence++, $filesforzipping);
