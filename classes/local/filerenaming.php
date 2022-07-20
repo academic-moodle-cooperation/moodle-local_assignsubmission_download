@@ -491,6 +491,8 @@ class filerenaming extends assign {
                         $feedback = $this->get_assign_feedback_status_renderable($student);
                         // The feedback for our latest submission.
                         if ($feedback && $feedback->grade) {
+
+                            $sequence = 1;
                             foreach ($this->get_feedback_plugins() as $feedbackplugin) {
                                 if (!$feedbackplugin->is_enabled() or !$feedbackplugin->is_visible()) {
                                     continue;
