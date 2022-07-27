@@ -66,7 +66,7 @@ function local_assignsubmission_download_extend_settings_navigation(settings_nav
         $modulesettings = $navref->get('modulesettings');
         if ($modulesettings) {
             $node = $modulesettings->add(
-                    get_string('pluginname_submissions', 'local_assignsubmission_download'), $link, navigation_node::TYPE_SETTING);
+                get_string('pluginname_submissions', 'local_assignsubmission_download'), $link, navigation_node::TYPE_SETTING);
         }
     }
 
@@ -75,7 +75,7 @@ function local_assignsubmission_download_extend_settings_navigation(settings_nav
         $modulesettings = $navref->get('modulesettings');
         if ($modulesettings) {
             $node = $modulesettings->add(
-                    get_string('pluginname_print', 'local_assignsubmission_download'), $link, navigation_node::TYPE_SETTING);
+                get_string('pluginname_print', 'local_assignsubmission_download'), $link, navigation_node::TYPE_SETTING);
         }
     }
 }

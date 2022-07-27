@@ -75,5 +75,40 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         // Assignsubmission_download savepoint reached.
         upgrade_plugin_savepoint(true, 2021051802, 'local', 'assignsubmission_download');
     }
+    if ($oldversion < 2021051803) {
+        $table = new xmldb_table('local_assignsubm_download');
+        $index = new xmldb_index('cmid', XMLDB_INDEX_NOTUNIQUE, ['cmid']);
+        // Conditionally launch add index cmid.
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        $index = new xmldb_index('userid', XMLDB_INDEX_NOTUNIQUE, ['userid']);
+        // Conditionally launch add index userid.
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        // Define table local_assignsubm_download to be created.
+        $table = new xmldb_table('local_assignsubm_feedback');
+        // Adding fields to table local_assignsubm_download.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('cmid', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('lastdownloaded', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+
+        // Adding keys to table local_assignsubm_download.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_index('cmid', XMLDB_INDEX_NOTUNIQUE, ['cmid']);
+        $table->add_index('userid', XMLDB_INDEX_NOTUNIQUE, ['userid']);
+
+        // Conditionally launch create table for local_assignsubm_download.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Assignsubmission_download savepoint reached.
+        upgrade_plugin_savepoint(true, 2021051803, 'local', 'assignsubmission_download');
+    }
     return true;
 }

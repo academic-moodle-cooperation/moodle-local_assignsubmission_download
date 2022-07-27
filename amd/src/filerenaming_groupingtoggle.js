@@ -16,7 +16,7 @@
 /**
  * JS handling group/grouping toggler for filerenaming
  *
- * @package   local_assignsubmission_download
+ * @module    local_assignsubmission_download/filerenaming_groupingtoggle
  * @author    Philipp Hager
  * @copyright 2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

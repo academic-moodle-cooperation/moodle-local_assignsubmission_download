@@ -49,7 +49,7 @@ defined('MOODLE_INTERNAL') || die();
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class filerenaming extends assign {
-
+    private $_filerenamingform = null;
     /**
      * Main view setup
      *
@@ -148,28 +148,7 @@ class filerenaming extends assign {
         $pattern = get_user_preferences('filerenamingpattern', '');
         $cleanfilename = get_user_preferences('clean_filerenaming', '');
 
-        $urlparams = array('id' => $this->get_course_module()->id, 'action' => 'grading');
-        $currenturl = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_filerenaming.php', $urlparams);
-
-        $shownotreuploadablehint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
-                                    || $this->get_feedback_plugin_by_type('file')->is_enabled();
-
-        $lastdownloaded = $this->get_lastdownloaded_date($this->get_course_module()->id, $USER->id);
-        $filerenamingsettingsformparams = array('cm' => $this->get_course_module(),
-                                                'contextid' => $this->get_context()->id,
-                                                'currenturl' => $currenturl,
-                                                'userid' => $USER->id,
-                                                'submissionsenabled' => $this->is_any_submission_plugin_enabled(),
-                                                'show_notreuploadable_hint' => $shownotreuploadablehint,
-                                                'lastdownloaded' => $lastdownloaded);
-
-        $classoptions = array('class' => 'gradingbatchoperationsform');
-
-        $filerenamingsettingsform = new mod_assign_filerenaming_settings_form(null,
-                                                                  $filerenamingsettingsformparams,
-                                                                  'post',
-                                                                  '',
-                                                                  $classoptions);
+        $filerenamingsettingsform = $this->get_filenrenaming_form();
         $filerenamingsettingsdata = new stdClass();
         $filerenamingsettingsdata->filerenamingpattern = $pattern;
         $filerenamingsettingsdata->clean_filerenaming = $cleanfilename;
@@ -201,6 +180,37 @@ class filerenaming extends assign {
         return $o;
     }
 
+    private function get_filenrenaming_form() {
+        global $USER, $CFG;
+        if (empty($this->_filerenamingform)) {
+            $urlparams = array('id' => $this->get_course_module()->id, 'action' => 'grading');
+            $currenturl = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_filerenaming.php', $urlparams);
+
+            $lastdownloaded = $this->get_lastdownloaded_date($this->get_course_module()->id, $USER->id);
+            $lastdownloadedfeedback = $this->get_lastdownloaded_date($this->get_course_module()->id, $USER->id, true);
+
+            $shownotreuploadablehint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
+                || $this->get_feedback_plugin_by_type('file')->is_enabled();
+
+            $filerenamingsettingsformparams = array('cm' => $this->get_course_module(),
+                'contextid' => $this->get_context()->id,
+                'currenturl' => $currenturl,
+                'userid' => $USER->id,
+                'submissionsenabled' => $this->is_any_submission_plugin_enabled(),
+                'show_notreuploadable_hint' => $shownotreuploadablehint,
+                'lastdownloaded' => $lastdownloaded,
+                'lastdownloadedfeedback' => $lastdownloadedfeedback);
+
+            $classoptions = array('class' => 'gradingbatchoperationsform', 'data-double-submit-protection' => 'off');
+
+            $this->_filerenamingform = new mod_assign_filerenaming_settings_form(null,
+                $filerenamingsettingsformparams,
+                'post',
+                '',
+                $classoptions);
+        }
+        return $this->_filerenamingform;
+    }
     /**
      * Save grading options.
      *
@@ -215,22 +225,7 @@ class filerenaming extends assign {
         // Need submit permission to submit an assignment.
         require_capability('mod/assign:grade', $this->get_context());
 
-        $urlparams = array('id' => $this->get_course_module()->id, 'action' => 'grading');
-        $currenturl = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_filerenaming.php', $urlparams);
-
-        $shownotreuploadablehint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
-                                    || $this->get_feedback_plugin_by_type('file')->is_enabled();
-        $lastdownloaded = $this->get_lastdownloaded_date($this->get_course_module()->id, $USER->id);
-
-        $filerenamingsettingsparams = array('cm' => $this->get_course_module(),
-                                            'currenturl' => $currenturl,
-                                            'contextid' => $this->get_context()->id,
-                                            'userid' => $USER->id,
-                                            'submissionsenabled' => $this->is_any_submission_plugin_enabled(),
-                                            'show_notreuploadable_hint' => $shownotreuploadablehint,
-                                            'lastdownloaded' => $lastdownloaded);
-
-        $mform = new mod_assign_filerenaming_settings_form(null, $filerenamingsettingsparams);
+        $mform = $this->get_filenrenaming_form();
 
         if ($data = $mform->get_data()) {
             set_user_preference('filerenamingpattern', $data->filerenamingpattern);
@@ -246,8 +241,10 @@ class filerenaming extends assign {
             if (!isset($data->submissionneweras)) {
                 $data->submissionneweras = 0;
             }
+            $downloadsubmissions = $data->downloadtype_submissions == '1';
+            $downloadfeedbacks = $data->downloadtype_feedbacks == '1';
             if (isset($data->submittodownload)) {
-                $this->download_submissions($data->coursegroup, $data->coursegrouping, $data->submissionneweras);
+                $this->download_submissions($data->coursegroup, $data->coursegrouping, $data->submissionneweras, $downloadsubmissions, $downloadfeedbacks);
             }
         }
     }
@@ -260,9 +257,10 @@ class filerenaming extends assign {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    protected function get_lastdownloaded_date($cmid, $userid) {
+    protected function get_lastdownloaded_date($cmid, $userid, $feedback = false) {
         global $DB;
-        $lastdownload = $DB->get_record('local_assignsubm_download', ['userid' => $userid, 'cmid' => $cmid]);
+        $tablename = $feedback ? 'local_assignsubm_feedback' : 'local_assignsubm_download';
+        $lastdownload = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
         if ($lastdownload) {
             return userdate($lastdownload->lastdownloaded);
         } else {
@@ -276,18 +274,19 @@ class filerenaming extends assign {
      * @param $userid int user id
      * @throws \dml_exception
      */
-    protected function update_lastdownloaded_date($cmid, $userid) {
+    protected function update_lastdownloaded_date($cmid, $userid, $feedback = false) {
         global $DB;
-        $lastdownload = $DB->get_record('local_assignsubm_download', ['userid' => $userid, 'cmid' => $cmid]);
+        $tablename = $feedback ? 'local_assignsubm_feedback' : 'local_assignsubm_download';
+        $lastdownload = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
         if ($lastdownload) {
             $lastdownload->lastdownloaded = time();
-            $DB->update_record('local_assignsubm_download', $lastdownload);
+            $DB->update_record($tablename, $lastdownload);
         } else {
             $lastdownload = new stdClass();
             $lastdownload->cmid = $cmid;
             $lastdownload->userid = $userid;
             $lastdownload->lastdownloaded = time();
-            $DB->insert_record('local_assignsubm_download', $lastdownload);
+            $DB->insert_record($tablename, $lastdownload);
         }
     }
 
@@ -317,7 +316,7 @@ class filerenaming extends assign {
      * @param array $userids Array of user ids to download assignment submissions in a zip file
      * @return string - If an error occurs, this will contain the error page.
      */
-    protected function download_submissions($coursegroup = false, $coursegrouping = false, $submissionneweras = 0) {
+    protected function download_submissions($coursegroup = false, $coursegrouping = false, $submissionneweras = 0, $downloadsubmissions = true, $downloadfeedbacks = false) {
         global $CFG, $DB, $USER;
 
         // More efficient to load this here.
@@ -345,6 +344,8 @@ class filerenaming extends assign {
         if ($groupmode) {
             $groupname = groups_get_group_name($groupid).'-';
         }
+
+        $fs = get_file_storage();
 
         // Construct the zip file name.
         $filename = filerenaming_clean_custom($this->get_course()->shortname . '-' . // AMC moodle university code one line.
@@ -411,76 +412,136 @@ class filerenaming extends assign {
                 }
 
                 if ($submission) {
+                    // TODO is this ever been used / when did it last work?
                     $downloadasfolders = get_user_preferences('assign_downloadasfolders', 1);
-                    foreach ($this->get_submission_plugins() as $plugin) {
-                        if ($plugin->is_enabled() && $plugin->is_visible()) {
-                            if ($downloadasfolders) {
-                                // Create a folder for each user for each assignment plugin.
-                                // This is the default behavior for version of Moodle >= 3.1.
-                                $submission->exportfullpath = true;
-                                $pluginfiles = $plugin->get_files($submission, $student);
-                                $sequence = 1;
-                                foreach ($pluginfiles as $zipfilepath => $file) {
-                                    // Todo Kick out files out of the cutoff date here if they have there own timestamp!
-                                    $type = $plugin->get_type();
-                                    // Compare $submissionneweras against the file timestamp if type is file.
-                                    // Otherwise compare against the timestamp of the submission.
-                                    if (($type == 'file'
-                                                    && $file->get_timemodified() >= $submissionneweras)
+                    $downloadasfolders = false; // TBD whether it will be used - 15.06.2022
+                    if ($downloadsubmissions) {
+                        foreach ($this->get_submission_plugins() as $plugin) {
+                            if ($plugin->is_enabled() && $plugin->is_visible()) {
+                                if ($downloadasfolders) {
+                                    // Create a folder for each user for each assignment plugin.
+                                    // This is the default behavior for version of Moodle >= 3.1.
+                                    $submission->exportfullpath = true;
+                                    $pluginfiles = $plugin->get_files($submission, $student);
+                                    $sequence = 1;
+                                    foreach ($pluginfiles as $zipfilepath => $file) {
+                                        // Todo Kick out files out of the cutoff date here if they have there own timestamp!
+                                        $type = $plugin->get_type();
+                                        // Compare $submissionneweras against the file timestamp if type is file.
+                                        // Otherwise compare against the timestamp of the submission.
+                                        if (($type == 'file'
+                                                && $file->get_timemodified() >= $submissionneweras)
                                             || ($type != 'file' &&
-                                                    $submission->timemodified >= $submissionneweras)) {
-                                        $subtype = $plugin->get_subtype();
-                                        $zipfilename = basename($zipfilepath);
-                                        $prefixedfilename = clean_filename($prefix .
+                                                $submission->timemodified >= $submissionneweras)) {
+                                            $subtype = $plugin->get_subtype();
+                                            $zipfilename = basename($zipfilepath);
+                                            $prefixedfilename = clean_filename($prefix .
                                                 '_' .
                                                 $subtype .
                                                 '_' .
                                                 $type .
                                                 '_');
-                                        if ($type == 'file') {
-                                            $pathfilename = $prefixedfilename . $file->get_filepath() . $zipfilename;
-                                        } else if ($type == 'onlinetext') {
-                                            $pathfilename = $prefixedfilename . '/' . $zipfilename;
-                                        } else {
-                                            $pathfilename = $prefixedfilename . '/' . $zipfilename;
-                                        }
-
-                                        // AMC moodle university code start.
-                                        $pathfilename = filerenaming_rename_file($pathfilename, $zipfilename, $student,
+                                            if ($type == 'file') {
+                                                $pathfilename = $prefixedfilename . $file->get_filepath() . $zipfilename;
+                                            } else if ($type == 'onlinetext') {
+                                                $pathfilename = $prefixedfilename . '/' . $zipfilename;
+                                            } else {
+                                                $pathfilename = $prefixedfilename . '/' . $zipfilename;
+                                            }
+                                            // AMC moodle university code start.
+                                            $pathfilename = filerenaming_rename_file($pathfilename, $zipfilename, $student,
                                                 $this, $submission, $groupname, $sequence++, $filesforzipping);
-                                        // AMC moodle university code end.
-
-                                        $pathfilename = clean_param($pathfilename, PARAM_PATH);
-                                        $filesforzipping[$pathfilename] = $file;
+                                            // AMC moodle university code end.
+                                            $pathfilename = clean_param($pathfilename, PARAM_PATH);
+                                            $filesforzipping[$pathfilename] = $file;
+                                        }
                                     }
-                                }
-                            } else {
-                                // Create a single folder for all users of all assignment plugins.
-                                // This was the default behavior for version of Moodle < 3.1.
-                                $submission->exportfullpath = false;
-                                $pluginfiles = $plugin->get_files($submission, $student);
-                                $type = $plugin->get_type();
-                                $sequence = 1;
-                                foreach ($pluginfiles as $zipfilename => $file) {
-                                    // Compare $submissionneweras against the file timestamp if type is file.
-                                    // Otherwise compare against the timestamp of the submission.
-                                    if (($type == 'file'
-                                                    && $file->get_timemodified() >= $submissionneweras)
+                                } else {
+                                    // Create a single folder for all users of all assignment plugins.
+                                    // This was the default behavior for version of Moodle < 3.1.
+                                    $submission->exportfullpath = false;
+                                    $pluginfiles = $plugin->get_files($submission, $student);
+                                    $type = $plugin->get_type();
+                                    $sequence = 1;
+                                    foreach ($pluginfiles as $zipfilename => $file) {
+                                        // Compare $submissionneweras against the file timestamp if type is file.
+                                        // Otherwise compare against the timestamp of the submission.
+                                        if (($type == 'file'
+                                                && $file->get_timemodified() >= $submissionneweras)
                                             || ($type != 'file' &&
-                                                    $submission->timemodified >= $submissionneweras)) {
-                                        $subtype = $plugin->get_subtype();
-                                        $prefixedfilename = clean_filename($prefix .
+                                                $submission->timemodified >= $submissionneweras)) {
+                                            $subtype = $plugin->get_subtype();
+                                            $prefixedfilename = clean_filename($prefix .
                                                 '_' .
                                                 $subtype .
                                                 '_' .
-                                                $type .
+                                                $type);
+                                            // AMC moodle university code start.
+                                            $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
+                                                $this, $submission, $groupname, $sequence++, $filesforzipping);
+                                            // AMC moodle university code end.
+                                            $filesforzipping[$prefixedfilename] = $file;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if ($downloadfeedbacks) {
+                        $feedback = $this->get_assign_feedback_status_renderable($student);
+                        // The feedback for our latest submission.
+                        if ($feedback && $feedback->grade) {
+
+                            $sequence = 1;
+                            foreach ($this->get_feedback_plugins() as $feedbackplugin) {
+                                if (!$feedbackplugin->is_enabled() or !$feedbackplugin->is_visible()) {
+                                    continue;
+                                }
+                                $component = $feedbackplugin->get_subtype().'_'.$feedbackplugin->get_type();
+                                $subtype = $feedbackplugin->get_subtype();
+                                $type = $feedbackplugin->get_type();
+                                $fileareas = $feedbackplugin->get_file_areas();
+                                foreach ($fileareas as $filearea => $name) {
+
+                                    if ($areafiles = $fs->get_area_files(
+                                        $this->get_context()->id,
+                                        $component,
+                                        $filearea,
+                                        $feedback->grade->id,
+                                        'itemid, filepath, filename',
+                                        false)) {
+                                        foreach ($areafiles as $file) {
+
+                                            $zipfilename = $file->get_filename();
+                                            $prefixedfilename = clean_filename($prefix .
                                                 '_' .
-                                                $zipfilename);
+                                                $subtype .
+                                                '_' .
+                                                $type);
+                                            // AMC moodle university code start.
+                                            $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
+                                                $this, $submission, $groupname, $sequence++, $filesforzipping);
+                                            $filesforzipping[$prefixedfilename] = $file;
+                                        }
+                                    }
+                                }
+
+                                if ($feedbackplugin->get_type() == 'comments') {
+                                    $comments = $feedbackplugin->get_editor_text('comments', $feedback->grade->id);
+                                    $comments = str_replace('@@PLUGINFILE@@/', '', $comments);
+                                    if (mb_strlen(trim($comments)) > 0) {
+                                        $comments = self::convert_content_to_html_doc($feedbackplugin->get_name(), $comments);
+                                        $zipfilename = $feedbackplugin->get_name() . '.html';
+                                        $prefixedfilename = clean_filename($prefix .
+                                            '_' .
+                                            $subtype .
+                                            '_' .
+                                            $type);
                                         // AMC moodle university code start.
                                         $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
-                                                $this, $submission, $groupname, $sequence++, $filesforzipping);
-                                        // AMC moodle university code end.
-                                        $filesforzipping[$prefixedfilename] = $file;
+                                            $this, $submission, $groupname, $sequence++, $filesforzipping);
+
+                                        $filesforzipping[$prefixedfilename] = [$comments];
                                     }
                                 }
                             }
@@ -489,6 +550,7 @@ class filerenaming extends assign {
                 }
             }
         }
+
         $result = '';
         if (count($filesforzipping) == 0) {
             $header = new assign_header($this->get_instance(),
@@ -514,35 +576,54 @@ class filerenaming extends assign {
             echo $result;
             $result = '';
             die;
-        } else if ($zipfile = $this->pack_files($filesforzipping)) {
-            $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id);
+        } else {
+            if ($downloadsubmissions) {
+                $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id);
+            }
+            if ($downloadfeedbacks) {
+                $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id, true);
+            }
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
-            // Send file and delete after sending.
-            send_temp_file($zipfile, $filename);
+
+            // Close the session to avoid tab block.
+            \core\session\manager::write_close();
+
+            $zipwriter = \core_files\archive_writer::get_stream_writer($filename, \core_files\archive_writer::ZIP_WRITER);
+
+            foreach ($filesforzipping as $pathinzip => $file) {
+                if ($file instanceof \stored_file) {
+                    // Most of cases are \stored_file.
+                    $zipwriter->add_file_from_stored_file($pathinzip, $file);
+                } else if (is_array($file)) {
+                    // Save $file as contents, from onlinetext subplugin.
+                    $content = reset($file);
+                    $zipwriter->add_file_from_string($pathinzip, $content);
+                } else if (is_string($file)) {
+                    $zipwriter->add_file_from_filepath($pathinzip, $file);
+                }
+            }
+
+            // Finish the archive.
+            $zipwriter->finish();
+            die;
             // We will not get here - send_temp_file calls exit.
         }
         return $result;
     }
 
-    /**
-     * Generate zip file from array of given files - copied from mod_assign 3.10
-     *
-     * @param array $filesforzipping - array of files to pass into archive_to_pathname.
-     *                                 This array is indexed by the final file name and each
-     *                                 element in the array is an instance of a stored_file object.
-     * @return path of temp file - note this returned file does
-     *         not have a .zip extension - it is a temp file.
-     */
-    protected function pack_files($filesforzipping) {
-        global $CFG;
-        // Create path for new zip file.
-        $tempzip = tempnam($CFG->tempdir . '/', 'assignment_');
-        // Zip files.
-        $zipper = new zip_packer();
-        if ($zipper->archive_to_pathname($filesforzipping, $tempzip)) {
-            return $tempzip;
-        }
-        return false;
+    public static function convert_content_to_html_doc($title, $content, $additionalhead = '') {
+        return <<<HTML
+<!doctype html>
+<html>
+<head>
+    <title>$title</title>
+    <meta charset="utf-8">
+    $additionalhead
+</head>
+<body>
+$content
+</body>
+</html>
+HTML;
     }
-
 }

@@ -1,5 +1,14 @@
 CHANGELOG
 =========
+
+3.11.3 (2022-07-26)
+-------------------
+* [FEATURE] #7100 - Implement download of assignment feedbacks
+* [BUG] #7907 Fix debug messages caused by class rename
+* [FEATURE] #6963 Implement stream zip for downloading
+* [BUG] #7188 - fix position of download and export links
+* [BUG] #7276 - fix tags replacing
+
 3.11.2 (2021-11-23)
 -------------------
 * [FIXED] #6985 Fix download buttons getting disabled after pressing them

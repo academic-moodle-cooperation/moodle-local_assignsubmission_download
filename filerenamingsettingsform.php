@@ -60,6 +60,31 @@ class mod_assign_filerenaming_settings_form extends moodleform {
                     get_string('notreuploadable_hint', 'local_assignsubmission_download'), 'info'));
         }
 
+        $downloadtypegroup = [];
+
+        $downloadtypegroup[] =&
+            $mform->createElement('advcheckbox',
+                'downloadtype_submissions',
+                '',
+                get_string('downloadtype:submissions', 'local_assignsubmission_download'),
+                [], [0, 1]);
+
+        $downloadtypegroup[] =&
+            $mform->createElement('advcheckbox',
+                'downloadtype_feedbacks',
+                '',
+                get_string('downloadtype:feedbacks', 'local_assignsubmission_download'),
+                [], [0, 1]);
+
+        $mform->addGroup($downloadtypegroup, 'downloadtype',
+            get_string('downloadtype', 'local_assignsubmission_download'),
+            '<br />',
+            false);
+        $mform->addHelpButton('downloadtype', 'downloadtype', 'local_assignsubmission_download');
+        $mform->setDefault('downloadtype_submissions', 1);
+
+        $mform->addRule('downloadtype', '', 'required', null, 'server');
+
         $tags = array();
         foreach (FILERENAMING_TAGS as $tag) {
             $tags[] = html_writer::tag('span', $tag, array('class' => 'nametag', 'data-nametag' => $tag));
@@ -144,6 +169,13 @@ class mod_assign_filerenaming_settings_form extends moodleform {
             $mform->addHelpButton('lastdownloaded', 'lastdownloaded_title',
                 'local_assignsubmission_download');
         }
+        if (!empty($this->_customdata['lastdownloadedfeedback'])) {
+            $mform->addElement('static', 'lastdownloadedfeedback',
+                get_string('lastdownloadedfeedbacks_title', 'local_assignsubmission_download'),
+                $this->_customdata['lastdownloadedfeedback']);
+            $mform->addHelpButton('lastdownloadedfeedback', 'lastdownloadedfeedbacks_title',
+                'local_assignsubmission_download');
+        }
 
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_groupingtoggle', 'initializer', array($jsgroupings));
 
@@ -162,5 +194,13 @@ class mod_assign_filerenaming_settings_form extends moodleform {
 
         // Button.
         $mform->addElement('submit', 'submittodownload', get_string('strfilerenaming', 'local_assignsubmission_download'));
+    }
+
+    public function validation($data, $files) {
+        $errors = parent::validation($data, $files);
+        if ($data['downloadtype_feedbacks'] == '0' && $data['downloadtype_submissions'] == '0') {
+            $errors['downloadtype'] = get_string('downloadtype:error', 'local_assignsubmission_download');
+        }
+        return $errors;
     }
 }
