@@ -75,7 +75,7 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         // Assignsubmission_download savepoint reached.
         upgrade_plugin_savepoint(true, 2021051802, 'local', 'assignsubmission_download');
     }
-    if ($oldversion < 2022040501) {
+    if ($oldversion < 2021051803) {
         $table = new xmldb_table('local_assignsubm_download');
         $index = new xmldb_index('cmid', XMLDB_INDEX_NOTUNIQUE, ['cmid']);
         // Conditionally launch add index cmid.
@@ -108,7 +108,7 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         }
 
         // Assignsubmission_download savepoint reached.
-        upgrade_plugin_savepoint(true, 2022040501, 'local', 'assignsubmission_download');
+        upgrade_plugin_savepoint(true, 2021051803, 'local', 'assignsubmission_download');
     }
     return true;
 }

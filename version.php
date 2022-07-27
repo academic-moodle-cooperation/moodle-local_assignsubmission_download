@@ -26,12 +26,12 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2022040501;
-$plugin->requires  = 2022030300;           // Requires this Moodle version!
+$plugin->version   = 2021051803;
+$plugin->requires  = 2021051700;           // Requires this Moodle version!
 $plugin->component = 'local_assignsubmission_download';    // To check on upgrade, that module sits in correct place.
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'v4.0.1';            // User-friendly version number.
+$plugin->release   = 'v3.11.3';            // User-friendly version number.
 
 $plugin->dependencies = array(
-    'mod_assign' => 2021110900
+    'mod_assign' => 2021051700
 );

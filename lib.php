@@ -55,53 +55,27 @@ function local_assignsubmission_download_extend_settings_navigation(settings_nav
     }
 
     // Check if item already added.
-    if ($navref->find('assignsubmission_download_export', navigation_node::TYPE_CUSTOM)) {
+    if ($navref->find('assignsubmission_download'.$PAGE->course->id, navigation_node::TYPE_CUSTOM)) {
         // Already added!
         return;
-    }
-
-    // Find appropriate key where our link should come. Probably won't work, but at least try.
-    $keys = [
-        'advgrading' => navigation_node::TYPE_CUSTOM,
-        'modedit' => navigation_node::TYPE_SETTING,
-        'filtermanage' => navigation_node::TYPE_SETTING,
-    ];
-
-    $modulesettings = $navref->get('modulesettings');
-    if (!$modulesettings) {
-        return; // Nothing to do!
-    }
-
-    $beforekey = null;
-    foreach ($keys as $key => $type) {
-        $node = $modulesettings->find($key, $type);
-        if ($node) {
-            $beforekey = $key;
-            break;
-        }
     }
 
     // Prepare our nodes!
     if (get_config('local_assignsubmission_download', 'showfilerenaming')) {
         $link = new moodle_url('/local/assignsubmission_download/view_filerenaming.php', array('id' => $PAGE->cm->id));
-        $childnode = navigation_node::create(
-            get_string('pluginname_submissions', 'local_assignsubmission_download'),
-            $link,
-            navigation_node::TYPE_SETTING,
-            'assignsubmission_download_export',
-            'assignsubmission_download_export'
-        );
-        $modulesettings->add_node($childnode, $beforekey);
+        $modulesettings = $navref->get('modulesettings');
+        if ($modulesettings) {
+            $node = $modulesettings->add(
+                get_string('pluginname_submissions', 'local_assignsubmission_download'), $link, navigation_node::TYPE_SETTING);
+        }
     }
 
     if (get_config('local_assignsubmission_download', 'showexport')) {
         $link = new moodle_url('/local/assignsubmission_download/view_printpreview.php', array('id' => $PAGE->cm->id));
-        $childnode = navigation_node::create(
-            get_string('pluginname_print', 'local_assignsubmission_download'),
-            $link,
-            navigation_node::TYPE_SETTING,
-            'assignsubmission_download_export_print',
-            'assignsubmission_download_export_print');
-        $modulesettings->add_node($childnode, $beforekey);
+        $modulesettings = $navref->get('modulesettings');
+        if ($modulesettings) {
+            $node = $modulesettings->add(
+                get_string('pluginname_print', 'local_assignsubmission_download'), $link, navigation_node::TYPE_SETTING);
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace local_assignsubmission_download\local;
 
 use assign;
 use assign_form;
-use \mod_assign\output\assign_header;
+use assign_header;
 use core_php_time_limit;
 use mod_assign_filerenaming_settings_form;
 use stdClass;
@@ -155,7 +155,7 @@ class filerenaming extends assign {
         $filerenamingsettingsform->set_data($filerenamingsettingsdata);
 
         $actionformtext = "";
-        $header = new \mod_assign\output\assign_header($this->get_instance(),
+        $header = new assign_header($this->get_instance(),
                                     $this->get_context(),
                                     false,
                                     $this->get_course_module()->id,

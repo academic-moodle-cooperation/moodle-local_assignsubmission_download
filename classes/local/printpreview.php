@@ -29,7 +29,7 @@ namespace local_assignsubmission_download\local;
 
 use assign;
 use assign_form;
-use \mod_assign\output\assign_header;
+use assign_header;
 use help_icon;
 use html_writer;
 use mod_assign_printpreview_settings_form;
