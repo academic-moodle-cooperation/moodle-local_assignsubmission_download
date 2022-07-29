@@ -435,7 +435,7 @@ class filerenaming extends assign {
                                                 $submission->timemodified >= $submissionneweras)) {
                                             $subtype = $plugin->get_subtype();
                                             $zipfilename = basename($zipfilepath);
-                                            $prefixedfilename = clean_filename($prefix .
+                                            $prefixedfilename = clean_filename(/*$prefix . */
                                                 '_' .
                                                 $subtype .
                                                 '_' .
@@ -471,7 +471,7 @@ class filerenaming extends assign {
                                             || ($type != 'file' &&
                                                 $submission->timemodified >= $submissionneweras)) {
                                             $subtype = $plugin->get_subtype();
-                                            $prefixedfilename = clean_filename($prefix .
+                                            $prefixedfilename = clean_filename(/*$prefix .*/
                                                 '_' .
                                                 $subtype .
                                                 '_' .
@@ -513,7 +513,7 @@ class filerenaming extends assign {
                                         foreach ($areafiles as $file) {
 
                                             $zipfilename = $file->get_filename();
-                                            $prefixedfilename = clean_filename($prefix .
+                                            $prefixedfilename = clean_filename(/*$prefix .*/
                                                 '_' .
                                                 $subtype .
                                                 '_' .
@@ -532,7 +532,7 @@ class filerenaming extends assign {
                                     if (mb_strlen(trim($comments)) > 0) {
                                         $comments = self::convert_content_to_html_doc($feedbackplugin->get_name(), $comments);
                                         $zipfilename = $feedbackplugin->get_name() . '.html';
-                                        $prefixedfilename = clean_filename($prefix .
+                                        $prefixedfilename = clean_filename(/*$prefix .*/
                                             '_' .
                                             $subtype .
                                             '_' .
