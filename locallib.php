@@ -51,7 +51,7 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
     $o = '';
     if (ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
         // Use locally set filerenaming.
-        $o = $filerenaminguserpref;
+        $o = $filerenaminguserpref . $prefixedfilename;
     } else {
         // Nothing to replace.
         return clean_custom($prefixedfilename);
