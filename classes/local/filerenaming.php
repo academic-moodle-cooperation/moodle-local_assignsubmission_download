@@ -412,9 +412,9 @@ class filerenaming extends assign {
                 }
 
                 if ($submission) {
-                    // TODO is this ever been used / when did it last work?
                     $downloadasfolders = get_user_preferences('assign_downloadasfolders', 1);
-                    $downloadasfolders = false; // TBD whether it will be used - 15.06.2022
+                    // TODO is this ever been used / when did it last work? TBD whether it will be used - 15.06.2022.
+                    $downloadasfolders = false;
                     if ($downloadsubmissions) {
                         foreach ($this->get_submission_plugins() as $plugin) {
                             if ($plugin->is_enabled() && $plugin->is_visible()) {
@@ -435,7 +435,7 @@ class filerenaming extends assign {
                                                 $submission->timemodified >= $submissionneweras)) {
                                             $subtype = $plugin->get_subtype();
                                             $zipfilename = basename($zipfilepath);
-                                            $prefixedfilename = clean_filename($prefix .
+                                            $prefixedfilename = clean_filename(/*$prefix . */
                                                 '_' .
                                                 $subtype .
                                                 '_' .
@@ -462,20 +462,24 @@ class filerenaming extends assign {
                                     $submission->exportfullpath = false;
                                     $pluginfiles = $plugin->get_files($submission, $student);
                                     $type = $plugin->get_type();
+                                    $typestr = $plugin->get_name();
                                     $sequence = 1;
                                     foreach ($pluginfiles as $zipfilename => $file) {
+                                        if ($type == 'onlinetext') {
+                                            $zipfilename = $typestr . '.html';
+                                        }
                                         // Compare $submissionneweras against the file timestamp if type is file.
                                         // Otherwise compare against the timestamp of the submission.
                                         if (($type == 'file'
                                                 && $file->get_timemodified() >= $submissionneweras)
                                             || ($type != 'file' &&
                                                 $submission->timemodified >= $submissionneweras)) {
-                                            $subtype = $plugin->get_subtype();
-                                            $prefixedfilename = clean_filename($prefix .
+                                            $subtype = get_string('submission', 'mod_assign');
+                                            $prefixedfilename = clean_filename(/*$prefix .*/
                                                 '_' .
                                                 $subtype .
                                                 '_' .
-                                                $type);
+                                                $typestr);
                                             // AMC moodle university code start.
                                             $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
                                                 $this, $submission, $groupname, $sequence++, $filesforzipping);
@@ -498,8 +502,9 @@ class filerenaming extends assign {
                                     continue;
                                 }
                                 $component = $feedbackplugin->get_subtype().'_'.$feedbackplugin->get_type();
-                                $subtype = $feedbackplugin->get_subtype();
+                                $subtype = get_string('feedback');
                                 $type = $feedbackplugin->get_type();
+                                $typestr = $feedbackplugin->get_name();
                                 $fileareas = $feedbackplugin->get_file_areas();
                                 foreach ($fileareas as $filearea => $name) {
 
@@ -513,11 +518,11 @@ class filerenaming extends assign {
                                         foreach ($areafiles as $file) {
 
                                             $zipfilename = $file->get_filename();
-                                            $prefixedfilename = clean_filename($prefix .
+                                            $prefixedfilename = clean_filename(/*$prefix .*/
                                                 '_' .
                                                 $subtype .
                                                 '_' .
-                                                $type);
+                                                $typestr);
                                             // AMC moodle university code start.
                                             $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
                                                 $this, $submission, $groupname, $sequence++, $filesforzipping);
@@ -531,12 +536,12 @@ class filerenaming extends assign {
                                     $comments = str_replace('@@PLUGINFILE@@/', '', $comments);
                                     if (mb_strlen(trim($comments)) > 0) {
                                         $comments = self::convert_content_to_html_doc($feedbackplugin->get_name(), $comments);
-                                        $zipfilename = $feedbackplugin->get_name() . '.html';
-                                        $prefixedfilename = clean_filename($prefix .
+                                        $zipfilename = $typestr . '.html';
+                                        $prefixedfilename = clean_filename(/*$prefix .*/
                                             '_' .
                                             $subtype .
                                             '_' .
-                                            $type);
+                                            $typestr);
                                         // AMC moodle university code start.
                                         $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
                                             $this, $submission, $groupname, $sequence++, $filesforzipping);
