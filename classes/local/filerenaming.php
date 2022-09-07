@@ -474,7 +474,6 @@ class filerenaming extends assign {
                                                 && $file->get_timemodified() >= $submissionneweras)
                                             || ($type != 'file' &&
                                                 $submission->timemodified >= $submissionneweras)) {
-                                            //$subtype = $plugin->get_subtype();
                                             $subtype = get_string('submission', 'mod_assign');
                                             $prefixedfilename = clean_filename(/*$prefix .*/
                                                 '_' .
