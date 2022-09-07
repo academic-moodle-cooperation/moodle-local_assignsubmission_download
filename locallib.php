@@ -194,17 +194,14 @@ function replace_custom($o, $maxlength, $pattern, $string) {
  */
 function clean_custom($filename) {
     global $CFG;
+    $replace = array(
+        'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 's', ' ' => '_'
+    );
+    $filename = str_replace(array_keys($replace), array_values($replace), $filename);
 
     $cleanfilenameuserpref = get_user_preferences('clean_filerenaming', '');
-
     if ((isset($cleanfilenameuserpref) && $cleanfilenameuserpref)) {
-        $replace = array(
-            'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 's', ' ' => '_'
-        );
-
-        $o = preg_replace('/[^A-Za-z0-9\_\-\.]/', '', strtr($filename, $replace));
-        return clean_filename($o);
-    } else {
-        return clean_filename($filename);
+        $filename = preg_replace('/[^A-Za-z0-9\_\-\.]/', '', $filename);
     }
+    return clean_filename($filename);
 }
