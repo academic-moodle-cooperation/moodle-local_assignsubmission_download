@@ -147,7 +147,7 @@ $string['lastdownloadedfeedbacks_title_help'] = 'The date shows the last downloa
 $string['downloadtype:submissions'] = 'All file submissions from students';
 $string['downloadtype:feedbacks'] = 'All feedback files from teachers';
 $string['downloadtype'] = 'Download';
-$string['downloadtype_help'] = 'Some help comes here.. TBD';
+$string['downloadtype_help'] = 'Here you can select which files you would like to download - files submitted by students and/or feedback from teachers (comments, annotated PDFs, feedback files)';
 $string['downloadtype:error'] = 'Please select at least one option';
 
 
