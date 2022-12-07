@@ -41,7 +41,7 @@ Access the plugin's features via the assignment settings drop-down menu.
 Requirements
 ------------
 The plugin/s were available including core patches for Moodle 2.5+.  
-This core patch free version is for Moodle 4.
+This core patch free version is for Moodle 4.1.
 
 
 Installation

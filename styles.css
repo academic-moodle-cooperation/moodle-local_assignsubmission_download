@@ -109,3 +109,8 @@
     margin-top: 1em;
     margin-left: 1em;
 }
+
+
+body.local-assignsubmission_download .activity-information[data-region="activity-information"] {
+    display: none;
+}

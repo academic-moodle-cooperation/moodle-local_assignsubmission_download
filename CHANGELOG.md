@@ -1,77 +1,109 @@
 CHANGELOG
 =========
 
+
+4.1.0 (2022-12-07)
+------------------
+
+* Moodle 4.1 compatible version
+* [FIXED] #7414 - remove activity deadline information
+* [FIXED] #7407 - fix "Requires grading" filter
+* [FIXED] #7392 - reorder menu entries
+
+
 4.0.1 (2022-06-14)
 -------------------
+
 * [FEATURE] #7100 - Implement download of assignment feedbacks
+
 
 4.0.0 (2022-04-05)
 -------------------
+
 * Moodle 4.0 compatible version
 * [BUG] #7907 Fix debug messages caused by class rename
 * [FEATURE] #6963 Implement stream zip for downloading
 * [BUG] #7188 - fix position of download and export links
 
+
 3.11.2 (2021-11-23)
 -------------------
+
 * [FIXED] #6985 Fix download buttons getting disabled after pressing them
 * [FIXED] #7022 Fix bug with strong element in assignment editor
 * [FEATURE] #6884 Implement last downloaded date
 
+
 3.11.1 (2021-07-08)
 -------------------
+
 * [FIXED] #6964 fixed an issue with upgrading to version 3.11.0
+
 
 3.11.0 (2021-05-18)
 ------------------
+
 * Moodle 3.11.0 compatible version
 * [FIXED] #6881 - fix invalid settings storage names
 * [FIXED] #6899 - remove concatenation from lang strings
 * [FIXED] #6883 - fix errors when assignment is empty
 * [FIXED] #6880 - refactor class names
 
+
 3.10.0 (2020-11-10)
 ------------------
+
 * [FEATURE] #6626 Add [filenumber] placeholder. It sequentially labels the submissions of a single student.
                   A hint about using it will be shown if more than one file can be submitted.
 
+
 3.9.1 (2020-08-23)
 ------------------
+
 * [FEATURE] #6259 Add option to filter for submissions newer as a given date to file renaming
+
 
 3.9.0 (2020-06-15)
 ------------------
+
 * Moodle 3.9.0 compatible version
+
 
 3.8.0 (2019-12-11)
 ------------------
+
 * Moodle 3.8 compatible version
 * [FIXED] fix checking for capabilities for user with fixed id = 2
 
+
 3.7.0 (2019-06-28)
 ------------------
-* #5967 Moodle 3.7 compatible version
+
+* \#5967 Moodle 3.7 compatible version
 * [FEATURE] #5831 Add grouping selector to submission downloads
 * [FEATURE] #6074 Add group name in filename unconditionally if user belongs to only one group or a group is selected
 
 
 3.6.0 (2018-12-11)
-------------------v
-* #5581 Moodle 3.6 compatible version
-* #5297 Code cleanup activities
-* #5798 Re-Add german langstrings to master branch
+------------------
+
+* \#5581 Moodle 3.6 compatible version
+* \#5297 Code cleanup activities
+* \#5798 Re-Add german langstrings to master branch
 * [FEATURE] #5728 Add group selector to submission downloads
 
 
 3.5.0 (2018-07-18)
 ------------------
+
 * Moodle 3.5 compatible version
-* #5391 Check & Rewrite use of YUI and analyze rewrite to JQuery/Javascript Modules
-* #5392 Include Privacy API
+* \#5391 Check & Rewrite use of YUI and analyze rewrite to JQuery/Javascript Modules
+* \#5392 Include Privacy API
 
 
 3.4.0 (2018-04-24)
 ------------------
+
 * Moodle 3.4 compatible verions
 * [FIXED] #5000 Fixed codechecker issues
 * [FIXED] #5301 Fix invalid get_string() identifier for access/view rights
