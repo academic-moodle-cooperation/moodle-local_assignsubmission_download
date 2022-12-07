@@ -186,7 +186,15 @@ class printpreview_table extends table_sql implements renderable {
             } else if ($filter == ASSIGN_FILTER_REQUIRE_GRADING) {
                 $where .= ' AND (s.timemodified IS NOT NULL AND
                                  s.status = :submitted AND
-                                 (s.timemodified > g.timemodified OR g.timemodified IS NULL))';
+                                 (s.timemodified >= g.timemodified OR g.timemodified IS NULL OR g.grade IS NULL';
+
+                // Assignment grade is set to the negative grade scale id when scales are used.
+                if ($this->assignment->get_instance()->grade < 0) {
+                    // Scale grades are set to -1 when not graded.
+                    $where .= ' OR g.grade = -1';
+                }
+
+                $where .= '))';
                 $params['submitted'] = ASSIGN_SUBMISSION_STATUS_SUBMITTED;
 
             } else if (strpos($filter, ASSIGN_FILTER_SINGLE_USER) === 0) {

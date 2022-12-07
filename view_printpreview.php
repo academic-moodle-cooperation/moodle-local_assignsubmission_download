@@ -46,6 +46,7 @@ $urlparams = array('id' => $id,
 
 $url = new moodle_url('/local/assignsubmission_download/view_printpreview.php', $urlparams);
 $PAGE->set_url($url);
+$PAGE->add_body_class('local-assignsubmission_download');
 
 $PAGE->navbar->add(get_string('pluginname_print', 'local_assignsubmission_download'),
                    new moodle_url('/local/assignsubmission_download/view_printpreview.php',

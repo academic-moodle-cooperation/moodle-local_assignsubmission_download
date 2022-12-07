@@ -205,7 +205,7 @@ class printpreview extends assign {
         // Plagiarism update status apearring in the grading book.
         if (!empty($CFG->enableplagiarism)) {
             require_once($CFG->libdir . '/plagiarismlib.php');
-            $o .= plagiarism_update_status($this->get_course(), $this->get_course_module());
+            $o .= plagiarism_update_status($this->get_course(), $this->get_course_module()); // TODO fix deprecated function!
         }
 
         // Load and print the table of submissions.
@@ -216,6 +216,7 @@ class printpreview extends assign {
            .$OUTPUT->render($helpicon), array('class' => 'data_bold'));
 
         $gradingtable = new printpreview_table($this, $perpage, $filter, 0, null);
+
         $o .= $PAGE->get_renderer('local_assignsubmission_download')->render($gradingtable);
 
         $o .= html_writer::end_tag('div');

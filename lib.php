@@ -60,25 +60,28 @@ function local_assignsubmission_download_extend_settings_navigation(settings_nav
         return;
     }
 
-    // Find appropriate key where our link should come. Probably won't work, but at least try.
-    $keys = [
-        'advgrading' => navigation_node::TYPE_CUSTOM,
-        'modedit' => navigation_node::TYPE_SETTING,
-        'filtermanage' => navigation_node::TYPE_SETTING,
-    ];
-
     $modulesettings = $navref->get('modulesettings');
     if (!$modulesettings) {
         return; // Nothing to do!
     }
-
+    $keys = $modulesettings->get_children_key_list();
     $beforekey = null;
-    foreach ($keys as $key => $type) {
-        $node = $modulesettings->find($key, $type);
-        if ($node) {
-            $beforekey = $key;
-            break;
-        }
+    $i = array_search('modedit', $keys);
+    if ($i === false and array_key_exists(0, $keys)) {
+        $beforekey = $keys[0];
+    } else if (array_key_exists($i + 1, $keys)) {
+        $beforekey = $keys[$i + 1];
+    }
+
+    if (get_config('local_assignsubmission_download', 'showexport')) {
+        $link = new moodle_url('/local/assignsubmission_download/view_printpreview.php', array('id' => $PAGE->cm->id));
+        $childnode = navigation_node::create(
+            get_string('pluginname_print', 'local_assignsubmission_download'),
+            $link,
+            navigation_node::TYPE_SETTING,
+            'assignsubmission_download_export_print',
+            'assignsubmission_download_export_print');
+        $modulesettings->add_node($childnode, $beforekey);
     }
 
     // Prepare our nodes!
@@ -94,14 +97,4 @@ function local_assignsubmission_download_extend_settings_navigation(settings_nav
         $modulesettings->add_node($childnode, $beforekey);
     }
 
-    if (get_config('local_assignsubmission_download', 'showexport')) {
-        $link = new moodle_url('/local/assignsubmission_download/view_printpreview.php', array('id' => $PAGE->cm->id));
-        $childnode = navigation_node::create(
-            get_string('pluginname_print', 'local_assignsubmission_download'),
-            $link,
-            navigation_node::TYPE_SETTING,
-            'assignsubmission_download_export_print',
-            'assignsubmission_download_export_print');
-        $modulesettings->add_node($childnode, $beforekey);
-    }
 }
