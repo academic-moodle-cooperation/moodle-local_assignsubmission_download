@@ -84,7 +84,7 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $mform->addElement('select', 'textsize',
                 get_string('strtextsize', 'local_assignsubmission_download'), $options, $dirtyclass);
 
-        /*$options = array(0 => get_string('strportrait', 'local_assignsubmission_download'),
+        $options = array(0 => get_string('strportrait', 'local_assignsubmission_download'),
                          1 => get_string('strlandscape', 'local_assignsubmission_download'));
         $mform->addElement('select', 'pageorientation',
             get_string('strpageorientation', 'local_assignsubmission_download'), $options, $dirtyclass);
@@ -104,7 +104,7 @@ class mod_assign_printpreview_settings_form extends moodleform {
             $mform->setDefault('filter', get_user_preferences('assign_filter', ''));
         }
 
-        MoodleQuickForm::registerElementType('groupsactivitymenu',
+        /*MoodleQuickForm::registerElementType('groupsactivitymenu',
             $CFG->dirroot.'/local/assignsubmission_download/groupsactivitymenu.php', 'MoodleQuickForm_groupsactivitymenu');
         $groupsactivitymenu = $mform->addElement('groupsactivitymenu', 'group');
         $groupsactivitymenu->set_data($instance['cm'], $instance['currenturl']);
