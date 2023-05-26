@@ -104,13 +104,13 @@ class mod_assign_printpreview_settings_form extends moodleform {
             $mform->setDefault('filter', get_user_preferences('assign_filter', ''));
         }
 
-        /*MoodleQuickForm::registerElementType('groupsactivitymenu',
+        MoodleQuickForm::registerElementType('groupsactivitymenu',
             $CFG->dirroot.'/local/assignsubmission_download/groupsactivitymenu.php', 'MoodleQuickForm_groupsactivitymenu');
         $groupsactivitymenu = $mform->addElement('groupsactivitymenu', 'group');
         $groupsactivitymenu->set_data($instance['cm'], $instance['currenturl']);
 
         $params = new stdClass();
-        $PAGE->requires->js_call_amd('local_assignsubmission_download/printpreviewer', 'initializer', array($params)); */
+        $PAGE->requires->js_call_amd('local_assignsubmission_download/printpreviewer', 'initializer', array($params)); 
 
         // Hidden params.
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
