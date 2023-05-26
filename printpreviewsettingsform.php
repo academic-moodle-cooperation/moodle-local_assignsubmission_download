@@ -84,7 +84,7 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $mform->addElement('select', 'textsize',
                 get_string('strtextsize', 'local_assignsubmission_download'), $options, $dirtyclass);
 
-        $options = array(0 => get_string('strportrait', 'local_assignsubmission_download'),
+       /* $options = array(0 => get_string('strportrait', 'local_assignsubmission_download'),
                          1 => get_string('strlandscape', 'local_assignsubmission_download'));
         $mform->addElement('select', 'pageorientation',
             get_string('strpageorientation', 'local_assignsubmission_download'), $options, $dirtyclass);
@@ -122,7 +122,7 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $mform->addElement('hidden', 'selectedusers', '', array('class' => 'selectedusers'));
         $mform->setType('selectedusers', PARAM_SEQUENCE);
         $mform->addElement('hidden', 'action', 'grading');
-        $mform->setType('action', PARAM_ALPHA);
+        $mform->setType('action', PARAM_ALPHA);*/
 
         // Button.
         $mform->addElement('submit', 'submittoprint', get_string('strprint', 'local_assignsubmission_download'));
