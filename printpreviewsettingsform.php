@@ -84,7 +84,7 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $mform->addElement('select', 'textsize',
                 get_string('strtextsize', 'local_assignsubmission_download'), $options, $dirtyclass);
 
-       /* $options = array(0 => get_string('strportrait', 'local_assignsubmission_download'),
+        /*$options = array(0 => get_string('strportrait', 'local_assignsubmission_download'),
                          1 => get_string('strlandscape', 'local_assignsubmission_download'));
         $mform->addElement('select', 'pageorientation',
             get_string('strpageorientation', 'local_assignsubmission_download'), $options, $dirtyclass);
@@ -110,8 +110,8 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $groupsactivitymenu->set_data($instance['cm'], $instance['currenturl']);
 
         $params = new stdClass();
-        $PAGE->requires->js_call_amd('local_assignsubmission_download/printpreviewer', 'initializer', array($params));
-*/
+        $PAGE->requires->js_call_amd('local_assignsubmission_download/printpreviewer', 'initializer', array($params)); */
+
         // Hidden params.
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
         $mform->setType('contextid', PARAM_INT);
