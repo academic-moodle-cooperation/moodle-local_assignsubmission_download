@@ -61,6 +61,7 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
      * @access    public
      * @return    void
      */
+    // phpcs:ignore
     public function setName($name) {
         $this->updateAttributes(array('name' => $name));
     }
@@ -73,6 +74,7 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
      * @access    public
      * @return    string
      */
+    // phpcs:ignore
     public function getName() {
         return $this->getAttribute('name');
     }
