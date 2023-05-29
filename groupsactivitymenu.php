@@ -61,13 +61,10 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
      * @access    public
      * @return    void
      */
-    function setName($name)
-    {
+    public function setName($name) {
         $this->updateAttributes(array('name' => $name));
-    } //end func setName
+    }
 
-    // }}}
-    // {{{ getName()
 
     /**
      * Returns the element name
@@ -76,11 +73,9 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
      * @access    public
      * @return    string
      */
-    function getName()
-    {
+    public function getName() {
         return $this->getAttribute('name');
-    } //end func getName
-
+    }
     public function set_data($cm, $url) {
         $this->cm = $cm;
         $this->url = $url;
