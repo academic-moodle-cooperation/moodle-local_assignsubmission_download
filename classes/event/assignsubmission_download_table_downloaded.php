@@ -97,17 +97,6 @@ class assignsubmission_download_table_downloaded extends \mod_assign\event\base 
     }
 
     /**
-     * Return legacy data for add_to_log().
-     *
-     * @return array
-     */
-    protected function get_legacy_logdata() {
-        $logmessage = get_string('downloadprintpreviewtable', 'local_assignsubmission_download');
-        $this->set_legacy_logdata('download submission printpreview table', $logmessage);
-        return parent::get_legacy_logdata();
-    }
-
-    /**
      * Custom validation.
      *
      * @throws \coding_exception

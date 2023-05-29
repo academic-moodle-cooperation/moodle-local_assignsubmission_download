@@ -53,6 +53,31 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
         return null;
     }
 
+    /**
+     * Sets the input field name
+     *
+     * @param     string    $name   Input field name attribute
+     * @since     1.0
+     * @access    public
+     * @return    void
+     */
+    // phpcs:ignore
+    public function setName($name) {
+        $this->updateAttributes(array('name' => $name));
+    }
+
+
+    /**
+     * Returns the element name
+     *
+     * @since     1.0
+     * @access    public
+     * @return    string
+     */
+    // phpcs:ignore
+    public function getName() {
+        return $this->getAttribute('name');
+    }
     public function set_data($cm, $url) {
         $this->cm = $cm;
         $this->url = $url;
