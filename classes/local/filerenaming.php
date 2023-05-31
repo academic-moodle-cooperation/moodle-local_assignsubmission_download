@@ -416,6 +416,7 @@ class filerenaming extends assign {
                     // TODO is this ever been used / when did it last work? TBD whether it will be used - 15.06.2022.
                     $downloadasfolders = false;
                     if ($downloadsubmissions) {
+
                         foreach ($this->get_submission_plugins() as $plugin) {
                             if ($plugin->is_enabled() && $plugin->is_visible()) {
                                 if ($downloadasfolders) {
@@ -464,10 +465,11 @@ class filerenaming extends assign {
                                     $type = $plugin->get_type();
                                     $typestr = $plugin->get_name();
                                     $sequence = 1;
+
+                                    $onlinetextfilestorename = [];
+                                    $onlinetextcontents = '';
+                                    $onlinetextfilename = '';
                                     foreach ($pluginfiles as $zipfilename => $file) {
-                                        if ($type == 'onlinetext') {
-                                            $zipfilename = $typestr . '.html';
-                                        }
                                         // Compare $submissionneweras against the file timestamp if type is file.
                                         // Otherwise compare against the timestamp of the submission.
                                         if (($type == 'file'
@@ -481,11 +483,33 @@ class filerenaming extends assign {
                                                 '_' .
                                                 $typestr);
                                             // AMC moodle university code start.
-                                            $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
-                                                $this, $submission, $groupname, $sequence++, $filesforzipping);
                                             // AMC moodle university code end.
-                                            $filesforzipping[$prefixedfilename] = $file;
+                                            if ($type == 'onlinetext') {
+                                                if ($zipfilename != 'onlinetext.html') {
+                                                    $dirname = filerenaming_rename_file($prefixedfilename, '', $student,
+                                                        $this, $submission, $groupname, $sequence, $filesforzipping);
+                                                    $prefixedfilename = $dirname . '_files/' . $zipfilename;
+                                                    $filesforzipping[$prefixedfilename] = $file;
+                                                    $onlinetextfilestorename[$zipfilename] = $prefixedfilename;
+                                                } else {
+
+                                                    $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
+                                                        $this, $submission, $groupname, $sequence++, $filesforzipping);
+                                                    $onlinetextcontents = $file[0];
+                                                    $onlinetextfilename = $prefixedfilename;
+                                                }
+                                            } else {
+
+                                                $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
+                                                    $this, $submission, $groupname, $sequence++, $filesforzipping);
+                                                $filesforzipping[$prefixedfilename] = $file;
+                                            }
                                         }
+                                    }
+                                    if ($type == 'onlinetext') {
+                                        $onlinetextcontents = str_replace(array_keys($onlinetextfilestorename),
+                                            array_values($onlinetextfilestorename), $onlinetextcontents);
+                                        $filesforzipping[$onlinetextfilename] = [$onlinetextcontents];
                                     }
                                 }
                             }
@@ -505,9 +529,14 @@ class filerenaming extends assign {
                                 $subtype = get_string('feedback');
                                 $type = $feedbackplugin->get_type();
                                 $typestr = $feedbackplugin->get_name();
-                                $fileareas = $feedbackplugin->get_file_areas();
-                                foreach ($fileareas as $filearea => $name) {
+                                if (method_exists($feedbackplugin, 'get_user_data_file_areas')) {
+                                    $fileareas = $feedbackplugin->get_user_data_file_areas();
+                                } else {
+                                    $fileareas = $feedbackplugin->get_file_areas();
+                                }
+                                $commentsfilestorename = [];
 
+                                foreach ($fileareas as $filearea => $name) {
                                     if ($areafiles = $fs->get_area_files(
                                         $this->get_context()->id,
                                         $component,
@@ -516,24 +545,34 @@ class filerenaming extends assign {
                                         'itemid, filepath, filename',
                                         false)) {
                                         foreach ($areafiles as $file) {
-
                                             $zipfilename = $file->get_filename();
-                                            $prefixedfilename = clean_filename(/*$prefix .*/
-                                                '_' .
-                                                $subtype .
-                                                '_' .
-                                                $typestr);
-                                            // AMC moodle university code start.
-                                            $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
-                                                $this, $submission, $groupname, $sequence++, $filesforzipping);
-                                            $filesforzipping[$prefixedfilename] = $file;
+                                            if ($type == 'comments') {
+
+                                                $dirname = filerenaming_rename_file($prefixedfilename, '', $student,
+                                                    $this, $submission, $groupname, $sequence, $filesforzipping);
+                                                $prefixedfilename = $dirname . '_files/' . $zipfilename;
+                                                $filesforzipping[$prefixedfilename] = $file;
+                                                $commentsfilestorename[$zipfilename] = $prefixedfilename;
+                                            } else {
+                                                $prefixedfilename = clean_filename(/*$prefix .*/
+                                                    '_' .
+                                                    $subtype .
+                                                    '_' .
+                                                    $typestr);
+                                                // AMC moodle university code start.
+                                                $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
+                                                    $this, $submission, $groupname, $sequence++, $filesforzipping);
+                                                $filesforzipping[$prefixedfilename] = $file;
+                                            }
                                         }
                                     }
                                 }
 
-                                if ($feedbackplugin->get_type() == 'comments') {
+                                if ($type == 'comments') {
                                     $comments = $feedbackplugin->get_editor_text('comments', $feedback->grade->id);
                                     $comments = str_replace('@@PLUGINFILE@@/', '', $comments);
+                                    $comments = str_replace(array_keys($commentsfilestorename),
+                                        array_values($commentsfilestorename), $comments);
                                     if (mb_strlen(trim($comments)) > 0) {
                                         $comments = self::convert_content_to_html_doc($feedbackplugin->get_name(), $comments);
                                         $zipfilename = $typestr . '.html';
@@ -555,7 +594,6 @@ class filerenaming extends assign {
                 }
             }
         }
-
         $result = '';
         if (count($filesforzipping) == 0) {
             $header = new assign_header($this->get_instance(),
