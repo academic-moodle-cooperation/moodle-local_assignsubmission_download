@@ -347,10 +347,11 @@ class filerenaming extends assign {
 
         $fs = get_file_storage();
 
+        $currentdate = date('Y-m-d');
         // Construct the zip file name.
         $filename = filerenaming_clean_custom($this->get_course()->shortname . '-' . // AMC moodle university code one line.
                                    $this->get_instance()->name . '-' .
-                                   $groupname . $this->get_course_module()->id . '.zip');
+                                   $groupname . $this->get_course_module()->id . '_' . $currentdate . '.zip');
 
         // Get all the files for each student.
         $resetgroupname = false;
