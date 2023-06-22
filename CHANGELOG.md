@@ -5,6 +5,7 @@ CHANGELOG
 ------------------
 
 * Moodle 4.2 compatible version
+* [FEATURE] #7590 - improve zip filename by adding current date
 
 4.1.0 (2022-12-07)
 ------------------
