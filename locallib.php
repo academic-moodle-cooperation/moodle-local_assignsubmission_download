@@ -27,7 +27,7 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]', '[filenumber]'];
+const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[lastnamephonetic]', '[firstnamephonetic]', '[username]', '[alternatename]', '[assignmentname]', '[group]', '[filename]', '[filenumber]'];
 
 /**
  * File rename function
@@ -46,7 +46,7 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
     global $CFG;
 
     // Select filerenaming pattern out of (session|moodle default) in this order.
-    $placeholders = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]', '[filenumber]'];
+    $placeholders = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[lastnamephonetic]', '[firstnamephonetic]', '[username]', '[alternatename]', '[assignmentname]', '[group]', '[filename]', '[filenumber]'];
     $filerenaminguserpref = get_user_preferences('filerenamingpattern', '');
     $o = '';
     if (ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
@@ -101,11 +101,19 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
         $o = (strpos($o, $blind) === false) ? str_replace('[fullname]',  $blind, $o) : str_replace('[fullname]',  '', $o);
         $o = (strpos($o, $blind) === false) ? str_replace('[firstname]', $blind, $o) : str_replace('[firstname]', '', $o);
         $o = (strpos($o, $blind) === false) ? str_replace('[lastname]',  $blind, $o) : str_replace('[lastname]',  '', $o);
+        $o = (strpos($o, $blind) === false) ? str_replace('[username]',  $blind, $o) : str_replace('[username]',  '', $o);
+        $o = (strpos($o, $blind) === false) ? str_replace('[alternatename]',  $blind, $o) : str_replace('[alternatename]',  '', $o);
+        $o = (strpos($o, $blind) === false) ? str_replace('[firstnamephonetic]', $blind, $o) : str_replace('[firstnamephonetic]', '', $o);
+        $o = (strpos($o, $blind) === false) ? str_replace('[lastnamephonetic]',  $blind, $o) : str_replace('[lastnamephonetic]',  '', $o);
     } else {
         $o = str_replace('[idnumber]',  $user->idnumber, $o);
         $o = str_replace('[fullname]',  fullname($user), $o);
         $o = str_replace('[firstname]', $user->firstname, $o);
         $o = str_replace('[lastname]',  $user->lastname, $o);
+        $o = str_replace('[username]',  $user->username, $o);
+        $o = str_replace('[alternatename]',  $user->alternatename, $o);
+        $o = str_replace('[firstnamephonetic]', $user->firstnamephonetic, $o);
+        $o = str_replace('[lastnamephonetic]',  $user->lastnamephonetic, $o);
     }
 
     $o = replace_custom($o, $maxlength, '[assignmentname]', $assignmentname);
