@@ -39,18 +39,24 @@ require_capability('local/assignsubmission_download:view', $context);
 
 $printpreview = new \local_assignsubmission_download\local\printpreview($context, $cm, $course);
 
-$urlparams = array('id' => $id,
-                  'action' => optional_param('action', '', PARAM_TEXT),
-                  'rownum' => optional_param('rownum', 0, PARAM_INT),
-                  'useridlistid' => optional_param('useridlistid', $printpreview->get_useridlist_key_id(), PARAM_ALPHANUM));
+$urlparams = [
+    'id' => $id,
+    'action' => optional_param('action', '', PARAM_TEXT),
+    'rownum' => optional_param('rownum', 0, PARAM_INT),
+    'useridlistid' => optional_param('useridlistid', $printpreview->get_useridlist_key_id(), PARAM_ALPHANUM),
+];
 
 $url = new moodle_url('/local/assignsubmission_download/view_printpreview.php', $urlparams);
 $PAGE->set_url($url);
 $PAGE->add_body_class('local-assignsubmission_download');
 
-$PAGE->navbar->add(get_string('pluginname_print', 'local_assignsubmission_download'),
-                   new moodle_url('/local/assignsubmission_download/view_printpreview.php',
-                                  array('id' => $id)));
+$PAGE->navbar->add(
+    get_string('pluginname_print', 'local_assignsubmission_download'),
+    new moodle_url(
+        '/local/assignsubmission_download/view_printpreview.php',
+        ['id' => $id]
+    )
+);
 
 $output = $PAGE->get_renderer('local_assignsubmission_download');
 

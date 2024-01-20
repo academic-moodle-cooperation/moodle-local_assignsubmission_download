@@ -24,8 +24,6 @@
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Renderer for the preview table that is very similar to assign renderer
  *
@@ -46,7 +44,7 @@ class local_assignsubmission_download_renderer extends plugin_renderer_base {
         $o = '';
         $o .= $this->output->box_start('boxaligncenter gradingtable');
 
-        $this->page->requires->js_init_call('M.mod_assign.init_grading_table', array());
+        $this->page->requires->js_init_call('M.mod_assign.init_grading_table', []);
         $this->page->requires->string_for_js('nousersselected', 'assign');
         $this->page->requires->string_for_js('batchoperationconfirmgrantextension', 'assign');
         $this->page->requires->string_for_js('batchoperationconfirmlock', 'assign');

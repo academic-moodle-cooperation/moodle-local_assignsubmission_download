@@ -32,6 +32,6 @@ $plugin->component = 'local_assignsubmission_download';    // To check on upgrad
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->release   = 'v4.2.0';            // User-friendly version number.
 
-$plugin->dependencies = array(
-    'mod_assign' => 2021110900
-);
+$plugin->dependencies = [
+    'mod_assign' => 2021110900,
+];

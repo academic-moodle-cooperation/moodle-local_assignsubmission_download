@@ -57,13 +57,13 @@ class printpreview_table extends table_sql implements renderable {
     /** @var boolean $hasgrantextension - Only do the capability check once for the entire table */
     private $hasgrantextension = false;
     /** @var array $groupsubmissions - A static cache of group submissions */
-    private $groupsubmissions = array();
+    private $groupsubmissions = [];
     /** @var array $submissiongroups - A static cache of submission groups */
-    private $submissiongroups = array();
+    private $submissiongroups = [];
     /** @var string $plugingradingbatchoperations - List of plugin supported batch operations */
-    public $plugingradingbatchoperations = array();
+    public $plugingradingbatchoperations = [];
     /** @var array $plugincache - A cache of plugin lookups to match a column name to a plugin efficiently */
-    private $plugincache = array();
+    private $plugincache = [];
     /** @var array $scale - A list of the keys and descriptions for the custom scale */
     private $scale = null;
 
@@ -90,7 +90,7 @@ class printpreview_table extends table_sql implements renderable {
             if ($plugin->is_visible() && $plugin->is_enabled()) {
                 foreach ($plugin->get_grading_batch_operations() as $action => $description) {
                     if (empty($this->plugingradingbatchoperations)) {
-                        $this->plugingradingbatchoperations[$plugin->get_type()] = array();
+                        $this->plugingradingbatchoperations[$plugin->get_type()] = [];
                     }
                     $this->plugingradingbatchoperations[$plugin->get_type()][$action] = $description;
                 }
@@ -99,9 +99,8 @@ class printpreview_table extends table_sql implements renderable {
         $this->perpage = $perpage;
         $this->quickgrading = false;
         $this->output = $PAGE->get_renderer('mod_assign');
-        $this->is_printpreview = true;
 
-        $urlparams = array('id' => $assignment->get_course_module()->id);
+        $urlparams = ['id' => $assignment->get_course_module()->id];
         $url = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_printpreview.php', $urlparams);
         $this->define_baseurl($url);
 
@@ -118,7 +117,7 @@ class printpreview_table extends table_sql implements renderable {
             $users[] = -1;
         }
 
-        $params = array();
+        $params = [];
         $params['assignmentid1'] = (int)$this->assignment->get_instance()->id;
         $params['assignmentid2'] = (int)$this->assignment->get_instance()->id;
         $params['assignmentid3'] = (int)$this->assignment->get_instance()->id;
@@ -169,7 +168,7 @@ class printpreview_table extends table_sql implements renderable {
                             g.attemptnumber = gmx.maxattempt
                          LEFT JOIN {assign_user_flags} uf ON u.id = uf.userid AND uf.assignment = :assignmentid3';
 
-        $userparams = array();
+        $userparams = [];
         $userindex = 0;
 
         list($userwhere, $userparams) = $DB->get_in_or_equal($users, SQL_PARAMS_NAMED, 'user');
@@ -240,8 +239,8 @@ class printpreview_table extends table_sql implements renderable {
             $this->is_downloading('pdf', $downloadfilename);
         }
 
-        $columns = array();
-        $headers = array();
+        $columns = [];
+        $headers = [];
 
         // Select.
         if (!$this->is_downloading()) {
@@ -273,7 +272,7 @@ class printpreview_table extends table_sql implements renderable {
                 if ($plugin->is_visible() && $plugin->is_enabled()
                 &&  $plugin->has_user_summary() && $plugin->get_type() != 'comments') {
                     $index = 'plugin' . count($this->plugincache);
-                    $this->plugincache[$index] = array($plugin);
+                    $this->plugincache[$index] = [$plugin];
                     $columns[] = $index;
                     $headers[] = $plugin->get_name();
                 }
@@ -298,14 +297,14 @@ class printpreview_table extends table_sql implements renderable {
                 if ($plugin->is_visible() && $plugin->is_enabled()) {
                     foreach ($plugin->get_editor_fields() as $field => $description) {
                         $index = 'plugin' . count($this->plugincache);
-                        $this->plugincache[$index] = array($plugin, $field);
+                        $this->plugincache[$index] = [$plugin, $field];
                         $columns[] = $index;
                         $headers[] = $description;
                     }
                 }
             } else if ($plugin->is_visible() && $plugin->is_enabled() && $plugin->has_user_summary()) {
                 $index = 'plugin' . count($this->plugincache);
-                $this->plugincache[$index] = array($plugin);
+                $this->plugincache[$index] = [$plugin];
                 $columns[] = $index;
                 $headers[] = $plugin->get_name();
             }
@@ -466,7 +465,7 @@ class printpreview_table extends table_sql implements renderable {
         $this->setup();
         $this->currpage = 0;
         $this->query_db($this->tablemaxrows);
-        $result = array();
+        $result = [];
         foreach ($this->rawdata as $row) {
             $result[] = $row->$columnname;
         }
@@ -513,7 +512,7 @@ class printpreview_table extends table_sql implements renderable {
     public function col_fullname($row) {
         if (!$this->is_downloading()) {
             $courseid = $this->assignment->get_course()->id;
-            $link = new moodle_url('/user/view.php', array('id' => $row->id, 'course' => $courseid));
+            $link = new moodle_url('/user/view.php', ['id' => $row->id, 'course' => $courseid]);
             $fullname = $this->output->action_link($link, fullname($row));
         } else {
             $fullname = fullname($row);
@@ -521,9 +520,12 @@ class printpreview_table extends table_sql implements renderable {
 
         if (!$this->assignment->is_active_user($row->id)) {
             $suspendedstring = get_string('userenrolmentsuspended', 'grades');
-            $fullname .= ' ' . html_writer::empty_tag('img', array('src' => $this->output->image_url('i/enrolmentsuspended'),
-                'title' => $suspendedstring, 'alt' => $suspendedstring, 'class' => 'usersuspendedicon'));
-            $fullname = html_writer::tag('span', $fullname, array('class' => 'usersuspended'));
+            $fullname .= ' ' . html_writer::empty_tag('img', [
+                    'src' => $this->output->image_url('i/enrolmentsuspended'),
+                    'title' => $suspendedstring, 'alt' => $suspendedstring, 'class' => 'usersuspendedicon',
+                ]
+            );
+            $fullname = html_writer::tag('span', $fullname, ['class' => 'usersuspended']);
         }
         return $fullname;
     }
@@ -551,7 +553,7 @@ class printpreview_table extends table_sql implements renderable {
         global $DB;
 
         if (empty($this->scale)) {
-            $dbparams = array('id' => -($this->assignment->get_instance()->grade));
+            $dbparams = ['id' => -($this->assignment->get_instance()->grade)];
             $this->scale = $DB->get_record('scale', $dbparams);
         }
 
@@ -571,7 +573,7 @@ class printpreview_table extends table_sql implements renderable {
         $o = '';
 
         $link = '';
-        $separator = $this->output->spacer(array(), true);
+        $separator = $this->output->spacer([], true);
         $grade = '';
         $gradingdisabled = $this->assignment->grading_disabled($row->id);
 
@@ -581,12 +583,16 @@ class printpreview_table extends table_sql implements renderable {
                 $name = get_string('hiddenuser', 'assign') .
                         $this->assignment->get_uniqueid_for_user($row->userid);
             }
-            $icon = $this->output->pix_icon('gradefeedback',
-                                            get_string('gradeuser', 'assign', $name),
-                                            'mod_assign');
-            $urlparams = array('id' => $this->assignment->get_course_module()->id,
-                               'rownum' => $this->rownum,
-                               'action' => 'grade');
+            $icon = $this->output->pix_icon(
+                'gradefeedback',
+                get_string('gradeuser', 'assign', $name),
+                'mod_assign'
+            );
+            $urlparams = [
+                'id' => $this->assignment->get_course_module()->id,
+                'rownum' => $this->rownum,
+                'action' => 'grade',
+            ];
             $url = new moodle_url('/mod/assign/view.php', $urlparams);
             $link = $this->output->action_link($url, $icon);
             $grade .= $link . $separator;
@@ -698,16 +704,18 @@ class printpreview_table extends table_sql implements renderable {
         if ($showviewlink) {
             $viewstr = get_string('view' . substr($plugin->get_subtype(), strlen('assign')), 'assign');
             $icon = $this->output->pix_icon('t/preview', $viewstr);
-            $urlparams = array('id' => $this->assignment->get_course_module()->id,
-                                                     'sid' => $item->id,
-                                                     'gid' => $item->id,
-                                                     'plugin' => $plugin->get_type(),
-                                                     'action' => 'viewplugin' . $plugin->get_subtype(),
-                                                     'returnaction' => $returnaction,
-                                                     'returnparams' => http_build_query($returnparams));
+            $urlparams = [
+                'id' => $this->assignment->get_course_module()->id,
+                'sid' => $item->id,
+                'gid' => $item->id,
+                'plugin' => $plugin->get_type(),
+                'action' => 'viewplugin' . $plugin->get_subtype(),
+                'returnaction' => $returnaction,
+                'returnparams' => http_build_query($returnparams),
+            ];
             $url = new moodle_url('/mod/assign/view.php', $urlparams);
             $link = $this->output->action_link($url, $icon);
-            $separator = $this->output->spacer(array(), true);
+            $separator = $this->output->spacer([], true);
         }
 
         return $link . $separator . $summary;
@@ -755,7 +763,7 @@ class printpreview_table extends table_sql implements renderable {
                         return $this->format_plugin_summary_with_link($plugin,
                                                                       $submission,
                                                                       'grading',
-                                                                      array());
+                                                                      []);
                     }
                 } else if ($row->submissionid) {
                     if ($row->status == ASSIGN_SUBMISSION_STATUS_REOPENED) {
@@ -777,7 +785,7 @@ class printpreview_table extends table_sql implements renderable {
                     return $this->format_plugin_summary_with_link($plugin,
                                                                   $submission,
                                                                   'grading',
-                                                                  array());
+                                                                  []);
                 }
             } else {
                 $grade = null;
@@ -802,7 +810,7 @@ class printpreview_table extends table_sql implements renderable {
                     return $this->format_plugin_summary_with_link($plugin,
                                                                   $grade,
                                                                   'grading',
-                                                                  array());
+                                                                  []);
                 }
             }
         }
@@ -822,7 +830,7 @@ class printpreview_table extends table_sql implements renderable {
         if (isset($this->submissiongroups[$userid])) {
             $group = $this->submissiongroups[$userid];
         } else {
-            $group = $this->assignment->get_submission_group($userid, false);
+            $group = $this->assignment->get_submission_group($userid);
             $this->submissiongroups[$userid] = $group;
         }
 
