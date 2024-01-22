@@ -36,6 +36,7 @@ Access the plugin's features via the assignment settings drop-down menu.
 * In the "Clean filenames" checkbox, specify whether or not you want to clean up special
  characters in the file names.
 * Additionally, if the activity allows groups, you can restrict the downloaded elements by groups or groupings.
+* If you only want to download files after a certain date, specify this under "Submissions newer as".
 
 
 Requirements

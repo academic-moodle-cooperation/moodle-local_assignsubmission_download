@@ -99,14 +99,18 @@ $string['filerenamingpattern'] = 'Naming scheme';
 $string['rename_propertydescription'] = 'Available tags: {$a}';
 $string['filerenamingpattern_help'] = 'The parameter \'naming scheme\' determines the naming of the filenames. The following bracket terms (\'tags\') are available:<br>
     <br>
-    [filename] original filename<br>
-    [firstname] first name<br>
-    [lastname] last name<br>
-    [fullname] full name<br>
     [idnumber] matriculation number<br>
-    [assignmentname] name of the assignment<br>
+    [lastname] last name<br>
+    [firstname] first name<br>
+    [fullname] full name<br>
     [group] group, in case the participant is enroled into a group<br>
+    [groupid] group id, in case the participant is enroled into a group and it has an id<br>
+    [filename] original filename<br>
     [filenumber] sequential number for files uploaded by a single student<br>
+    [assignmentname] name of the assignment<br>
+    [courseshortname] short name of the course<br>
+    [currentdate] current date in format YYYYMMDD (YearMonthDay)<br>
+    [currenttime] current time HHMM (HoursMinutes)<br>
     <br>
     If you add any alphanumeric characters (without brackets), these characters will be added to all the uploaded/downloaded assignments<br>
     <br>

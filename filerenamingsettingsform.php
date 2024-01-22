@@ -87,7 +87,11 @@ class mod_assign_filerenaming_settings_form extends moodleform {
 
         $tags = [];
         foreach (FILERENAMING_TAGS as $tag) {
-            $tags[] = html_writer::tag('span', $tag, ['class' => 'nametag', 'data-nametag' => $tag]);
+            $tags[] = html_writer::tag('span', $tag, array('class' => 'nametag', 'data-nametag' => $tag));
+            $tags[] = ' '; // Add a space after each tag
+            if ($tag === '[groupid]') {
+                $tags[] = '<br>'; // Add a line break after the [groupid] tag
+            }
         }
 
         $mform->addElement('text', 'filerenamingpattern',
