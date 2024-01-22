@@ -17,20 +17,16 @@
 /**
  * This file contains the renderer for printpreview table
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        Günther Bernsteiner
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Renderer for the preview table that is very similar to assign renderer
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -39,14 +35,14 @@ class local_assignsubmission_download_renderer extends plugin_renderer_base {
     /**
      * Render the grading table.
      *
-     * @param assign_grading_table $table
+     * @param printpreview_table $table
      * @return string
      */
     public function render_printpreview_table(printpreview_table $table) {
         $o = '';
         $o .= $this->output->box_start('boxaligncenter gradingtable');
 
-        $this->page->requires->js_init_call('M.mod_assign.init_grading_table', array());
+        $this->page->requires->js_init_call('M.mod_assign.init_grading_table', []);
         $this->page->requires->string_for_js('nousersselected', 'assign');
         $this->page->requires->string_for_js('batchoperationconfirmgrantextension', 'assign');
         $this->page->requires->string_for_js('batchoperationconfirmlock', 'assign');

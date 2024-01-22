@@ -47,7 +47,7 @@ class mod_assign_filerenaming_settings_form extends moodleform {
 
         $mform = $this->_form;
         $instance = $this->_customdata;
-        $dirtyclass = array('class' => 'ignoredirty');
+        $dirtyclass = ['class' => 'ignoredirty'];
 
         $mform->disable_form_change_checker();
 
@@ -85,7 +85,7 @@ class mod_assign_filerenaming_settings_form extends moodleform {
 
         $mform->addRule('downloadtype', '', 'required', null, 'server');
 
-        $tags = array();
+        $tags = [];
         foreach (FILERENAMING_TAGS as $tag) {
             $tags[] = html_writer::tag('span', $tag, array('class' => 'nametag', 'data-nametag' => $tag));
             $tags[] = ' '; // Add a space after each tag
@@ -95,14 +95,14 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         }
 
         $mform->addElement('text', 'filerenamingpattern',
-                get_string('filerenamingpattern', 'local_assignsubmission_download'),  array('size' => '100'));
+                get_string('filerenamingpattern', 'local_assignsubmission_download'),  ['size' => '100']);
         $mform->setType('filerenamingpattern', PARAM_RAW_TRIMMED);
         $mform->setDefault('filerenamingpattern', get_string('defaultfilerenamingpattern', 'local_assignsubmission_download'));
         $mform->addElement('static', 'tags', '',
                 get_string('rename_propertydescription', 'local_assignsubmission_download', implode("", $tags)));
         $mform->addHelpButton('filerenamingpattern', 'filerenamingpattern', 'local_assignsubmission_download');
 
-        $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_tagsupport', 'initializer', array());
+        $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_tagsupport', 'initializer', []);
 
         $mform->addElement('advcheckbox', 'clean_filerenaming',
                 get_string('clean_filerenaming', 'local_assignsubmission_download'), ' ');
@@ -124,7 +124,7 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $groupallparticipants->id = "0";
 
         array_unshift($activitygroupings, $groupingallparticipants);
-        $jsgroupings = array();
+        $jsgroupings = [];
         if (($groupmode != NOGROUPS)) {
             $selectgrouping = $mform->createElement('select', 'coursegrouping',
                 get_string('labelgrouping', 'local_assignsubmission_download'));
@@ -134,8 +134,8 @@ class mod_assign_filerenaming_settings_form extends moodleform {
                 $jsgroupings[$curgrouping->id]->name = $curgrouping->name;
                 $jsgroupings[$curgrouping->id]->id = $curgrouping->id;
 
-                $jsgroupings[$curgrouping->id]->groups = array();
-                $groupsingrouping = groups_get_all_groups($course->id, null, $curgrouping->id);
+                $jsgroupings[$curgrouping->id]->groups = [];
+                $groupsingrouping = groups_get_all_groups($course->id, 0, $curgrouping->id);
                 array_unshift($groupsingrouping, $groupallparticipants);
                 foreach ($groupsingrouping as $gindex => $curgroup) {
                     $groupinginfo = new stdClass();
@@ -181,11 +181,7 @@ class mod_assign_filerenaming_settings_form extends moodleform {
                 'local_assignsubmission_download');
         }
 
-        $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_groupingtoggle', 'initializer', array($jsgroupings));
-
-        // Hidden params.
-        // $mform->addElement('hidden', 'mydata', '');
-        // $mform->setAttributes('mydata', 'data-groupings', array($jsgroupings));
+        $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_groupingtoggle', 'initializer', [$jsgroupings]);
 
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
         $mform->setType('contextid', PARAM_INT);

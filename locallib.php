@@ -25,7 +25,6 @@
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
 
 const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[group]', '[groupid]', '[filename]', '[filenumber]', '[assignmentname]', '[courseshortname]', '[currentdate]', '[currenttime]'];
 
@@ -42,7 +41,8 @@ const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname
  * @param optional array $zipfiles array of filenames that must not be used in the same download
  * @return String The renamed filename
  */
-function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, $submission, $groupname, $sequence, $zipfiles = null) {
+function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
+        $submission, $groupname, $sequence, $zipfiles = null) {
     global $CFG;
 
     // Select filerenaming pattern out of (session|moodle default) in this order.
@@ -81,7 +81,7 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
     $assignmentname = $assign->get_instance()->name;
     $coursemodule   = $assign->get_course_module();
 
-    // Assign a groupname if possible (existing and unique!)
+    // Assign a groupname if possible (existing and unique!).
     if ($groupname == '' && groups_get_activity_groupmode($coursemodule)) {
         $usergroups = groups_get_all_groups($coursemodule->course, $user->id, $coursemodule->groupingid);
         if (count($usergroups) == 1) {
@@ -221,9 +221,9 @@ function replace_custom($o, $maxlength, $pattern, $string) {
  */
 function clean_custom($filename) {
     global $CFG;
-    $replace = array(
-        'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 's', ' ' => '_'
-    );
+    $replace = [
+        'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 's', ' ' => '_',
+    ];
     $filename = str_replace(array_keys($replace), array_values($replace), $filename);
 
     $cleanfilenameuserpref = get_user_preferences('clean_filerenaming', '');

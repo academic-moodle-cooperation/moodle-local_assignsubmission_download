@@ -63,7 +63,7 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
      */
     // phpcs:ignore
     public function setName($name) {
-        $this->updateAttributes(array('name' => $name));
+        $this->updateAttributes(['name' => $name]);
     }
 
 
@@ -96,7 +96,7 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
             $this->setLabel(get_string('groupsseparate'));
         }
 
-        if ($this->aag and $this->cm->groupingid) {
+        if ($this->aag && $this->cm->groupingid) {
             if ($grouping = groups_get_grouping($this->cm->groupingid)) {
                 $this->setLabel($this->getLabel() . ' (' . format_string($grouping->name) . ')');
             }
@@ -123,7 +123,7 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
 
         $context = context_module::instance($this->cm->id);
 
-        if ($groupmode == VISIBLEGROUPS or $this->aag) {
+        if ($groupmode == VISIBLEGROUPS || $this->aag) {
             $allowedgroups = groups_get_all_groups($this->cm->course, 0, $this->cm->groupingid); // Any group in grouping.
         } else {
             $allowedgroups = groups_get_all_groups($this->cm->course, $USER->id, $this->cm->groupingid); // Only assigned groups.
@@ -131,8 +131,8 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
 
         $activegroup = groups_get_activity_group($this->cm, true, $allowedgroups);
 
-        $groupsmenu = array();
-        if ((!$allowedgroups or $groupmode == VISIBLEGROUPS or $this->aag)) {
+        $groupsmenu = [];
+        if ((!$allowedgroups || $groupmode == VISIBLEGROUPS || $this->aag)) {
             $groupsmenu[0] = get_string('allparticipants');
         }
 
@@ -168,7 +168,7 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
             $params['sesskey'] = sesskey();
         }
         foreach ($params as $name => $value) {
-            $output .= html_writer::empty_tag('input', array('type' => 'hidden', 'name' => $name, 'value' => $value));
+            $output .= html_writer::empty_tag('input', ['type' => 'hidden', 'name' => $name, 'value' => $value]);
         }
 
         if (empty($select->attributes['id'])) {
@@ -194,10 +194,10 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
         }
         $output .= html_writer::select($select->options, $select->name, $select->selected, $select->nothing, $select->attributes);
 
-        $go = html_writer::empty_tag('input', array('type' => 'submit', 'value' => get_string('go')));
-        $output .= html_writer::tag('noscript', html_writer::tag('div', $go), array('class' => 'inline'));
+        $go = html_writer::empty_tag('input', ['type' => 'submit', 'value' => get_string('go')]);
+        $output .= html_writer::tag('noscript', html_writer::tag('div', $go), ['class' => 'inline']);
 
         // And finally one more wrapper with class.
-        return html_writer::tag('div', $output, array('class' => $select->class));
+        return html_writer::tag('div', $output, ['class' => $select->class]);
     }
 }

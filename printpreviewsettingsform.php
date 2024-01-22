@@ -46,46 +46,55 @@ class mod_assign_printpreview_settings_form extends moodleform {
 
         $mform = $this->_form;
         $instance = $this->_customdata;
-        $dirtyclass = array('class' => 'ignoredirty');
+        $dirtyclass = ['class' => 'ignoredirty'];
 
         $mform->disable_form_change_checker();
 
         // Printsettings.
         $mform->addElement('header', 'printsettings', get_string('printsettingstitle', 'local_assignsubmission_download'));
 
-        $options = array(MTablePDF::OUTPUT_FORMAT_PDF => 'PDF',
-                         MTablePDF::OUTPUT_FORMAT_XLSX => 'XLSX',
-                         MTablePDF::OUTPUT_FORMAT_ODS => 'ODS',
-                         MTablePDF::OUTPUT_FORMAT_CSV_COMMA => 'CSV (;)',
-                         MTablePDF::OUTPUT_FORMAT_CSV_TAB => 'CSV (tab)');
+        $options = [
+            MTablePDF::OUTPUT_FORMAT_PDF => 'PDF',
+            MTablePDF::OUTPUT_FORMAT_XLSX => 'XLSX',
+            MTablePDF::OUTPUT_FORMAT_ODS => 'ODS',
+            MTablePDF::OUTPUT_FORMAT_CSV_COMMA => 'CSV (;)',
+            MTablePDF::OUTPUT_FORMAT_CSV_TAB => 'CSV (tab)',
+        ];
         $mform->addElement('select', 'exportformat',
                 get_string('exportformat', 'local_assignsubmission_download'), $options, $dirtyclass);
 
         $mform->addElement('html', html_writer::div(html_writer::span(
                 get_string('onlypdf', 'local_assignsubmission_download'), null), 'bold'));
 
-        $grpperpage = array();
+        $grpperpage = [];
         $grpperpage[] =& $mform->createElement('text', 'perpage',
                 get_string('perpage', 'local_assignsubmission_download'), 'size="3"');
         $mform->setType('perpage', PARAM_INT);
-        $mform->setDefault('perpage', get_user_preferences('assign_perpage', get_config('local_assignsubmission_download', 'assignmentpatch_perpage')));
+        $mform->setDefault(
+            'perpage',
+            get_user_preferences('assign_perpage', get_config('local_assignsubmission_download', 'assignmentpatch_perpage'))
+        );
 
         $grpperpage[] =& $mform->createElement('advcheckbox', 'optimum', '',
                 get_string('optimum', 'local_assignsubmission_download'));
         $mform->setDefault('optimum', get_user_preferences('assign_optimum', 0));
 
-        $mform->addGroup($grpperpage, 'grpperpage', get_string('assignmentsperpage', 'assign'), array(''), true);
+        $mform->addGroup($grpperpage, 'grpperpage', get_string('assignmentsperpage', 'assign'), '', true);
         $mform->setType('grpperpage', PARAM_RAW);
         $mform->addHelpButton('grpperpage', 'perpage', 'local_assignsubmission_download');
 
-        $options = array(0 => get_string('strsmall', 'local_assignsubmission_download'),
-                         1 => get_string('strmedium', 'local_assignsubmission_download'),
-                         2 => get_string('strlarge', 'local_assignsubmission_download'));
+        $options = [
+            0 => get_string('strsmall', 'local_assignsubmission_download'),
+            1 => get_string('strmedium', 'local_assignsubmission_download'),
+            2 => get_string('strlarge', 'local_assignsubmission_download'),
+        ];
         $mform->addElement('select', 'textsize',
-                get_string('strtextsize', 'local_assignsubmission_download'), $options, $dirtyclass);
+            get_string('strtextsize', 'local_assignsubmission_download'), $options, $dirtyclass);
 
-        $options = array(0 => get_string('strportrait', 'local_assignsubmission_download'),
-                         1 => get_string('strlandscape', 'local_assignsubmission_download'));
+        $options = [
+            0 => get_string('strportrait', 'local_assignsubmission_download'),
+            1 => get_string('strlandscape', 'local_assignsubmission_download'),
+        ];
         $mform->addElement('select', 'pageorientation',
             get_string('strpageorientation', 'local_assignsubmission_download'), $options, $dirtyclass);
 
@@ -96,9 +105,11 @@ class mod_assign_printpreview_settings_form extends moodleform {
         // Datasettings.
         $mform->addElement('header', 'datasettings', get_string('datasettingstitle', 'local_assignsubmission_download'));
 
-        $options = array('' => get_string('all', 'local_assignsubmission_download'),
-                         ASSIGN_FILTER_SUBMITTED => get_string('filtersubmitted', 'assign'),
-                         ASSIGN_FILTER_REQUIRE_GRADING => get_string('filterrequiregrading', 'assign'));
+        $options = [
+            '' => get_string('all', 'local_assignsubmission_download'),
+            ASSIGN_FILTER_SUBMITTED => get_string('filtersubmitted', 'assign'),
+            ASSIGN_FILTER_REQUIRE_GRADING => get_string('filterrequiregrading', 'assign'),
+        ];
         if ($instance['submissionsenabled']) {
             $mform->addElement('select', 'filter', get_string('show', 'local_assignsubmission_download'), $options, $dirtyclass);
             $mform->setDefault('filter', get_user_preferences('assign_filter', ''));
@@ -110,7 +121,7 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $groupsactivitymenu->set_data($instance['cm'], $instance['currenturl']);
 
         $params = new stdClass();
-        $PAGE->requires->js_call_amd('local_assignsubmission_download/printpreviewer', 'initializer', array($params));
+        $PAGE->requires->js_call_amd('local_assignsubmission_download/printpreviewer', 'initializer', [$params]);
 
         // Hidden params.
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
@@ -119,7 +130,7 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'userid', $instance['userid']);
         $mform->setType('userid', PARAM_INT);
-        $mform->addElement('hidden', 'selectedusers', '', array('class' => 'selectedusers'));
+        $mform->addElement('hidden', 'selectedusers', '', ['class' => 'selectedusers']);
         $mform->setType('selectedusers', PARAM_SEQUENCE);
         $mform->addElement('hidden', 'action', 'grading');
         $mform->setType('action', PARAM_ALPHA);

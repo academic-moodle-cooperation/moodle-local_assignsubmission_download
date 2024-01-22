@@ -48,15 +48,14 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$capabilities = array(
-        'local/assignsubmission_download:view' => array(
-                'captype' => 'read',
-                'contextlevel' => CONTEXT_COURSE,
-                'archetypes' => array(
-                        'editingteacher' => CAP_ALLOW,
-                        'teacher' => CAP_ALLOW,
-                        'manager' => CAP_ALLOW
-                )
-        )
-);
-
+$capabilities = [
+    'local/assignsubmission_download:view' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => [
+            'editingteacher' => CAP_ALLOW,
+            'teacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW,
+        ],
+    ],
+];

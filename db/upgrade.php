@@ -23,8 +23,6 @@
  */
 
 
-defined('MOODLE_INTERNAL') || die();
-
 function xmldb_local_assignsubmission_download_upgrade($oldversion) {
     global $DB;
     $dbman = $DB->get_manager();
@@ -33,7 +31,7 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         $configs = [
             'assignmentpatch_perpage' => 'assignmentpatch_perpage',
             'assignsubmission_download_showfilerenaming' => 'showfilerenaming',
-            'assignsubmission_download_showexport' => 'showexport'
+            'assignsubmission_download_showexport' => 'showexport',
         ];
         foreach ($configs as $oldname => $newname) {
             $config = $DB->get_record('config', ['name' => $oldname]);
@@ -42,9 +40,13 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
                 $newconfig->plugin = 'local_assignsubmission_download';
                 $newconfig->name = $newname;
                 $newconfig->value = $config->value;
-                if (!$DB->record_exists('config_plugins',
-                   ['plugin' => 'local_assignsubmission_download',
-                    'name' => $newname])) {
+                if (!$DB->record_exists(
+                    'config_plugins',
+                    [
+                        'plugin' => 'local_assignsubmission_download',
+                        'name' => $newname,
+                    ]
+                )) {
                     $DB->insert_record('config_plugins', $newconfig);
                 }
                 $DB->delete_records('config', ['id' => $config->id]);
