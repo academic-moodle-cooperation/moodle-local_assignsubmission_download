@@ -260,7 +260,7 @@ class filerenaming extends assign {
      * Returns the last downloaded date for module and user as string
      * @param int $cmid int coursemodule id
      * @param int $userid int user id
-     * @param bool $feedback 
+     * @param bool $feedback
      * @return \lang_string|string
      * @throws \coding_exception
      * @throws \dml_exception
@@ -674,7 +674,7 @@ class filerenaming extends assign {
      *
      * @param string $title The title of the HTML document.
      * @param string $content The main content to be included in the body of the HTML document.
-     * @param string $additionalhead Optional. Additional elements to be included in the head of the HTML document. 
+     * @param string $additionalhead Optional. Additional elements to be included in the head of the HTML document.
      *                               Default is an empty string.
      * @return string The complete HTML document as a string.
      */
