@@ -26,7 +26,9 @@
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[group]', '[groupid]', '[filename]', '[filenumber]', '[assignmentname]', '[courseshortname]', '[currentdate]', '[currenttime]'];
+const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[group]', '[groupid]', '[filename]',
+    '[filenumber]', '[assignmentname]', '[courseshortname]', '[currentdate]', '[currenttime]',
+];
 
 /**
  * File rename function
@@ -46,7 +48,9 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
     global $CFG;
 
     // Select filerenaming pattern out of (session|moodle default) in this order.
-    $placeholders = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]', '[filenumber]', '[groupid]', '[courseshortname]', '[currenttime]', '[currentdate]'];
+    $placeholders = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]',
+        '[filenumber]', '[groupid]', '[courseshortname]', '[currenttime]', '[currentdate]',
+    ];
     $filerenaminguserpref = get_user_preferences('filerenamingpattern', '');
     $o = '';
     if (ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
@@ -101,7 +105,7 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
         if ($groupid) {
             $group = groups_get_group($groupid);
             if ($group) {
-                $groupidnumber = $group->idnumber; // Get the idnumber from the group
+                $groupidnumber = $group->idnumber; // Get the idnumber from the group.
             }
         }
     }
