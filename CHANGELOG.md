@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+4.3.0 (2024-01-22)
+------------------
+
+* Moodle 4.3 compatible version
+* [FEATURE] #7254 - new tags for renaming scheme
+
 4.2.0 (2023-05-31)
 ------------------
 
