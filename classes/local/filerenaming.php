@@ -17,8 +17,7 @@
 /**
  * This file contains the filerenaming class (extending assign)
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        Günther Bernsteiner
  * @author        Andreas Krieger
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
@@ -41,12 +40,15 @@ use zip_packer;
 /**
  * The filerenaming class, extending assign.
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class filerenaming extends assign {
+    /**
+     * @var null|\moodleform $_filerenamingform Holds the instance of the file renaming form.
+     * Initially set to null.
+     */
     private $_filerenamingform = null;
     /**
      * Main view setup
@@ -178,6 +180,10 @@ class filerenaming extends assign {
         return $o;
     }
 
+    /**
+     * Returns the filerenaming form
+     * @return mod_assign_filerenaming_settings_form
+     */
     private function get_filenrenaming_form() {
         global $USER, $CFG;
         if (empty($this->_filerenamingform)) {
@@ -252,8 +258,9 @@ class filerenaming extends assign {
 
     /**
      * Returns the last downloaded date for module and user as string
-     * @param $cmid int coursemodule id
-     * @param $userid int user id
+     * @param int $cmid int coursemodule id
+     * @param int $userid int user id
+     * @param bool $feedback 
      * @return \lang_string|string
      * @throws \coding_exception
      * @throws \dml_exception
@@ -271,9 +278,11 @@ class filerenaming extends assign {
 
     /**
      * Updates the last downloaded date for module and user
-     * @param $cmid int course module id
-     * @param $userid int user id
+     * @param int $cmid int course module id
+     * @param int $userid int user id
+     * @param bool $feedback
      * @throws \dml_exception
+     * @return void
      */
     protected function update_lastdownloaded_date($cmid, $userid, $feedback = false) {
         global $DB;
@@ -313,8 +322,11 @@ class filerenaming extends assign {
 
     /**
      * Download a zip file of all assignment submissions.
-     *
-     * @param array $userids Array of user ids to download assignment submissions in a zip file
+     * @param mixed $coursegroup
+     * @param mixed $coursegrouping
+     * @param mixed $submissionneweras
+     * @param mixed $downloadsubmissions
+     * @param mixed $downloadfeedbacks
      * @return string - If an error occurs, this will contain the error page.
      */
     protected function download_submissions($coursegroup = false, $coursegrouping = false, $submissionneweras = 0,
@@ -657,6 +669,15 @@ class filerenaming extends assign {
         return $result;
     }
 
+    /**
+     * Converts provided content into a full HTML document.
+     *
+     * @param string $title The title of the HTML document.
+     * @param string $content The main content to be included in the body of the HTML document.
+     * @param string $additionalhead Optional. Additional elements to be included in the head of the HTML document. 
+     *                               Default is an empty string.
+     * @return string The complete HTML document as a string.
+     */
     public static function convert_content_to_html_doc($title, $content, $additionalhead = '') {
         return <<<HTML
 <!doctype html>

@@ -17,8 +17,7 @@
 /**
  * This file contains the privacy preference provider class.
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        Andreas Krieger (andreas.krieger@tuwien.ac.at)
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -33,8 +32,7 @@ use core_privacy\local\request\writer;
 /**
  * The privacy preference provider.
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -43,6 +41,12 @@ class provider implements
     \core_privacy\local\metadata\provider {
     // This plugin does store personal user data, even if its just user preferences.
 
+    /**
+     * Get the list of user preferences used by this plugin.
+     *
+     * @param   collection  $collection The initialised collection to add items to.
+     * @return  collection  The updated collection.
+     */
     public static function get_metadata(collection $collection) : collection {
 
         // Add all user preferences into the collection.
@@ -62,7 +66,7 @@ class provider implements
     /**
      * Export all user preferences for the plugin.
      *
-     * @param   int         $userid The userid of the user whose data is to be exported.
+     * @param int $userid The userid of the user whose data is to be exported.
      */
     public static function export_user_preferences(int $userid) {
         $filerenamingpattern = get_user_preferences('filerenamingpattern', null, $userid);
