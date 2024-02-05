@@ -67,7 +67,7 @@ class table_pdf_export_format extends table_default_export_format_parent {
         global $CFG, $USER, $SESSION;
 
         $this->columns = $columns;
-        $this->widths = array();
+        $this->widths = [];
         // Column width calculation.
         $this->widths['recordid']      = 10;  // ID.
         $this->widths['fullname']      = 10;   // Name.
@@ -85,15 +85,15 @@ class table_pdf_export_format extends table_default_export_format_parent {
         $this->widths['plugin2']       = 10;  // Abgabe Kommentar.
 
         // Hide columns.
-        $pdftitles = array();
-        $pdfwidths = array();
+        $pdftitles = [];
+        $pdfwidths = [];
         $sum = 0;
 
         foreach ($this->columns as $key => $field) {
             if (empty($SESSION->flextable['mod_assign_grading']->collapse[$field])) {
                 $w = (array_key_exists($field, $this->widths)) ? $this->widths[$field] : 0;
                 $pdftitles[] = $titles[$key];
-                $pdfwidths[] = array('mode' => 'Relativ', 'value' => $w);
+                $pdfwidths[] = ['mode' => 'Relativ', 'value' => $w];
                 $sum += $w;
             }
         }
@@ -133,7 +133,7 @@ class table_pdf_export_format extends table_default_export_format_parent {
             $headergroup = '';
             $groupname = '';
         } else {
-            if ($groupmode == VISIBLEGROUPS or $aag) {
+            if ($groupmode == VISIBLEGROUPS || $aag) {
                 $headergroup = get_string('groupsvisible');
                 $allowedgroups = groups_get_all_groups($coursemodule->course, 0, $coursemodule->groupingid);
             } else {
@@ -179,7 +179,7 @@ class table_pdf_export_format extends table_default_export_format_parent {
         global $SESSION;
 
         // Hide columns.
-        $pdfrow = array();
+        $pdfrow = [];
         foreach ($this->columns as $key => $field) {
             if (empty($SESSION->flextable['mod_assign_grading']->collapse[$field])) {
                 $pdfrow[] = strip_tags($row[$key]);

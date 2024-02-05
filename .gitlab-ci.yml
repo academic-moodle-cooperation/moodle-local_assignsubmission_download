@@ -22,7 +22,7 @@ variables:
     - moodle-plugin-ci install --moodle="moodle-upstream-core" --db-host=$DB_HOST --db-port=$DB_PORT
   script:
     - moodle-plugin-ci phplint
-   # - moodle-plugin-ci phpcpd
+  #  - moodle-plugin-ci phpcpd
     - moodle-plugin-ci phpmd
     - moodle-plugin-ci codechecker
   #  - moodle-plugin-ci validate
@@ -34,8 +34,8 @@ variables:
     #- moodle-plugin-ci behat --profile chrome
   parallel:
     matrix:
-      - MOODLE_BRANCH: [ "MOODLE_402_STABLE" ]
-        PHP_VERSION: [ "8.0", "8.1" ]
+      - MOODLE_BRANCH: [ "MOODLE_403_STABLE" ]
+        PHP_VERSION: [ "8.0", "8.1", "8.2" ]
 
 test:postgres:
   <<: *job_configuration

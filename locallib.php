@@ -25,9 +25,10 @@
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
 
-const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]', '[filenumber]'];
+const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[group]', '[groupid]', '[filename]',
+    '[filenumber]', '[assignmentname]', '[courseshortname]', '[currentdate]', '[currenttime]',
+];
 
 /**
  * File rename function
@@ -42,11 +43,14 @@ const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname
  * @param optional array $zipfiles array of filenames that must not be used in the same download
  * @return String The renamed filename
  */
-function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, $submission, $groupname, $sequence, $zipfiles = null) {
+function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
+        $submission, $groupname, $sequence, $zipfiles = null) {
     global $CFG;
 
     // Select filerenaming pattern out of (session|moodle default) in this order.
-    $placeholders = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]', '[filenumber]'];
+    $placeholders = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]',
+        '[filenumber]', '[groupid]', '[courseshortname]', '[currenttime]', '[currentdate]',
+    ];
     $filerenaminguserpref = get_user_preferences('filerenamingpattern', '');
     $o = '';
     if (ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
@@ -81,7 +85,7 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
     $assignmentname = $assign->get_instance()->name;
     $coursemodule   = $assign->get_course_module();
 
-    // Assign a groupname if possible (existing and unique!)
+    // Assign a groupname if possible (existing and unique!).
     if ($groupname == '' && groups_get_activity_groupmode($coursemodule)) {
         $usergroups = groups_get_all_groups($coursemodule->course, $user->id, $coursemodule->groupingid);
         if (count($usergroups) == 1) {
@@ -92,6 +96,27 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
     } else {
         $groupname = substr($groupname, 0, -1);
     }
+
+    // Get group idnumber if existing.
+    $groupidnumber = '';
+
+    if ($groupname != '') {
+        $groupid = groups_get_group_by_name($coursemodule->course, $groupname);
+        if ($groupid) {
+            $group = groups_get_group($groupid);
+            if ($group) {
+                $groupidnumber = $group->idnumber; // Get the idnumber from the group.
+            }
+        }
+    }
+
+    // Get course shortname.
+    $courseshortname = $assign->get_course()->shortname;
+
+    // Get current time HHMM and date YYYYMMDD.
+    $now = time();
+    $currenttime = userdate($now, '%H%M', 99, false, false);
+    $currentdate = date('Ymd');
 
     // Replace pattern.
     if ($assign->is_blind_marking()) {
@@ -113,11 +138,17 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign, 
 
     if (!$groupname || empty($groupname) || strcmp($groupname, '-') == 0) {
         $o = str_replace('[group]', '', $o);
+        $o = str_replace('[groupid]', '', $o);
     } else {
         $o = str_replace('[group]', $groupname, $o);
+        $o = str_replace('[groupid]', $groupidnumber, $o);
     }
 
     $o = replace_custom($o, $maxlength, '[filename]', $filename);
+    $o = replace_custom($o, $maxlength, '[courseshortname]', $courseshortname);
+
+    $o = replace_custom($o, $maxlength, '[currenttime]', $currenttime);
+    $o = replace_custom($o, $maxlength, '[currentdate]', $currentdate);
 
     // Check for existing files in download archive.
     $o = clean_custom($o);
@@ -194,9 +225,9 @@ function replace_custom($o, $maxlength, $pattern, $string) {
  */
 function clean_custom($filename) {
     global $CFG;
-    $replace = array(
-        'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 's', ' ' => '_'
-    );
+    $replace = [
+        'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 's', ' ' => '_',
+    ];
     $filename = str_replace(array_keys($replace), array_values($replace), $filename);
 
     $cleanfilenameuserpref = get_user_preferences('clean_filerenaming', '');

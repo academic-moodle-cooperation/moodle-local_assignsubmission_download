@@ -17,8 +17,7 @@
 /**
  * Admin settings for printpreview and filerenaming
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        Andreas Krieger
  * @author        Günther Bernsteiner
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}

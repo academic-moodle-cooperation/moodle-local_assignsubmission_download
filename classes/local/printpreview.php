@@ -29,7 +29,7 @@ namespace local_assignsubmission_download\local;
 
 use assign;
 use assign_form;
-use \mod_assign\output\assign_header;
+use mod_assign\output\assign_header;
 use help_icon;
 use html_writer;
 use mod_assign_printpreview_settings_form;
@@ -37,8 +37,6 @@ use moodle_url;
 use printpreview_table;
 use stdClass;
 use url_select;
-
-defined('MOODLE_INTERNAL') || die();
 
 
 /**
@@ -116,7 +114,7 @@ class printpreview extends assign {
         $o = '';
         $cmid = $this->get_course_module()->id;
 
-        $links = array();
+        $links = [];
         if (has_capability('gradereport/grader:view', $this->get_course_context()) &&
                 has_capability('moodle/grade:viewall', $this->get_course_context())) {
             $gradebookurl = '/grade/report/grader/index.php?id=' . $this->get_course()->id;
@@ -148,9 +146,14 @@ class printpreview extends assign {
         $gradingmanager = get_grading_manager($this->get_context(), 'mod_assign', 'submissions');
 
         $filter  = get_user_preferences('assign_filter', '');
-        $perpage = get_user_preferences('assign_perpage', get_config('local_assignsubmission_download', 'assignmentpatch_perpage'));
+        $perpage = get_user_preferences(
+            'assign_perpage',
+            get_config('local_assignsubmission_download', 'assignmentpatch_perpage')
+        );
         $optimum = get_user_preferences('assign_optimum', 0);
-        $perpage = ($perpage <= 0 || $optimum) ? get_config('local_assignsubmission_download', 'assignmentpatch_perpage') : $perpage;
+        if ($perpage <= 0 || $optimum) {
+            $perpage = get_config('local_assignsubmission_download', 'assignmentpatch_perpage');
+        }
         $optimum = ($perpage == 0 || $perpage == '') ? 1 : 0;
 
         $textsize = get_user_preferences('assign_textsize', 0);
@@ -161,25 +164,29 @@ class printpreview extends assign {
         $showquickgrading = empty($controller);
         $quickgrading = get_user_preferences('assign_quickgrading', false);
 
-        $urlparams = array('id' => $this->get_course_module()->id, 'action' => 'grading');
+        $urlparams = ['id' => $this->get_course_module()->id, 'action' => 'grading'];
         $currenturl = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_printpreview.php', $urlparams);
 
-        $printpreviewsettingsformparams = array('cm' => $this->get_course_module(),
-                                                'contextid' => $this->get_context()->id,
-                                                'currenturl' => $currenturl,
-                                                'userid' => $USER->id,
-                                                'submissionsenabled' => $this->is_any_submission_plugin_enabled(),
-                                                'textsize' => $textsize,
-                                                'pageorientation' => $pageorientation,
-                                                'printheader' => $printheader);
+        $printpreviewsettingsformparams = [
+            'cm' => $this->get_course_module(),
+            'contextid' => $this->get_context()->id,
+            'currenturl' => $currenturl,
+            'userid' => $USER->id,
+            'submissionsenabled' => $this->is_any_submission_plugin_enabled(),
+            'textsize' => $textsize,
+            'pageorientation' => $pageorientation,
+            'printheader' => $printheader,
+        ];
 
-        $formoptions = array('class' => 'gradingbatchoperationsform', 'data-double-submit-protection' => 'off');
+        $formoptions = ['class' => 'gradingbatchoperationsform', 'data-double-submit-protection' => 'off'];
         // Print options for changing the filter and changing the number of results per page.
-        $printpreviewsettingsform = new mod_assign_printpreview_settings_form(null,
-                                                                  $printpreviewsettingsformparams,
-                                                                  'post',
-                                                                  '',
-                                                                  $formoptions);
+        $printpreviewsettingsform = new mod_assign_printpreview_settings_form(
+            null,
+            $printpreviewsettingsformparams,
+            'post',
+            '',
+            $formoptions
+        );
         $printpreviewsettingsdata = new stdClass();
         $printpreviewsettingsdata->filter = $filter;
         $printpreviewsettingsdata->grpperpage['perpage'] = $perpage;
@@ -209,11 +216,11 @@ class printpreview extends assign {
         }
 
         // Load and print the table of submissions.
-        $o .= html_writer::start_tag('div', array('class' => 'table_printpreview'));
+        $o .= html_writer::start_tag('div', ['class' => 'table_printpreview']);
 
         $helpicon = new help_icon('data_preview', 'local_assignsubmission_download');
         $o .= html_writer::tag('div', get_string('data_preview', 'local_assignsubmission_download')
-           .$OUTPUT->render($helpicon), array('class' => 'data_bold'));
+           .$OUTPUT->render($helpicon), ['class' => 'data_bold']);
 
         $gradingtable = new printpreview_table($this, $perpage, $filter, 0, null);
 
@@ -237,14 +244,16 @@ class printpreview extends assign {
         // Need submit permission to submit an assignment.
         require_capability('mod/assign:grade', $this->get_context());
 
-        $urlparams = array('id' => $this->get_course_module()->id, 'action' => 'grading');
+        $urlparams = ['id' => $this->get_course_module()->id, 'action' => 'grading'];
         $currenturl = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_printpreview.php', $urlparams);
 
-        $printpreviewsettingsparams = array('cm' => $this->get_course_module(),
-                                            'currenturl' => $currenturl,
-                                            'contextid' => $this->get_context()->id,
-                                            'userid' => $USER->id,
-                                            'submissionsenabled' => $this->is_any_submission_plugin_enabled());
+        $printpreviewsettingsparams = [
+            'cm' => $this->get_course_module(),
+            'currenturl' => $currenturl,
+            'contextid' => $this->get_context()->id,
+            'userid' => $USER->id,
+            'submissionsenabled' => $this->is_any_submission_plugin_enabled(),
+        ];
 
         $mform = new mod_assign_printpreview_settings_form(null, $printpreviewsettingsparams,
                 'post', '', ['data-double-submit-protection' => 'off']);
@@ -252,8 +261,11 @@ class printpreview extends assign {
         if ($data = $mform->get_data()) {
             set_user_preference('assign_filter', $data->filter);
             set_user_preference('assign_exportformat', $data->exportformat);
-            set_user_preference('assign_perpage',
-                    isset($data->grpperpage['perpage']) ? $data->grpperpage['perpage'] : get_config('local_assignsubmission_download', 'assignmentpatch_perpage'));
+            set_user_preference(
+                'assign_perpage',
+                isset($data->grpperpage['perpage']) ?
+                    $data->grpperpage['perpage'] : get_config('local_assignsubmission_download', 'assignmentpatch_perpage')
+            );
             set_user_preference('assign_optimum', $data->grpperpage['optimum']);
             set_user_preference('assign_textsize', isset($data->textsize) ? $data->textsize : 0);
             set_user_preference('assign_pageorientation', isset($data->pageorientation) ? $data->pageorientation : 0);
@@ -282,7 +294,9 @@ class printpreview extends assign {
         $filter  = get_user_preferences('assign_filter', '');
         $perpage = get_user_preferences('assign_perpage', get_config('local_assignsubmission_download', 'assignmentpatch_perpage'));
         $optimum = get_user_preferences('assign_optimum', 0);
-        $perpage = ($perpage <= 0 || $optimum) ? get_config('local_assignsubmission_download', 'assignmentpatch_perpage') : $perpage;
+        if ($perpage <= 0 || $optimum) {
+            $perpage = get_config('local_assignsubmission_download', 'assignmentpatch_perpage');
+        }
         $optimum = ($perpage == 0 || $perpage == '') ? 1 : 0;
         $selectedusers = $SESSION->selectedusers;
 
@@ -308,7 +322,7 @@ class printpreview extends assign {
         $params['action'] = $action;
         $cm = $this->get_course_module();
         if ($cm) {
-            $currenturl = new moodle_url('/local/assignsubmission_download/view_printpreview.php', array('id' => $cm->id));
+            $currenturl = new moodle_url('/local/assignsubmission_download/view_printpreview.php', ['id' => $cm->id]);
         }
 
         $currenturl->params($params);

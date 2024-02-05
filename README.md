@@ -3,77 +3,43 @@ Assign Submission Download
 
 This file is part of the local_assignsubmission_download plugin for Moodle - <http://moodle.org/>
 
-*Author:*    Andreas Krieger, Daniel Binder
+*Author:*    Andreas Krieger, Daniel Binder, Clemens Marx
 
-*Copyright:* 2020 [Academic Moodle Cooperation](http://www.academic-moodle-cooperation.org)
+*Copyright:* [Academic Moodle Cooperation](http://www.academic-moodle-cooperation.org)
 
 *License:*   [GNU GPL v3 or later](http://www.gnu.org/copyleft/gpl.html)
 
 
 Description
 -----------
-The Assign Submission Download plugin (local_assignsubmission_download) allows to rename file submissions on download and to export a submission overview in various formats.
+The assignment extension Assign Submissions Download enables teachers to download all submissions of an assignment according to an individually defined naming scheme as a ZIP archive. There is also an export function for the submission information.
 
 
-Example of usage
+Usage
 ----------------
 
-Access the plugin's features via the assignment settings drop-down menu.
-
-"Export"-Feature:
-
-* In the "Export settings" choose your export format settings (pdf, xlsx, csv). 
-* In the "Data settings" choose the filters.
-* On the "Data preview" block filter for initials of (surname|first name).
-* Press the "Download file" button to get the report.
-
-"Download renamed submissions"-Feature:
-
-* In the "Naming scheme" enter the desired (valid) pattern composed of the given tags and
- arbitrary characters.
-* For easier usage, choose one of the tags by clicking on them - they will be inserted at the
- current position.
-* In the "Clean filenames" checkbox, specify whether or not you want to clean up special
- characters in the file names.
-* Additionally, if the activity allows groups, you can restrict the downloaded elements by groups or groupings.
-
-
-Requirements
-------------
-The plugin/s were available including core patches for Moodle 2.5+.  
-This core patch free version is for Moodle 4.1.0.
+Students have to complete a seminar paper on a specific topic. The lecturer has assessed all assignments online and provided feedback. At the end of the course, the lecturer would now like to archive the assignments and comments locally on their PC. Since each student has chosen a different title for the uploaded file, the lecturer uses the task extension "download assignments renamed" to download all files according to the same naming scheme (e.g. surname_matriculation number_upload title => *Muster_123456789_documentname*) for reasons of clarity.
 
 
 Installation
 ------------
 
-* Copy the module code directly to the *moodleroot/local/assignsubmission_download* directory.
+* Copy the module code directly to the /local/assignsubmission_download directory.
 
 * Log into Moodle as administrator.
 
 * Open the administration area (*http://your-moodle-site/admin*) to start the installation
   automatically.
 
-
-
-Admin Settings
+Privacy API
 --------------
-### Global Settings
-* Default-Displayed Submissions  
-    This sets the number of submissions which are displayed per page, when teachers are viewing
- assignment submissions.
-    It is overwritten by the teacher's individual preferences. Input will be absolute-valued.
 
-* Show 'Download renamed submissions'  
-    Used to show or hide the 'Download renamed submissions' menu entry
-
-* Show 'Export'  
-    Used to show or hide the 'Export' menu entry
+The plugin fully implements the Moodle Privacy API.
 
 
 Documentation
 -------------
-You can find further information to the plugin on the [AMC website](https://www.academic-moodle-cooperation.org/en/)
+You can find further information to the plugin on the [AMC website](https://academic-moodle-cooperation.org/local_assignsubmission_download/).
 
 
 Bug Reports / Support
@@ -82,8 +48,7 @@ Bug Reports / Support
 We try our best to deliver bug-free plugins, but we can not test the plugin for every platform,
 database, PHP and Moodle version. If you find any bug please report it on
 [GitHub](https://github.com/academic-moodle-cooperation/moodle-local_assignsubmission_download/issues/). Please
-provide a detailed bug description, including the plugin and Moodle version and, if applicable, a
-screenshot.
+provide a detailed bug description, including the plugin and Moodle version and, if applicable, a screenshot.
 
 You may also file a request for enhancement on GitHub. If we consider the request generally useful
 and if it can be implemented with reasonable effort we might implement it in a future version.

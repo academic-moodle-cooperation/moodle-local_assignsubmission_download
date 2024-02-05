@@ -26,8 +26,6 @@
 
 namespace local_assignsubmission_download\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The printpreview viewed event.
  *
@@ -59,12 +57,12 @@ class assignsubmission_download_table_viewed extends \mod_assign\event\base {
      * @return assignsubmission_download_table_viewed
      */
     public static function create_from_assign(\assign $assign) {
-        $data = array(
+        $data = [
             'context' => $assign->get_context(),
-            'other' => array(
+            'other' => [
                 'assignid' => $assign->get_instance()->id,
-            ),
-        );
+            ],
+        ];
         self::$preventcreatecall = false;
         $event = self::create($data);
         self::$preventcreatecall = true;

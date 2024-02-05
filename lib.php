@@ -23,7 +23,6 @@
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * Function injects navigation node linking to current courses printpreview in settings navigation!
@@ -35,7 +34,7 @@ defined('MOODLE_INTERNAL') || die();
 function local_assignsubmission_download_extend_settings_navigation(settings_navigation $navref, context $context) {
     global $PAGE, $USER, $SESSION, $CFG;
     // Only add this settings item on non-site course pages.
-    if (!$PAGE->course or $PAGE->course->id == SITEID) {
+    if (!$PAGE->course || $PAGE->course->id == SITEID) {
         return;
     }
 
@@ -67,14 +66,14 @@ function local_assignsubmission_download_extend_settings_navigation(settings_nav
     $keys = $modulesettings->get_children_key_list();
     $beforekey = null;
     $i = array_search('modedit', $keys);
-    if ($i === false and array_key_exists(0, $keys)) {
+    if ($i === false && array_key_exists(0, $keys)) {
         $beforekey = $keys[0];
     } else if (array_key_exists($i + 1, $keys)) {
         $beforekey = $keys[$i + 1];
     }
 
     if (get_config('local_assignsubmission_download', 'showexport')) {
-        $link = new moodle_url('/local/assignsubmission_download/view_printpreview.php', array('id' => $PAGE->cm->id));
+        $link = new moodle_url('/local/assignsubmission_download/view_printpreview.php', ['id' => $PAGE->cm->id]);
         $childnode = navigation_node::create(
             get_string('pluginname_print', 'local_assignsubmission_download'),
             $link,
@@ -86,7 +85,7 @@ function local_assignsubmission_download_extend_settings_navigation(settings_nav
 
     // Prepare our nodes!
     if (get_config('local_assignsubmission_download', 'showfilerenaming')) {
-        $link = new moodle_url('/local/assignsubmission_download/view_filerenaming.php', array('id' => $PAGE->cm->id));
+        $link = new moodle_url('/local/assignsubmission_download/view_filerenaming.php', ['id' => $PAGE->cm->id]);
         $childnode = navigation_node::create(
             get_string('pluginname_submissions', 'local_assignsubmission_download'),
             $link,
