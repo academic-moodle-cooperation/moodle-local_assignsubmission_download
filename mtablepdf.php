@@ -17,7 +17,7 @@
 /**
  * mtablepdf.php
  *
- * @package       mtablepdf
+ * @package       local_assignsubmission_download
  * @author        Andreas Hruska (andreas.hruska@tuwien.ac.at)
  * @author        Katarzyna Potocka (katarzyna.potocka@tuwien.ac.at)
  * @author        Andreas Windbichler
@@ -35,7 +35,7 @@ require_once($CFG->libdir . '/pdflib.php');
 /**
  * MTablePDF class handles exports to PDF, XLSX, ODS, CSV...
  *
- * @package       mod_checkmark
+ * @package       local_assignsubmission_download
  * @author        Andreas Hruska (andreas.hruska@tuwien.ac.at)
  * @author        Katarzyna Potocka (katarzyna.potocka@tuwien.ac.at)
  * @author        Andreas Windbichler
@@ -97,7 +97,7 @@ class MTablePDF extends \pdf {
     /**
      * Constructor
      *
-     * @param char $orientation Orientation to use for PDF export
+     * @param string $orientation Orientation to use for PDF export
      * @param object[] $columnwidths Width management for columns
      */
     public function __construct($orientation, $columnwidths) {
@@ -245,7 +245,7 @@ class MTablePDF extends \pdf {
     /**
      * Sets the titles for the columns in the pdf
      *
-     * @param String $titles
+     * @param string[] $titles
      */
     public function settitles($titles) {
         if (count($titles) != count($this->columnwidths)) {

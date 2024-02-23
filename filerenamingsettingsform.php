@@ -17,8 +17,7 @@
 /**
  * This file contains the form to enter the modalities of filerenaming
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        Günther Bernsteiner
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -33,8 +32,7 @@ require_once($CFG->dirroot.'/local/assignsubmission_download/locallib.php');
 /**
  * Filerenaming form, to enter pattern and clean filename checkbox
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -196,6 +194,13 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->addElement('submit', 'submittodownload', get_string('strfilerenaming', 'local_assignsubmission_download'));
     }
 
+    /**
+     * Validation of the filerenaming settings form
+     *
+     * @param array $data
+     * @param array $files
+     * @return array of errors
+     */
     public function validation($data, $files) {
         $errors = parent::validation($data, $files);
         if ($data['downloadtype_feedbacks'] == '0' && $data['downloadtype_submissions'] == '0') {

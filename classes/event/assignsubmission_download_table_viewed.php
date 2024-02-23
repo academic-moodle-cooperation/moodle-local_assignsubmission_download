@@ -17,8 +17,7 @@
 /**
  * This file contains the printpreview table viewed event class.
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        Günther Bernsteiner
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -35,8 +34,7 @@ namespace local_assignsubmission_download\event;
  *      - int assignid: the id of the assignment.
  * }
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        Günther Bernsteiner
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -54,7 +52,7 @@ class assignsubmission_download_table_viewed extends \mod_assign\event\base {
      * @since Moodle 2.7
      *
      * @param \assign $assign
-     * @return assignsubmission_download_table_viewed
+     * @return \core\event\base
      */
     public static function create_from_assign(\assign $assign) {
         $data = [

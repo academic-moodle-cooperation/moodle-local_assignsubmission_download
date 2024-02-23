@@ -15,11 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * printpreview table definition
+ *
  * This file contains the definition for the printpreview table that is very simlar
  * to assign grading table and subclassses easy_table
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        Günther Bernsteiner
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -34,8 +35,7 @@ require_once($CFG->dirroot.'/mod/assign/locallib.php');
 /**
  * Printpreview table definition
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -75,6 +75,7 @@ class printpreview_table extends table_sql implements renderable {
      * @param string $filter The current filter
      * @param int $rowoffset For showing a subsequent page of results
      * @param string $downloadfilename
+     * @param array $selectedusers
      */
     public function __construct(assign $assignment,
                                 $perpage,
@@ -688,7 +689,7 @@ class printpreview_table extends table_sql implements renderable {
      * @param stdClass $item Submission or grade
      * @param string $returnaction The return action to pass to the
      *                             view_submission page (the current page)
-     * @param string $returnparams The return params to pass to the view_submission
+     * @param string[] $returnparams The return params to pass to the view_submission
      *                             page (the current page)
      * @return string The summary with an optional link
      */
@@ -852,7 +853,7 @@ class printpreview_table extends table_sql implements renderable {
     /**
      * Get, and optionally set, the export class.
      * Remark: overridden function, to make it handle special 'pdf' case (AK)
-     * @param $exportclass (optional) if passed, set the table to use this export class.
+     * @param table_dataformat_export_format $exportclass (optional) if passed, set the table to use this export class.
      * @return table_default_export_format_parent the export class in use (after any set).
      */
     public function export_class_instance($exportclass = null) {

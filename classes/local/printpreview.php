@@ -17,8 +17,7 @@
 /**
  * Printpreview class extending assign
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        Günther Bernsteiner
  * @author        Andreas Krieger
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
@@ -42,17 +41,15 @@ use url_select;
 /**
  * The printpreview class, extending assign.
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class printpreview extends assign {
-
     /**
      * Main view setup
      *
-     * @global type $SESSION
+     * @return string
      */
     protected function view_grading_page() {
         global $CFG, $SESSION, $PAGE;
@@ -328,5 +325,4 @@ class printpreview extends assign {
         $currenturl->params($params);
         $PAGE->set_url($currenturl);
     }
-
 }

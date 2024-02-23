@@ -50,10 +50,11 @@ class filerenaming extends assign {
      * Initially set to null.
      */
     private $_filerenamingform = null;
+
     /**
      * Main view setup
      *
-     * @global type $SESSION
+     * @return string
      */
     protected function view_grading_page() {
         global $CFG, $SESSION, $PAGE;
@@ -343,7 +344,7 @@ class filerenaming extends assign {
         $this->require_view_grades();
 
         // Load all users with submit.
-        $students = get_enrolled_users($this->get_context(), "mod/assign:submit", $coursegroup, 'u.*', null, null, null,
+        $students = get_enrolled_users($this->get_context(), "mod/assign:submit", $coursegroup, 'u.*', null, 0, 0,
                         $this->show_only_active_users());
 
         // Build a list of files to zip.
@@ -666,7 +667,6 @@ class filerenaming extends assign {
             die;
             // We will not get here - send_temp_file calls exit.
         }
-        return $result;
     }
 
     /**

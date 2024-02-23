@@ -15,14 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Upgrade for the database based on the version of the plugin
  *
- * @package       moodle311
+ * @package       local_assignsubmission_download
  * @author        Simeon Naydenov (moniNaydenov@gmail.com)
  * @copyright     2021
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
+/**
+ * Upgrade function
+ * @param mixed $oldversion
+ * @return bool
+ */
 function xmldb_local_assignsubmission_download_upgrade($oldversion) {
     global $DB;
     $dbman = $DB->get_manager();

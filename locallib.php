@@ -17,8 +17,7 @@
 /**
  * Functions to rename files during zip download
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        Alwin Weninger
  * @author        Günther Bernsteiner
  * @author        Andreas Krieger
@@ -26,6 +25,9 @@
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+/**
+ * List of tags that can be used in the filerenaming pattern.
+ */
 const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[group]', '[groupid]', '[filename]',
     '[filenumber]', '[assignmentname]', '[courseshortname]', '[currentdate]', '[currenttime]',
 ];
@@ -34,14 +36,15 @@ const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname
  * File rename function
  * Used by assign for renaming at upload or download of files
  *
- * @param String $prefixedfilename prefixed filename
- * @param String $original original filename
+ * @param string $prefixedfilename prefixed filename
+ * @param string $original original filename
  * @param stdClass $user owner of the file
  * @param assign $assign assign instance the file belongs to
  * @param stdClass $submission submission containing the file
- * @param String $groupname assign team submission groupname
- * @param optional array $zipfiles array of filenames that must not be used in the same download
- * @return String The renamed filename
+ * @param string $groupname assign team submission groupname
+ * @param int $sequence sequence number of the file
+ * @param ?string[] $zipfiles array of filenames that must not be used in the same download
+ * @return string The renamed filename
  */
 function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
         $submission, $groupname, $sequence, $zipfiles = null) {
@@ -169,9 +172,9 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
 /**
  * Helper function to check if the given filerenaming string contains any acceptable pattern.
  *
- * @param String $acceptedplaceholders accepted placeholder patterns to test string against
- * @param String $teststring tested filerenaming string
- * @return Boolean True if the pattern is valid, false otherwise
+ * @param string[] $acceptedplaceholders accepted placeholder patterns to test string against
+ * @param string $teststring tested filerenaming string
+ * @return bool True if the pattern is valid, false otherwise
  */
 function ispatternvalid($acceptedplaceholders, $teststring) {
     $isvalidpattern = false;
@@ -189,8 +192,8 @@ function ispatternvalid($acceptedplaceholders, $teststring) {
 /**
  * Helper function to create a clean filename.
  *
- * @param String $filename original filename which to clean
- * @return String the clean filename
+ * @param string $filename original filename which to clean
+ * @return string the clean filename
  */
 function filerenaming_clean_custom($filename) {
     return clean_custom($filename);
@@ -200,11 +203,11 @@ function filerenaming_clean_custom($filename) {
  * Helper function to replace a pattern with a string up to a certain lenght
  * due to file name length restrictions.
  *
- * @param String $o full string
- * @param String $o replace up to maxlength
- * @param String $pattern pattern which to replace
- * @param String $string string to replace pattern against
- * @return String the full string with pattern replaced by string, up to maxlength
+ * @param string $o full string
+ * @param int $maxlength replace up to maxlength
+ * @param string $pattern pattern which to replace
+ * @param string $string string to replace pattern against
+ * @return string the full string with pattern replaced by string, up to maxlength
  */
 function replace_custom($o, $maxlength, $pattern, $string) {
     $temp = str_replace($pattern, $string, $o);
@@ -220,8 +223,8 @@ function replace_custom($o, $maxlength, $pattern, $string) {
 /**
  * Helper function to replace "special" characters with regular ones in filenames.
  *
- * @param String $filename filename which to clean up
- * @return String the clean filename, without special characters
+ * @param string $filename filename which to clean up
+ * @return string the clean filename, without special characters
  */
 function clean_custom($filename) {
     global $CFG;

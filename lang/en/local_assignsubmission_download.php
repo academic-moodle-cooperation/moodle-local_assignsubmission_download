@@ -17,8 +17,7 @@
 /**
  * English lang file
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        2012 Alwin Weninger
  * @author        2013 onwards Günther Bernsteiner
  * @author        Andreas Krieger
