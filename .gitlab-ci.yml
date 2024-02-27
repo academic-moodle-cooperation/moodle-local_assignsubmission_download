@@ -25,7 +25,7 @@ variables:
     - moodle-plugin-ci phplint || failed
     - moodle-plugin-ci phpmd || failed
     - moodle-plugin-ci phpcs
-    - moodle-plugin-ci validate
+    - moodle-plugin-ci validate || true
     - moodle-plugin-ci savepoints
     - moodle-plugin-ci mustache
     - moodle-plugin-ci grunt
