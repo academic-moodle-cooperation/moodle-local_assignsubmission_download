@@ -47,7 +47,7 @@ class provider implements
      * @param   collection  $collection The initialised collection to add items to.
      * @return  collection  The updated collection.
      */
-    public static function get_metadata(collection $collection) : collection {
+    public static function get_metadata(collection $collection): collection {
 
         // Add all user preferences into the collection.
         $collection->add_user_preference('filerenamingpattern', 'privacy:metadata:preference:filerenamingpattern');
