@@ -102,6 +102,11 @@ class mod_assign_filerenaming_settings_form extends moodleform {
 
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_tagsupport', 'initializer', []);
 
+        $mform->addElement('advcheckbox', 'prevent_nameextension',
+                get_string('prevent_nameextension', 'local_assignsubmission_download'), ' ');
+        $mform->setDefault('prevent_nameextension', true);
+        $mform->addHelpButton('prevent_nameextension', 'prevent_nameextension', 'local_assignsubmission_download');
+
         $mform->addElement('advcheckbox', 'clean_filerenaming',
                 get_string('clean_filerenaming', 'local_assignsubmission_download'), ' ');
         $mform->setDefault('clean_filerenaming', true);

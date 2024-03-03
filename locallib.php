@@ -44,10 +44,11 @@ const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname
  * @param string $groupname assign team submission groupname
  * @param int $sequence sequence number of the file
  * @param ?string[] $zipfiles array of filenames that must not be used in the same download
+ * @param bool $prevent_prefix if true, the prefix will not be added to the filename
  * @return string The renamed filename
  */
 function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
-        $submission, $groupname, $sequence, $zipfiles = null) {
+        $submission, $groupname, $sequence, $zipfiles = null, $prevent_prefix = false) {
     global $CFG;
 
     // Select filerenaming pattern out of (session|moodle default) in this order.
@@ -56,7 +57,9 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
     ];
     $filerenaminguserpref = get_user_preferences('filerenamingpattern', '');
     $o = '';
-    if (ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
+    if ($prevent_prefix && ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
+        $o = $filerenaminguserpref;
+    } else if (ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
         // Use locally set filerenaming.
         $o = $filerenaminguserpref . $prefixedfilename;
     } else {
