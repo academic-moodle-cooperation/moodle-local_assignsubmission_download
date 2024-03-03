@@ -331,11 +331,11 @@ class filerenaming extends assign {
      * @param mixed $submissionneweras
      * @param mixed $downloadsubmissions
      * @param mixed $downloadfeedbacks
-     * @param bool $prevent_nameextension Select if the automatic extension of file names should be prevented.
+     * @param bool $preventnameextension Select if the automatic extension of file names should be prevented.
      * @return string - If an error occurs, this will contain the error page.
      */
     protected function download_submissions($coursegroup = false, $coursegrouping = false, $submissionneweras = 0,
-            $downloadsubmissions = true, $downloadfeedbacks = false, $prevent_nameextension = false) {
+            $downloadsubmissions = true, $downloadfeedbacks = false, $preventnameextension = false) {
         global $CFG, $DB, $USER;
 
         // More efficient to load this here.
@@ -471,7 +471,8 @@ class filerenaming extends assign {
                                             }
                                             // AMC moodle university code start.
                                             $pathfilename = filerenaming_rename_file($pathfilename, $zipfilename, $student,
-                                                $this, $submission, $groupname, $sequence++, $filesforzipping, $prevent_nameextension);
+                                                $this, $submission, $groupname, $sequence++, $filesforzipping,
+                                                $preventnameextension);
                                             // AMC moodle university code end.
                                             $pathfilename = clean_param($pathfilename, PARAM_PATH);
                                             $filesforzipping[$pathfilename] = $file;
@@ -507,21 +508,24 @@ class filerenaming extends assign {
                                             if ($type == 'onlinetext') {
                                                 if ($zipfilename != 'onlinetext.html') {
                                                     $dirname = filerenaming_rename_file($prefixedfilename, '', $student,
-                                                        $this, $submission, $groupname, $sequence, $filesforzipping, $prevent_nameextension);
+                                                        $this, $submission, $groupname, $sequence, $filesforzipping,
+                                                        $preventnameextension);
                                                     $prefixedfilename = $dirname . '_files/' . $zipfilename;
                                                     $filesforzipping[$prefixedfilename] = $file;
                                                     $onlinetextfilestorename[$zipfilename] = $prefixedfilename;
                                                 } else {
 
                                                     $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename,
-                                                        $student, $this, $submission, $groupname, $sequence++, $filesforzipping, $prevent_nameextension);
+                                                        $student, $this, $submission, $groupname, $sequence++, $filesforzipping,
+                                                        $preventnameextension);
                                                     $onlinetextcontents = $file[0];
                                                     $onlinetextfilename = $prefixedfilename;
                                                 }
                                             } else {
 
                                                 $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename,
-                                                    $student, $this, $submission, $groupname, $sequence++, $filesforzipping, $prevent_nameextension);
+                                                    $student, $this, $submission, $groupname, $sequence++, $filesforzipping,
+                                                    $preventnameextension);
                                                 $filesforzipping[$prefixedfilename] = $file;
                                             }
                                         }
@@ -569,7 +573,8 @@ class filerenaming extends assign {
                                             if ($type == 'comments') {
 
                                                 $dirname = filerenaming_rename_file($prefixedfilename, '', $student,
-                                                    $this, $submission, $groupname, $sequence, $filesforzipping, $prevent_nameextension);
+                                                    $this, $submission, $groupname, $sequence, $filesforzipping,
+                                                    $preventnameextension);
                                                 $prefixedfilename = $dirname . '_files/' . $zipfilename;
                                                 $filesforzipping[$prefixedfilename] = $file;
                                                 $commentsfilestorename[$zipfilename] = $prefixedfilename;
@@ -581,7 +586,8 @@ class filerenaming extends assign {
                                                     $typestr);
                                                 // AMC moodle university code start.
                                                 $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename,
-                                                    $student, $this, $submission, $groupname, $sequence++, $filesforzipping, $prevent_nameextension);
+                                                    $student, $this, $submission, $groupname, $sequence++, $filesforzipping,
+                                                    $preventnameextension);
                                                 $filesforzipping[$prefixedfilename] = $file;
                                             }
                                         }
@@ -603,7 +609,8 @@ class filerenaming extends assign {
                                             $typestr);
                                         // AMC moodle university code start.
                                         $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
-                                            $this, $submission, $groupname, $sequence++, $filesforzipping, $prevent_nameextension);
+                                            $this, $submission, $groupname, $sequence++, $filesforzipping,
+                                            $preventnameextension);
 
                                         $filesforzipping[$prefixedfilename] = [$comments];
                                     }
