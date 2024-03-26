@@ -17,8 +17,7 @@
 /**
  * Groupsactivity menu form element
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        Günther Bernsteiner
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -30,18 +29,35 @@ require_once('HTML/QuickForm/select.php');
 /**
  * Assignment grading table groupsactivitymenu
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
-
+    /**
+     * @var stdClass course module
+     */
     private $cm;
+    /**
+     * @var moodle_url url
+     */
     private $url;
+    /**
+     * @var bool
+     */
     private $aag;
+    /**
+     * @var int groupmode
+     */
     private $groupmode;
 
+    /**
+     * Summary of __construct
+     * @param ?string $elementname
+     * @param mixed $elementlabel
+     * @param mixed $options
+     * @param mixed $attributes
+     */
     public function __construct($elementname = null,
                                                        $elementlabel = null,
                                                        $options = null,
@@ -49,35 +65,43 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
         parent::__construct($elementname, $elementlabel, $attributes);
     }
 
+    /**
+     * Returns null
+     * @return null
+     */
     public function getvalue() {
         return null;
     }
 
+    // phpcs:disable
     /**
      * Sets the input field name
      *
      * @param     string    $name   Input field name attribute
      * @since     1.0
-     * @access    public
      * @return    void
      */
-    // phpcs:ignore
     public function setName($name) {
         $this->updateAttributes(['name' => $name]);
     }
-
 
     /**
      * Returns the element name
      *
      * @since     1.0
-     * @access    public
      * @return    string
      */
-    // phpcs:ignore
     public function getName() {
         return $this->getAttribute('name');
     }
+    // phpcs:enable
+
+    /**
+     * Sets the course module and url
+     * @param mixed $cm
+     * @param mixed $url
+     * @return void
+     */
     public function set_data($cm, $url) {
         $this->cm = $cm;
         $this->url = $url;
@@ -103,6 +127,10 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
         }
     }
 
+    /**
+     * Returns the html
+     * @return string
+     */
     public function tohtml() {
         global $USER, $OUTPUT;
 
@@ -151,9 +179,13 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
         }
 
         return '<div class="groupselector">'.$output.'</div>';
-
     }
 
+    /**
+     * Renders the single select
+     * @param single_select $select
+     * @return string
+     */
     public function render_single_select(single_select $select) {
         global $PAGE;
 

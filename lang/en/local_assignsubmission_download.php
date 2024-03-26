@@ -17,8 +17,7 @@
 /**
  * English lang file
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        2012 Alwin Weninger
  * @author        2013 onwards Günther Bernsteiner
  * @author        Andreas Krieger
@@ -116,6 +115,8 @@ $string['filerenamingpattern_help'] = 'The parameter \'naming scheme\' determine
     <br>
     Example:<br>
     The entry \'[idnumber]-[lastname]_[assignmentname]\' will result the following filename: \'01234567-Muster_assignmentname\'';
+$string['prevent_nameextension'] = 'Prevent automatic extension of file names';
+$string['prevent_nameextension_help'] = 'This function prevents the automatic extension of the file namens (with terms such as "_Submission_File_submissions").';
 $string['clean_filerenaming'] = 'Clean filenames';
 $string['clean_filerenaming_help'] = 'Removes white spaces and special characters from filenames and rewrites umlauts, e.g. \'Übung 1-Gruppe$4\' becomes \'Uebung1-Gruppe\'';
 $string['onlinetext_defaultfilename'] = 'Onlinetext';

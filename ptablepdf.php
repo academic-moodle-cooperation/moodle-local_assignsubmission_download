@@ -17,8 +17,7 @@
 /**
  * This file contains an adaptor from printpreview table to table export class
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @author        Günther Bernsteiner
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -29,40 +28,80 @@ defined('MOODLE_INTERNAL') || die();
 require_once('mtablepdf.php');
 require_once('printpreviewsettingsform.php');
 
-
 /**
  * Adaptor to hand over the information from printpreview table to table export class
  *
- * @package       local
- * @subpackage    assignsubmission_download
+ * @package       local_assignsubmission_download
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class table_pdf_export_format extends table_default_export_format_parent {
-
+    /**
+     * @var MTablePDF pdf object
+     */
     private $pdf;
+    /**
+     * @var string name of the file
+     */
     private $filename;
+    /**
+     * @var array columns
+     */
     private $columns;
+    /**
+     * @var array widths
+     */
     private $widths;
+    /**
+     * @var int rownum
+     */
     private $rownum;
 
+    /**
+     * Sets the filename
+     * @param mixed $filename
+     * @return void
+     */
     public function start_document($filename) {
         $this->filename = $filename;
     }
 
+    /**
+     * Starts the table
+     * @param mixed $sheettitle
+     * @return void
+     */
     public function start_table($sheettitle) {
         $this->documentstarted = true;
         $this->rownum = 0;
     }
 
+    /**
+     * Add a number of rows
+     * @param mixed $headers
+     * @return void
+     */
     public function output_headers($headers) {
         $this->rownum++;
     }
 
+    /**
+     * Add a number of rows
+     * @return void
+     */
     public function add_seperator() {
         $this->rownum++;
     }
 
+    /**
+     * Sets up the table
+     * @param mixed $coursename
+     * @param mixed $coursemodule
+     * @param mixed $assignment
+     * @param mixed $columns
+     * @param mixed $titles
+     * @return void
+     */
     public function setup_table($coursename, $coursemodule, $assignment, $columns, $titles) {
         global $CFG, $USER, $SESSION;
 
@@ -175,6 +214,11 @@ class table_pdf_export_format extends table_default_export_format_parent {
         }
     }
 
+    /**
+     * Add a row
+     * @param mixed $row
+     * @return bool
+     */
     public function add_data($row) {
         global $SESSION;
 
@@ -190,10 +234,18 @@ class table_pdf_export_format extends table_default_export_format_parent {
         return true;
     }
 
+    /**
+     * Unused
+     * @return void
+     */
     public function finish_table() {
 
     }
 
+    /**
+     * Generate finished pdf
+     * @return never
+     */
     public function finish_document() {
         $this->pdf->generate($this->filename);
         exit;
