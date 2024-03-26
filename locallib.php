@@ -31,6 +31,8 @@
 const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[group]', '[groupid]', '[filename]',
     '[filenumber]', '[assignmentname]', '[courseshortname]', '[currentdate]', '[currenttime]',
 ];
+const ZIPRENAMING_TAGS = ['[assignmentname]', '[assignmentid]', '[courseshortname]', '[currentdate]', '[currenttime]',
+];
 
 /**
  * File rename function
