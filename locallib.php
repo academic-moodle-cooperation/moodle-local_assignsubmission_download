@@ -227,6 +227,7 @@ function replace_custom($o, $maxlength, $pattern, $string) {
 
 /**
  * Helper function to replace "special" characters with regular ones in filenames.
+ * Also replaces spaces with underscores.
  *
  * @param string $filename filename which to clean up
  * @return string the clean filename, without special characters
@@ -243,4 +244,34 @@ function clean_custom($filename) {
         $filename = preg_replace('/[^A-Za-z0-9\_\-\.]/', '', $filename);
     }
     return clean_filename($filename);
+}
+
+/**
+ * ZIP archive rename function
+ * Function to rename the zip archive name based on the user name and pattern
+ *
+ * @param assign $assign assign instance the files inside the zip archive belong to
+ */
+function ziprenaming_rename_zip_archive ($assign) {
+    $ziprenaminguserpref = get_user_preferences('nameofziparchive', '');
+    $o = '';
+
+    // Declare the variables to replace.
+    $assignmentname = $assign->get_instance()->name;
+    $assignmentid = $assign->get_instance()->id;
+    $courseshortname = $assign->get_course()->shortname;
+    $currentdate = date('Ymd');
+    $currenttime = userdate(time(), '%H%M', 99, false, false);
+
+    // Replace pattern.
+    $o = str_replace('[assignmentname]', $assignmentname, $ziprenaminguserpref);
+    $o = str_replace('[assignmentid]', $assignmentid, $o);
+    $o = str_replace('[courseshortname]', $courseshortname, $o);
+    $o = str_replace('[currentdate]', $currentdate, $o);
+    $o = str_replace('[currenttime]', $currenttime, $o);
+
+    // Cleaned name and added .zip extension.
+    $o = clean_custom($o);
+    $o = $o.'.zip';
+    return $o;
 }
