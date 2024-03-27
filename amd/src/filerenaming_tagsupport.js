@@ -33,7 +33,7 @@ define(['jquery', 'core/log'], function($, log) {
     var Tagsupport = function() {
     };
 
-    Tagsupport.prototype.add_tag = function(e) {
+    Tagsupport.prototype.addTag = function(e) {
         e.stopPropagation();
         e.preventDefault();
 
@@ -64,7 +64,7 @@ define(['jquery', 'core/log'], function($, log) {
         log.info('Initialise filerenaming tag handling js...', 'local_assignsubmission_download');
         // Add JS-Eventhandler for each tag!
         $('[data-nametag]').unbind('click');
-        $('[data-nametag]').on('click', null, this, this.add_tag);
+        $('[data-nametag]').on('click', null, this, this.addTag);
         $('[data-nametag]').css('cursor', 'pointer');
     };
 
