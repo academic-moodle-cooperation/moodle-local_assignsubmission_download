@@ -188,7 +188,7 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $ziprenaming_tags = [];
         foreach (ZIPRENAMING_TAGS as $tag) {
             $ziprenaming_tags[] = ' '; // Add a space after each tag.
-            $ziprenaming_tags[] = html_writer::tag('span', $tag, ['class' => 'nametag', 'data-nametag' => $tag]);
+            $ziprenaming_tags[] = html_writer::tag('span', $tag, ['class' => 'nametag', 'data-zip-nametag' => $tag]);
         }
 
         $mform->addElement('text', 'nameofziparchive',
@@ -199,6 +199,7 @@ class mod_assign_filerenaming_settings_form extends moodleform {
                 get_string('rename_propertydescription', 'local_assignsubmission_download', implode("", $ziprenaming_tags)));
         $mform->addHelpButton('nameofziparchive', 'nameofziparchive', 'local_assignsubmission_download');
 
+        $PAGE->requires->js_call_amd('local_assignsubmission_download/ziprenaming_tagsupport', 'initializer', []);
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_groupingtoggle', 'initializer', [$jsgroupings]);
 
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
