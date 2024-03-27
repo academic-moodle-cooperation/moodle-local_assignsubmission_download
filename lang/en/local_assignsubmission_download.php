@@ -125,13 +125,13 @@ $string['nameofziparchive_help'] = 'Name of the zip archive which contains the d
     [assignmentname] name of the assignment<br>
     [assignmentid] id of the assignment<br>
     [courseshortname] short name of the course<br>
-    [currentdate] 
-    [currenttime]
+    [currentdate] current date in format YYYYMMDD (YearMonthDay)<br>
+    [currenttime] current time HHMM (HoursMinutes)<br>
     <br>
     If you add any alphanumeric characters (without brackets), these characters will be added to the zip archive name<br>
     <br>
     Example:<br>
-    The entry \'[courseshortname]-[assignmentname]_[currentdate]\' will result the following zip archive name: \'EC-exampleassignment_2024-04-01\'';
+    The entry \'[courseshortname]-[assignmentname]_[currentdate]\' will result the following zip archive name: \'EC-exampleassignment_20240401\'';
 $string['onlinetext_defaultfilename'] = 'Onlinetext';
 $string['hiddenuser'] = 'Participant';
 $string['notreuploadable_hint'] = 'Note, if one of the feedback types \'Feedback files\' or \'Offline grading worksheet\' is checked, the renamed download files of this page cannot be uploaded anymore.';
