@@ -199,7 +199,7 @@ class mod_assign_filerenaming_settings_form extends moodleform {
                 get_string('rename_propertydescription', 'local_assignsubmission_download', implode("", $ziprenamingtags)));
         $mform->addHelpButton('nameofziparchive', 'nameofziparchive', 'local_assignsubmission_download');
 
-        $PAGE->requires->js_call_amd('local_assignsubmission_download/ziprenaming_tagsupport', 'initializer', []);
+        $PAGE->requires->js_call_amd('local_assignsubmission_download/ziprenaming_tagsupport', 'init', []);
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_groupingtoggle', 'initializer', [$jsgroupings]);
 
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
