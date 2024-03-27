@@ -149,12 +149,14 @@ class filerenaming extends assign {
         $pattern = get_user_preferences('filerenamingpattern', '');
         $cleanfilename = get_user_preferences('clean_filerenaming', '');
         $preventnameextension = get_user_preferences('prevent_nameextension', '');
+        $nameofziparchive = get_user_preferences('nameofziparchive', '');
 
         $filerenamingsettingsform = $this->get_filenrenaming_form();
         $filerenamingsettingsdata = new stdClass();
         $filerenamingsettingsdata->filerenamingpattern = $pattern;
         $filerenamingsettingsdata->clean_filerenaming = $cleanfilename;
         $filerenamingsettingsdata->prevent_nameextension = $preventnameextension;
+        $filerenamingsettingsdata->nameofziparchive = $nameofziparchive;
         $filerenamingsettingsform->set_data($filerenamingsettingsdata);
 
         $actionformtext = "";
@@ -240,6 +242,7 @@ class filerenaming extends assign {
             set_user_preference('filerenamingpattern', $data->filerenamingpattern);
             set_user_preference('clean_filerenaming', $data->clean_filerenaming);
             set_user_preference('prevent_nameextension', $data->prevent_nameextension);
+            set_user_preference('nameofziparchive', $data->nameofziparchive);
 
             // Download submissions.
             if (!isset($data->coursegroup)) {
@@ -366,11 +369,8 @@ class filerenaming extends assign {
 
         $fs = get_file_storage();
 
-        $currentdate = date('Y-m-d');
         // Construct the zip file name.
-        $filename = filerenaming_clean_custom($this->get_course()->shortname . '-' . // AMC moodle university code one line.
-                                   $this->get_instance()->name . '-' .
-                                   $groupname . $this->get_course_module()->id . '_' . $currentdate . '.zip');
+        $zipname = ziprenaming_rename_zip_archive($this);
 
         // Get all the files for each student.
         $resetgroupname = false;
@@ -658,7 +658,7 @@ class filerenaming extends assign {
             // Close the session to avoid tab block.
             \core\session\manager::write_close();
 
-            $zipwriter = \core_files\archive_writer::get_stream_writer($filename, \core_files\archive_writer::ZIP_WRITER);
+            $zipwriter = \core_files\archive_writer::get_stream_writer($zipname, \core_files\archive_writer::ZIP_WRITER);
 
             foreach ($filesforzipping as $pathinzip => $file) {
                 if ($file instanceof \stored_file) {

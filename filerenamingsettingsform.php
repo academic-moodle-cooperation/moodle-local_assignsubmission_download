@@ -83,12 +83,12 @@ class mod_assign_filerenaming_settings_form extends moodleform {
 
         $mform->addRule('downloadtype', '', 'required', null, 'server');
 
-        $tags = [];
+        $filerenamingtags = [];
         foreach (FILERENAMING_TAGS as $tag) {
-            $tags[] = html_writer::tag('span', $tag, ['class' => 'nametag', 'data-nametag' => $tag]);
-            $tags[] = ' '; // Add a space after each tag.
+            $filerenamingtags[] = html_writer::tag('span', $tag, ['class' => 'nametag', 'data-nametag' => $tag]);
+            $filerenamingtags[] = ' '; // Add a space after each tag.
             if ($tag === '[groupid]') {
-                $tags[] = '<br>'; // Add a line break after the [groupid] tag.
+                $filerenamingtags[] = '<br>'; // Add a line break after the [groupid] tag.
             }
         }
 
@@ -97,7 +97,7 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->setType('filerenamingpattern', PARAM_RAW_TRIMMED);
         $mform->setDefault('filerenamingpattern', get_string('defaultfilerenamingpattern', 'local_assignsubmission_download'));
         $mform->addElement('static', 'tags', '',
-                get_string('rename_propertydescription', 'local_assignsubmission_download', implode("", $tags)));
+                get_string('rename_propertydescription', 'local_assignsubmission_download', implode("", $filerenamingtags)));
         $mform->addHelpButton('filerenamingpattern', 'filerenamingpattern', 'local_assignsubmission_download');
 
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_tagsupport', 'initializer', []);
@@ -184,6 +184,22 @@ class mod_assign_filerenaming_settings_form extends moodleform {
                 'local_assignsubmission_download');
         }
 
+        // Rename ZIP-Archive.
+        $ziprenamingtags = [];
+        foreach (ZIPRENAMING_TAGS as $tag) {
+            $ziprenamingtags[] = ' '; // Add a space after each tag.
+            $ziprenamingtags[] = html_writer::tag('span', $tag, ['class' => 'nametag', 'data-zip-nametag' => $tag]);
+        }
+
+        $mform->addElement('text', 'nameofziparchive',
+                get_string('nameofziparchive', 'local_assignsubmission_download'), ['size' => '100']);
+        $mform->setType('nameofziparchive', PARAM_RAW_TRIMMED);
+        $mform->setDefault('nameofziparchive', get_string('defaultziprenamingpattern', 'local_assignsubmission_download'));
+        $mform->addElement('static', 'ziptags', '',
+                get_string('rename_propertydescription', 'local_assignsubmission_download', implode("", $ziprenamingtags)));
+        $mform->addHelpButton('nameofziparchive', 'nameofziparchive', 'local_assignsubmission_download');
+
+        $PAGE->requires->js_call_amd('local_assignsubmission_download/ziprenaming_tagsupport', 'init', []);
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_groupingtoggle', 'initializer', [$jsgroupings]);
 
         $mform->addElement('hidden', 'contextid', $instance['contextid']);

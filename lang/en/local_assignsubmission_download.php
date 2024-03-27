@@ -119,12 +119,26 @@ $string['prevent_nameextension'] = 'Prevent automatic extension of file names';
 $string['prevent_nameextension_help'] = 'This function prevents the automatic extension of the file namens (with terms such as "_Submission_File_submissions").';
 $string['clean_filerenaming'] = 'Clean filenames';
 $string['clean_filerenaming_help'] = 'Removes white spaces and special characters from filenames and rewrites umlauts, e.g. \'Übung 1-Gruppe$4\' becomes \'Uebung1-Gruppe\'';
+$string['nameofziparchive'] = 'Name of the zip archive';
+$string['nameofziparchive_help'] = 'Name of the zip archive which contains the downloaded files. The following bracket terms (\'tags\') are available:<br>
+    <br>
+    [assignmentname] name of the assignment<br>
+    [assignmentid] id of the assignment<br>
+    [courseshortname] short name of the course<br>
+    [currentdate] current date in format YYYYMMDD (YearMonthDay)<br>
+    [currenttime] current time HHMM (HoursMinutes)<br>
+    <br>
+    If you add any alphanumeric characters (without brackets), these characters will be added to the zip archive name<br>
+    <br>
+    Example:<br>
+    The entry \'[courseshortname]-[assignmentname]_[currentdate]\' will result the following zip archive name: \'EC-exampleassignment_20240401\'';
 $string['onlinetext_defaultfilename'] = 'Onlinetext';
 $string['hiddenuser'] = 'Participant';
 $string['notreuploadable_hint'] = 'Note, if one of the feedback types \'Feedback files\' or \'Offline grading worksheet\' is checked, the renamed download files of this page cannot be uploaded anymore.';
 $string['filenumberinfo'] = 'Maximum number of uploaded files is larger than 1. Consider using [filenumber] to number all uploads of a student in order to improve sorting.';
 
 $string['defaultfilerenamingpattern'] = '[filename]';
+$string['defaultziprenamingpattern'] = '[courseshortname]-[assignmentname]-[assignmentid]';
 
 $string['show_propertyname'] = 'Show \'{$a->entrytoshow}\'';
 $string['show_propertydescription'] = 'Used to show or hide the \'{$a->entrytoshow}\' menu entry';
