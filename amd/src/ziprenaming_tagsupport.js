@@ -17,11 +17,45 @@
  * JavaScript handling insertion of tags for ZIP archive renaming
  *
  * @module     local_assignsubmission_download/ziprenaming_tagsupport
- * @author     2024 Clemens Marx
- * @copyright  2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
+ * @author     Clemens Marx
+ * @copyright  2024 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 /**
- * @module local_assignsubmission_download/ziprenaming_tagsupport
+ * This function adds an event listener to each tag element.
+ * By that the tags become clickable and will be inserted at the current caret position.
  */
+export const init = () => {
+    window.console.log('Initializing ZIP renaming tag support.');
+    // Add JS-Eventhandler for each tag.
+    document.querySelectorAll('[data-zip-nametag]').forEach(tag => {
+        tag.removeEventListener('click', addTag);
+        tag.addEventListener('click', addTag);
+        tag.style.cursor = 'pointer';
+    });
+};
+
+const addTag = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    window.console.log('Add tag...');
+
+    const targetfield = document.querySelector('input[name=nameofziparchive]');
+    const node = e.target;
+
+    let tag = '';
+    tag = node.getAttribute('data-zip-nametag');
+
+    const content = targetfield.value;
+    const caretPos = targetfield.selectionStart;
+
+    // Insert the tag at the current caret position.
+    targetfield.value = content.substring(0, caretPos) + tag + content.substring(caretPos);
+
+    // And now restore focus and caret position!
+    targetfield.focus();
+    const postpos = caretPos + tag.length;
+    targetfield.setSelectionRange(postpos, postpos);
+};
