@@ -31,6 +31,10 @@
 const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[group]', '[groupid]', '[filename]',
     '[filenumber]', '[assignmentname]', '[courseshortname]', '[currentdate]', '[currenttime]',
 ];
+/**
+ * List of tags that can be used in the ziprenaming pattern.
+ * @var array 
+ */
 const ZIPRENAMING_TAGS = ['[assignmentname]', '[assignmentid]', '[courseshortname]', '[currentdate]', '[currenttime]',
 ];
 
