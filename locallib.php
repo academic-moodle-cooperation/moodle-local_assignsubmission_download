@@ -33,7 +33,7 @@ const FILERENAMING_TAGS = ['[idnumber]', '[lastname]', '[firstname]', '[fullname
 ];
 /**
  * List of tags that can be used in the ziprenaming pattern.
- * @var array 
+ * @var array
  */
 const ZIPRENAMING_TAGS = ['[assignmentname]', '[assignmentid]', '[courseshortname]', '[currentdate]', '[currenttime]',
 ];
