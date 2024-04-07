@@ -202,6 +202,16 @@ class filerenaming extends assign {
             $lastdownloadedfeedback = $this->get_lastdownloaded_date($this->get_course_module()->id, $USER->id, true);
             $lastfilenamingscheme = $this->get_filenamingscheme($this->get_course_module()->id, $USER->id, 'local_assignsubm_download');
             $lastfilenamingschemefeedback = $this->get_filenamingscheme($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback');
+            $lastpreventnameextension = $this->get_preventnameextension($this->get_course_module()->id, $USER->id, 'local_assignsubm_download');
+            $lastpreventnameextensionfeedback = $this->get_preventnameextension($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback');
+            $lastcleanfilename = $this->get_cleanfilename($this->get_course_module()->id, $USER->id, 'local_assignsubm_download');
+            $lastcleanfilenamefeedback = $this->get_cleanfilename($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback');
+            $lastgroup = $this->get_group($this->get_course_module()->id, $USER->id, 'local_assignsubm_download');
+            $lastgroupfeedback = $this->get_group($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback');
+            $lastgrouping = $this->get_grouping($this->get_course_module()->id, $USER->id, 'local_assignsubm_download');
+            $lastgroupingfeedback = $this->get_grouping($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback');
+            $lastzipnamingscheme = $this->get_zipnamingscheme($this->get_course_module()->id, $USER->id, 'local_assignsubm_download');
+            $lastzipnamingschemefeedback = $this->get_zipnamingscheme($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback');
 
             $shownotreuploadablehint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
                 || $this->get_feedback_plugin_by_type('file')->is_enabled();
@@ -217,6 +227,16 @@ class filerenaming extends assign {
                 'lastdownloadedfeedback' => $lastdownloadedfeedback,
                 'lastfilenamingscheme' => $lastfilenamingscheme,
                 'lastfilenamingschemefeedback' => $lastfilenamingschemefeedback,
+                'lastpreventnameextension' => $lastpreventnameextension,
+                'lastpreventnameextensionfeedback' => $lastpreventnameextensionfeedback,
+                'lastcleanfilename' => $lastcleanfilename,
+                'lastcleanfilenamefeedback' => $lastcleanfilenamefeedback,
+                'lastgroup' => $lastgroup,
+                'lastgroupfeedback' => $lastgroupfeedback,
+                'lastgrouping' => $lastgrouping,
+                'lastgroupingfeedback' => $lastgroupingfeedback,
+                'lastzipnamingscheme' => $lastzipnamingscheme,
+                'lastzipnamingschemefeedback' => $lastzipnamingschemefeedback,
             ];
 
             $classoptions = ['class' => 'gradingbatchoperationsform', 'data-double-submit-protection' => 'off'];
@@ -229,6 +249,7 @@ class filerenaming extends assign {
         }
         return $this->_filerenamingform;
     }
+
     /**
      * Save grading options.
      *
@@ -246,8 +267,6 @@ class filerenaming extends assign {
         $mform = $this->get_filenrenaming_form();
 
         if ($data = $mform->get_data()) {
-            // NOTE 1. April Clemens - remove later:
-            // Replace everything with methods to write to database.
             set_user_preference('filerenamingpattern', $data->filerenamingpattern);
             set_user_preference('clean_filerenaming', $data->clean_filerenaming);
             set_user_preference('prevent_nameextension', $data->prevent_nameextension);
@@ -315,48 +334,145 @@ class filerenaming extends assign {
             $DB->insert_record($tablename, $lastdownload);
         }
     }
-
-    /**
-     * Returns the last filenaming scheme for module and user as string from database
-     * @param int $cmid int coursemodule id
-     * @param int $userid int user id
-     * @param string $tablename
-     * @return string last filenaming scheme
-     */
+//
+//    /**
+//     * Returns the last filenaming scheme for module and user as string from database
+//     * @param int $cmid int coursemodule id
+//     * @param int $userid int user id
+//     * @param string $tablename
+//     * @return string last filenaming scheme
+//     */
     protected function get_filenamingscheme($cmid, $userid, $tablename) {
         global $DB;
         $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
-        if ($databaseentry) {
-            if ($databaseentry->filenamingscheme) {
-                return $databaseentry->filenamingscheme;
-            } else {
-                return "No entry";
-            }
+        return $databaseentry->filenamingscheme ?? get_string('nodownloadsyet', 'local_assignsubmission_download');
+    }
+
+//    /**
+//     * Transform int 0/1 to string 'yes'/'no'
+//     * @param int $int
+//     * @return string
+//     */
+    protected function int_to_string($int) {
+        return $int ? 'yes' : 'no';
+    }
+
+//    /**
+//     * Return the last prevent name extension setting for module and user as string from database
+//     * @param int $cmid int coursemodule id
+//     * @param int $userid int user id
+//     * @param string $tablename
+//     * @return string last prevent name extension setting
+//     */
+    protected function get_preventnameextension($cmid, $userid, $tablename) {
+        global $DB;
+        $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
+        if ($databaseentry && $databaseentry->preventnameextension !== null) {
+            return $this->int_to_string($databaseentry->preventnameextension);
         } else {
-            return "No entry";
+            return get_string('nodownloadsyet', 'local_assignsubmission_download');
         }
     }
 
     /**
-     * Updates the last filenaming scheme for module and user to database
-     * @param int $cmid int course module id
+     * Return the last clean filename setting for module and user as string from database
+     * @param int $cmid int coursemodule id
      * @param int $userid int user id
-     * @param string $filenamingscheme
-     * @param string $tablename
-     * @return void
+     * @param int $tablename
+     * @return string last clean filename setting
      */
-    protected function update_filenamingscheme($cmid, $userid, $filenamingscheme, $tablename)
-    {
+    protected function get_cleanfilename($cmid, $userid, $tablename) {
         global $DB;
         $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
-        if ($databaseentry) {
+        if ($databaseentry && $databaseentry->cleanfilenames !== null) {
+            return $this->int_to_string($databaseentry->cleanfilenames);
+        } else {
+            return get_string('nodownloadsyet', 'local_assignsubmission_download');
+        }
+    }
+
+    /**
+     * Return the last group setting for module and user as string from database
+     * @param int $cmid int coursemodule id
+     * @param int $userid int user id
+     * @param string $tablename
+     * @return string last group setting
+     */
+    protected function get_group($cmid, $userid, $tablename) {
+        global $DB;
+        $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
+        if ($databaseentry && $databaseentry->choosegroup !== null) {
+            return $databaseentry->choosegroup;
+        } else {
+            return get_string('nodownloadsyet', 'local_assignsubmission_download');
+        }
+    }
+
+    /**
+     * Return the last grouping setting for module and user as string from database
+     * @param int $cmid int coursemodule id
+     * @param int $userid int user id
+     * @param string $tablename
+     * @return string last grouping setting
+     */
+    protected function get_grouping($cmid, $userid, $tablename) {
+        global $DB;
+        $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
+        if ($databaseentry && $databaseentry->choosegrouping !== null) {
+            return $databaseentry->choosegrouping;
+        } else {
+            return get_string('nodownloadsyet', 'local_assignsubmission_download');
+        }
+    }
+
+    /**
+     * Return the last zip naming scheme for module and user as string from database
+     * @param int $cmid int coursemodule id
+     * @param int $userid int user id
+     * @param string $tablename
+     * @return string last zip naming scheme
+     */
+    protected function get_zipnamingscheme($cmid, $userid, $tablename) {
+        global $DB;
+        $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
+        return $databaseentry->zipnamingscheme ?? get_string('nodownloadsyet', 'local_assignsubmission_download');
+    }
+
+    /**
+     * Update or insert the database entry for the download settings
+     * @param int $cmid int coursemodule id
+     * @param int $userid int user id
+     * @param string $tablename string table name for the database entry
+     * @param string $filenamingscheme string filenaming scheme
+     * @param int $preventnameextension int prevent name extension setting
+     * @param int $cleanfilenames int clean filename setting
+     * @param string $zipnamingscheme string zip naming scheme
+     * @param string|null $coursegroupname course group name 
+     * @param string|null $coursegroupingname course grouping name
+     * @return void
+     */
+    public function update_database_entry($cmid, $userid, $tablename, $filenamingscheme, $preventnameextension, $cleanfilenames,
+    $zipnamingscheme, $coursegroupname, $coursegroupingname) {
+        global $DB;
+        $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
+        if($databaseentry) {
             $databaseentry->filenamingscheme = $filenamingscheme;
+            $databaseentry->preventnameextension = $preventnameextension;
+            $databaseentry->cleanfilenames = $cleanfilenames;
+            $databaseentry->choosegroup = $coursegroupname;
+            $databaseentry->choosegrouping = $coursegroupingname;
+            $databaseentry->zipnamingscheme = $zipnamingscheme;
             $DB->update_record($tablename, $databaseentry);
         } else {
             $databaseentry = new stdClass();
             $databaseentry->cmid = $cmid;
             $databaseentry->userid = $userid;
             $databaseentry->filenamingscheme = $filenamingscheme;
+            $databaseentry->preventnameextension = $preventnameextension;
+            $databaseentry->cleanfilenames = $cleanfilenames;
+            $databaseentry->choosegroup = $coursegroupname;
+            $databaseentry->choosegrouping = $coursegroupingname;
+            $databaseentry->zipnamingscheme = $zipnamingscheme;
             $DB->insert_record($tablename, $databaseentry);
         }
     }
@@ -704,16 +820,26 @@ class filerenaming extends assign {
             if ($downloadsubmissions) {
                 $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id);
                 $filenamingscheme = get_user_preferences('filerenamingpattern', '');
-                $this->update_filenamingscheme($this->get_course_module()->id, $USER->id, $filenamingscheme, 'local_assignsubm_download');
-                // NOTE 1. April Clemens - remove later:
-                // Add here all the other functions to update the data in the database
-                // from the other fields of the form.
+                $preventnameextension = get_user_preferences('prevent_nameextension', '');
+                $cleanfilename = get_user_preferences('clean_filerenaming', '');
+                $ziparchivename = get_user_preferences('nameofziparchive', '');
+                $groupname = $groupid ? format_string(groups_get_group_name($groupid)) : null;
+                $groupingname = $groupingid ? format_string(groups_get_grouping_name($groupingid)) : null;
+                $this->update_database_entry($this->get_course_module()->id, $USER->id, 'local_assignsubm_download',
+                    $filenamingscheme, (int)$preventnameextension, (int)$cleanfilename, 
+                    $ziparchivename, $groupname, $groupingname);
             }
             if ($downloadfeedbacks) {
                 $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id, true);
-                // NOTE 1. April Clemens - remove later:
-                // Add here all the other functions to update the data in the database
-                // from the other fields of the form.
+                $filenamingscheme = get_user_preferences('filerenamingpattern', '');
+                $preventnameextension = get_user_preferences('prevent_nameextension', '');
+                $cleanfilename = get_user_preferences('clean_filerenaming', '');
+                $ziparchivename = get_user_preferences('nameofziparchive', '');
+                $groupname = $groupid ? format_string(groups_get_group_name($groupid)) : null;
+                $groupingname = $groupingid ? format_string(groups_get_grouping_name($groupingid)) : null;
+                $this->update_database_entry($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback',
+                    $filenamingscheme, (int)$preventnameextension, (int)$cleanfilename, 
+                    get_user_preferences('nameofziparchive', ''), $groupname, $groupingname);
             }
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
 
