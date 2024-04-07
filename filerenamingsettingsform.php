@@ -169,21 +169,6 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->addHelpButton('submissionneweras', 'submissionneweras',
                 'local_assignsubmission_download');
 
-        if (!empty($this->_customdata['lastdownloaded'])) {
-            $mform->addElement('static', 'lastdownloaded',
-                get_string('lastdownloaded_title', 'local_assignsubmission_download'),
-                $this->_customdata['lastdownloaded']);
-            $mform->addHelpButton('lastdownloaded', 'lastdownloaded_title',
-                'local_assignsubmission_download');
-        }
-        if (!empty($this->_customdata['lastdownloadedfeedback'])) {
-            $mform->addElement('static', 'lastdownloadedfeedback',
-                get_string('lastdownloadedfeedbacks_title', 'local_assignsubmission_download'),
-                $this->_customdata['lastdownloadedfeedback']);
-            $mform->addHelpButton('lastdownloadedfeedback', 'lastdownloadedfeedbacks_title',
-                'local_assignsubmission_download');
-        }
-
         // Rename ZIP-Archive.
         $ziprenamingtags = [];
         foreach (ZIPRENAMING_TAGS as $tag) {
@@ -200,6 +185,22 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->addHelpButton('nameofziparchive', 'nameofziparchive', 'local_assignsubmission_download');
 
         $PAGE->requires->js_call_amd('local_assignsubmission_download/ziprenaming_tagsupport', 'init', []);
+
+        if (!empty($this->_customdata['lastdownloaded'])) {
+            $mform->addElement('static', 'lastdownloaded',
+                get_string('lastdownloaded_title', 'local_assignsubmission_download'),
+                $this->_customdata['lastdownloaded']);
+            $mform->addHelpButton('lastdownloaded', 'lastdownloaded_title',
+                'local_assignsubmission_download');
+        }
+        if (!empty($this->_customdata['lastdownloadedfeedback'])) {
+            $mform->addElement('static', 'lastdownloadedfeedback',
+                get_string('lastdownloadedfeedbacks_title', 'local_assignsubmission_download'),
+                $this->_customdata['lastdownloadedfeedback']);
+            $mform->addHelpButton('lastdownloadedfeedback', 'lastdownloadedfeedbacks_title',
+                'local_assignsubmission_download');
+        }
+        
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_groupingtoggle', 'initializer', [$jsgroupings]);
 
         $mform->addElement('hidden', 'contextid', $instance['contextid']);
