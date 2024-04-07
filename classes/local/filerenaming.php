@@ -146,6 +146,9 @@ class filerenaming extends assign {
         $gradingactions = new url_select($links);
         $gradingactions->set_label(get_string('choosegradingaction', 'assign'));
 
+        // NOTE 1. April Clemens - remove later:
+        // Replace everything with calls from database. But maybe at line 200.
+        // Therefore this code could become much shorter if all the data is loaded from get_filerenaming_form.
         $pattern = get_user_preferences('filerenamingpattern', '');
         $cleanfilename = get_user_preferences('clean_filerenaming', '');
         $preventnameextension = get_user_preferences('prevent_nameextension', '');
@@ -197,6 +200,8 @@ class filerenaming extends assign {
 
             $lastdownloaded = $this->get_lastdownloaded_date($this->get_course_module()->id, $USER->id);
             $lastdownloadedfeedback = $this->get_lastdownloaded_date($this->get_course_module()->id, $USER->id, true);
+            $lastfilenamingscheme = $this->get_filenamingscheme($this->get_course_module()->id, $USER->id, 'local_assignsubm_download');
+            $lastfilenamingschemefeedback = $this->get_filenamingscheme($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback');
 
             $shownotreuploadablehint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
                 || $this->get_feedback_plugin_by_type('file')->is_enabled();
@@ -210,6 +215,8 @@ class filerenaming extends assign {
                 'show_notreuploadable_hint' => $shownotreuploadablehint,
                 'lastdownloaded' => $lastdownloaded,
                 'lastdownloadedfeedback' => $lastdownloadedfeedback,
+                'lastfilenamingscheme' => $lastfilenamingscheme,
+                'lastfilenamingschemefeedback' => $lastfilenamingschemefeedback,
             ];
 
             $classoptions = ['class' => 'gradingbatchoperationsform', 'data-double-submit-protection' => 'off'];
@@ -239,6 +246,8 @@ class filerenaming extends assign {
         $mform = $this->get_filenrenaming_form();
 
         if ($data = $mform->get_data()) {
+            // NOTE 1. April Clemens - remove later:
+            // Replace everything with methods to write to database.
             set_user_preference('filerenamingpattern', $data->filerenamingpattern);
             set_user_preference('clean_filerenaming', $data->clean_filerenaming);
             set_user_preference('prevent_nameextension', $data->prevent_nameextension);
@@ -304,6 +313,51 @@ class filerenaming extends assign {
             $lastdownload->userid = $userid;
             $lastdownload->lastdownloaded = time();
             $DB->insert_record($tablename, $lastdownload);
+        }
+    }
+
+    /**
+     * Returns the last filenaming scheme for module and user as string from database
+     * @param int $cmid int coursemodule id
+     * @param int $userid int user id
+     * @param string $tablename
+     * @return string last filenaming scheme
+     */
+    protected function get_filenamingscheme($cmid, $userid, $tablename) {
+        global $DB;
+        $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
+        if ($databaseentry) {
+            if ($databaseentry->filenamingscheme) {
+                return $databaseentry->filenamingscheme;
+            } else {
+                return "No entry";
+            }
+        } else {
+            return "No entry";
+        }
+    }
+
+    /**
+     * Updates the last filenaming scheme for module and user to database
+     * @param int $cmid int course module id
+     * @param int $userid int user id
+     * @param string $filenamingscheme
+     * @param string $tablename
+     * @return void
+     */
+    protected function update_filenamingscheme($cmid, $userid, $filenamingscheme, $tablename)
+    {
+        global $DB;
+        $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
+        if ($databaseentry) {
+            $databaseentry->filenamingscheme = $filenamingscheme;
+            $DB->update_record($tablename, $databaseentry);
+        } else {
+            $databaseentry = new stdClass();
+            $databaseentry->cmid = $cmid;
+            $databaseentry->userid = $userid;
+            $databaseentry->filenamingscheme = $filenamingscheme;
+            $DB->insert_record($tablename, $databaseentry);
         }
     }
 
@@ -649,9 +703,17 @@ class filerenaming extends assign {
         } else {
             if ($downloadsubmissions) {
                 $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id);
+                $filenamingscheme = get_user_preferences('filerenamingpattern', '');
+                $this->update_filenamingscheme($this->get_course_module()->id, $USER->id, $filenamingscheme, 'local_assignsubm_download');
+                // NOTE 1. April Clemens - remove later:
+                // Add here all the other functions to update the data in the database
+                // from the other fields of the form.
             }
             if ($downloadfeedbacks) {
                 $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id, true);
+                // NOTE 1. April Clemens - remove later:
+                // Add here all the other functions to update the data in the database
+                // from the other fields of the form.
             }
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
 
