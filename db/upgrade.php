@@ -117,5 +117,112 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         // Assignsubmission_download savepoint reached.
         upgrade_plugin_savepoint(true, 2022040501, 'local', 'assignsubmission_download');
     }
+    if ($oldversion < 2024012201) {
+        // Changes to table local_assignsubm_download.
+        $table = new xmldb_table('local_assignsubm_download');
+        // Define field filenamingscheme to be added to local_assignsubm_download.
+        $field = new xmldb_field('filenamingscheme', XMLDB_TYPE_CHAR, '200', null, null, null, null, 'lastdownloaded');
+
+        // Conditionally launch add field filenamingscheme.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field preventnameextension to be added to local_assignsubm_download.
+        $field = new xmldb_field('preventnameextension', XMLDB_TYPE_INTEGER, '2', null, null, null, null, 'filenamingscheme');
+
+        // Conditionally launch add field preventnameextension.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field cleanfilenames to be added to local_assignsubm_download.
+        $field = new xmldb_field('cleanfilenames', XMLDB_TYPE_INTEGER, '2', null, null, null, null, 'preventnameextension');
+
+        // Conditionally launch add field cleanfilenames.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field choosegrouping to be added to local_assignsubm_download.
+        $field = new xmldb_field('choosegrouping', XMLDB_TYPE_CHAR, '100', null, null, null, null, 'cleanfilenames');
+
+        // Conditionally launch add field choosegrouping.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field choosegroup to be added to local_assignsubm_download.
+        $field = new xmldb_field('choosegroup', XMLDB_TYPE_CHAR, '100', null, null, null, null, 'choosegrouping');
+
+        // Conditionally launch add field choosegroup.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field zipnamingscheme to be added to local_assignsubm_download.
+        $field = new xmldb_field('zipnamingscheme', XMLDB_TYPE_CHAR, '200', null, null, null, null, 'choosegroup');
+
+        // Conditionally launch add field zipnamingscheme.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Assignsubmission_download savepoint reached.
+        upgrade_plugin_savepoint(true, 2024012201, 'local', 'assignsubmission_download');
+
+        // Changes to table local_assignsubm_feedback.
+        $table = new xmldb_table('local_assignsubm_feedback');
+        // Define field filenamingscheme to be added to local_assignsubm_feedback.
+        $field = new xmldb_field('filenamingscheme', XMLDB_TYPE_CHAR, '200', null, null, null, null, 'lastdownloaded');
+
+        // Conditionally launch add field filenamingscheme.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field preventnameextension to be added to local_assignsubm_feedback.
+        $field = new xmldb_field('preventnameextension', XMLDB_TYPE_INTEGER, '2', null, null, null, null, 'filenamingscheme');
+
+        // Conditionally launch add field preventnameextension.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field cleanfilenames to be added to local_assignsubm_feedback.
+        $field = new xmldb_field('cleanfilenames', XMLDB_TYPE_INTEGER, '2', null, null, null, null, 'preventnameextension');
+
+        // Conditionally launch add field cleanfilenames.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field choosegrouping to be added to local_assignsubm_feedback.
+        $field = new xmldb_field('choosegrouping', XMLDB_TYPE_CHAR, '100', null, null, null, null, 'cleanfilenames');
+
+        // Conditionally launch add field choosegrouping.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field choosegroup to be added to local_assignsubm_feedback.
+        $field = new xmldb_field('choosegroup', XMLDB_TYPE_CHAR, '100', null, null, null, null, 'choosegrouping');
+
+        // Conditionally launch add field choosegroup.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field zipnamingscheme to be added to local_assignsubm_feedback.
+        $field = new xmldb_field('zipnamingscheme', XMLDB_TYPE_CHAR, '200', null, null, null, null, 'choosegroup');
+
+        // Conditionally launch add field zipnamingscheme.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Assignsubmission_download savepoint reached.
+        upgrade_plugin_savepoint(true, 2024012201, 'local', 'assignsubmission_download');
+    }
     return true;
 }
