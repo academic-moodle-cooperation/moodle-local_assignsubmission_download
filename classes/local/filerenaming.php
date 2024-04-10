@@ -198,20 +198,23 @@ class filerenaming extends assign {
             $urlparams = ['id' => $this->get_course_module()->id, 'action' => 'grading'];
             $currenturl = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_filerenaming.php', $urlparams);
 
-            $lastdownloaded = $this->get_lastdownloaded_date($this->get_course_module()->id, $USER->id);
-            $lastdownloadedfeedback = $this->get_lastdownloaded_date($this->get_course_module()->id, $USER->id, true);
-            $lastfilenamingscheme = $this->get_filenamingscheme($this->get_course_module()->id, $USER->id, 'local_assignsubm_download');
-            $lastfilenamingschemefeedback = $this->get_filenamingscheme($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback');
-            $lastpreventnameextension = $this->get_preventnameextension($this->get_course_module()->id, $USER->id, 'local_assignsubm_download');
-            $lastpreventnameextensionfeedback = $this->get_preventnameextension($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback');
-            $lastcleanfilename = $this->get_cleanfilename($this->get_course_module()->id, $USER->id, 'local_assignsubm_download');
-            $lastcleanfilenamefeedback = $this->get_cleanfilename($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback');
-            $lastgroup = $this->get_group($this->get_course_module()->id, $USER->id, 'local_assignsubm_download');
-            $lastgroupfeedback = $this->get_group($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback');
-            $lastgrouping = $this->get_grouping($this->get_course_module()->id, $USER->id, 'local_assignsubm_download');
-            $lastgroupingfeedback = $this->get_grouping($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback');
-            $lastzipnamingscheme = $this->get_zipnamingscheme($this->get_course_module()->id, $USER->id, 'local_assignsubm_download');
-            $lastzipnamingschemefeedback = $this->get_zipnamingscheme($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback');
+            $cmid = $this->get_course_module()->id;
+            $userid = $USER->id;
+
+            $lastdownloaded = $this->get_lastdownloaded_date($cmid, $userid);
+            $lastdownloadedfeedback = $this->get_lastdownloaded_date($cmid, $userid, true);
+            $lastfilenamingscheme = $this->get_filenamingscheme($cmid, $userid, 'local_assignsubm_download');
+            $lastfilenamingschemefeedback = $this->get_filenamingscheme($cmid, $userid, 'local_assignsubm_feedback');
+            $lastpreventnameextension = $this->get_preventnameextension($cmid, $userid, 'local_assignsubm_download');
+            $lastpreventnameextensionfeedback = $this->get_preventnameextension($cmid, $userid, 'local_assignsubm_feedback');
+            $lastcleanfilename = $this->get_cleanfilename($cmid, $userid, 'local_assignsubm_download');
+            $lastcleanfilenamefeedback = $this->get_cleanfilename($cmid, $userid, 'local_assignsubm_feedback');
+            $lastgroup = $this->get_group($cmid, $userid, 'local_assignsubm_download');
+            $lastgroupfeedback = $this->get_group($cmid, $userid, 'local_assignsubm_feedback');
+            $lastgrouping = $this->get_grouping($cmid, $userid, 'local_assignsubm_download');
+            $lastgroupingfeedback = $this->get_grouping($cmid, $userid, 'local_assignsubm_feedback');
+            $lastzipnamingscheme = $this->get_zipnamingscheme($cmid, $userid, 'local_assignsubm_download');
+            $lastzipnamingschemefeedback = $this->get_zipnamingscheme($cmid, $userid, 'local_assignsubm_feedback');
 
             $shownotreuploadablehint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
                 || $this->get_feedback_plugin_by_type('file')->is_enabled();
@@ -334,36 +337,36 @@ class filerenaming extends assign {
             $DB->insert_record($tablename, $lastdownload);
         }
     }
-//
-//    /**
-//     * Returns the last filenaming scheme for module and user as string from database
-//     * @param int $cmid int coursemodule id
-//     * @param int $userid int user id
-//     * @param string $tablename
-//     * @return string last filenaming scheme
-//     */
+
+    /**
+     * Returns the last filenaming scheme for module and user as string from database
+     * @param int $cmid int coursemodule id
+     * @param int $userid int user id
+     * @param string $tablename
+     * @return string last filenaming scheme
+     */
     protected function get_filenamingscheme($cmid, $userid, $tablename) {
         global $DB;
         $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
         return $databaseentry->filenamingscheme ?? get_string('nodownloadsyet', 'local_assignsubmission_download');
     }
 
-//    /**
-//     * Transform int 0/1 to string 'yes'/'no'
-//     * @param int $int
-//     * @return string
-//     */
+    /**
+     * Transform int 0/1 to string 'yes'/'no'
+     * @param int $int
+     * @return string
+     */
     protected function int_to_string($int) {
         return $int ? 'yes' : 'no';
     }
 
-//    /**
-//     * Return the last prevent name extension setting for module and user as string from database
-//     * @param int $cmid int coursemodule id
-//     * @param int $userid int user id
-//     * @param string $tablename
-//     * @return string last prevent name extension setting
-//     */
+    /**
+     * Return the last prevent name extension setting for module and user as string from database
+     * @param int $cmid int coursemodule id
+     * @param int $userid int user id
+     * @param string $tablename
+     * @return string last prevent name extension setting
+     */
     protected function get_preventnameextension($cmid, $userid, $tablename) {
         global $DB;
         $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
@@ -447,7 +450,7 @@ class filerenaming extends assign {
      * @param int $preventnameextension int prevent name extension setting
      * @param int $cleanfilenames int clean filename setting
      * @param string $zipnamingscheme string zip naming scheme
-     * @param string|null $coursegroupname course group name 
+     * @param string|null $coursegroupname course group name
      * @param string|null $coursegroupingname course grouping name
      * @return void
      */
@@ -455,7 +458,7 @@ class filerenaming extends assign {
     $zipnamingscheme, $coursegroupname, $coursegroupingname) {
         global $DB;
         $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
-        if($databaseentry) {
+        if ($databaseentry) {
             $databaseentry->filenamingscheme = $filenamingscheme;
             $databaseentry->preventnameextension = $preventnameextension;
             $databaseentry->cleanfilenames = $cleanfilenames;
@@ -826,7 +829,7 @@ class filerenaming extends assign {
                 $groupname = $groupid ? format_string(groups_get_group_name($groupid)) : null;
                 $groupingname = $groupingid ? format_string(groups_get_grouping_name($groupingid)) : null;
                 $this->update_database_entry($this->get_course_module()->id, $USER->id, 'local_assignsubm_download',
-                    $filenamingscheme, (int)$preventnameextension, (int)$cleanfilename, 
+                    $filenamingscheme, (int)$preventnameextension, (int)$cleanfilename,
                     $ziparchivename, $groupname, $groupingname);
             }
             if ($downloadfeedbacks) {
@@ -838,8 +841,8 @@ class filerenaming extends assign {
                 $groupname = $groupid ? format_string(groups_get_group_name($groupid)) : null;
                 $groupingname = $groupingid ? format_string(groups_get_grouping_name($groupingid)) : null;
                 $this->update_database_entry($this->get_course_module()->id, $USER->id, 'local_assignsubm_feedback',
-                    $filenamingscheme, (int)$preventnameextension, (int)$cleanfilename, 
-                    get_user_preferences('nameofziparchive', ''), $groupname, $groupingname);
+                    $filenamingscheme, (int)$preventnameextension, (int)$cleanfilename,
+                    $ziparchivename, $groupname, $groupingname);
             }
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
 
