@@ -151,7 +151,7 @@ class filerenaming extends assign {
         $filerenamingsettingsform->set_data($filerenamingsettingsdata);
 
         $actionformtext = "";
-        $header = new \mod_assign\output\assign_header($this->get_instance(),
+        $header = new assign_header($this->get_instance(),
                                     $this->get_context(),
                                     false,
                                     $this->get_course_module()->id,
@@ -193,8 +193,8 @@ class filerenaming extends assign {
             $lastdownloadedfeedback = $this->get_lastdownloaded_date($cmid, $userid, true);
             $lastfilenamingscheme = $this->get_filenamingscheme($cmid, $userid, 'local_assignsubm_download');
             $lastfilenamingschemefeedback = $this->get_filenamingscheme($cmid, $userid, 'local_assignsubm_feedback');
-            $lastpreventnameextension = $this->get_preventnameextension_as_string($cmid, $userid, 'local_assignsubm_download');
-            $lastpreventnameextensionfeedback = $this->get_preventnameextension_as_string($cmid, $userid, 'local_assignsubm_feedback');
+            $lastpreventnameext = $this->get_preventnameextension_as_string($cmid, $userid, 'local_assignsubm_download');
+            $lastpreventnameextfeedback = $this->get_preventnameextension_as_string($cmid, $userid, 'local_assignsubm_feedback');
             $lastcleanfilename = $this->get_cleanfilename_as_string($cmid, $userid, 'local_assignsubm_download');
             $lastcleanfilenamefeedback = $this->get_cleanfilename_as_string($cmid, $userid, 'local_assignsubm_feedback');
             $lastgroup = $this->get_group($cmid, $userid, 'local_assignsubm_download');
@@ -218,8 +218,8 @@ class filerenaming extends assign {
                 'lastdownloadedfeedback' => $lastdownloadedfeedback,
                 'lastfilenamingscheme' => $lastfilenamingscheme,
                 'lastfilenamingschemefeedback' => $lastfilenamingschemefeedback,
-                'lastpreventnameextension' => $lastpreventnameextension,
-                'lastpreventnameextensionfeedback' => $lastpreventnameextensionfeedback,
+                'lastpreventnameextension' => $lastpreventnameext,
+                'lastpreventnameextensionfeedback' => $lastpreventnameextfeedback,
                 'lastcleanfilename' => $lastcleanfilename,
                 'lastcleanfilenamefeedback' => $lastcleanfilenamefeedback,
                 'lastgroup' => $lastgroup,
@@ -286,7 +286,7 @@ class filerenaming extends assign {
 
     /**
      * Generate the filerenamening settings data for the filerenaming settings form.
-     * 
+     *
      * @param int $cmid int coursemodule id
      * @param int $userid int user id
      * @return stdClass filerenaming settings data object
@@ -301,7 +301,7 @@ class filerenaming extends assign {
             $data->clean_filerenaming = $this->get_cleanfilename_as_bool($cmid, $userid, $tablename);
             $data->prevent_nameextension = $this->get_preventnameextension_as_bool($cmid, $userid, $tablename);
             $data->nameofziparchive = $this->get_zipnamingscheme($cmid, $userid, $tablename);
-        } 
+        }
         return $data;
     }
 
@@ -519,10 +519,10 @@ class filerenaming extends assign {
 
     /**
      * Returns the table name with the latest download settings based on the unix timestamp of the last download.
-     * 
-     * If the tables have the same last entry date, the table name of the file download settings is returned - 
+     *
+     * If the tables have the same last entry date, the table name of the file download settings is returned -
      * the entries are then the same anyway.
-     * 
+     *
      * @param int $cmid int coursemodule id
      * @param int $userid int user id
      * @return string|null table name or null if no entry is found
@@ -549,9 +549,9 @@ class filerenaming extends assign {
     }
 
     /**
-     * Updates all the download settings for the selected download type 
+     * Updates all the download settings for the selected download type
      * This can be either the file download settings or the feedback download settings.
-     * 
+     *
      * @param string $tablename string table name
      * @param int $cmid int coursemodule id
      * @param int $userid int user id
@@ -897,7 +897,7 @@ class filerenaming extends assign {
         if (count($filesforzipping) == 0) {
             $header = new assign_header($this->get_instance(),
                                         $this->get_context(),
-                                        '',
+                                        false,
                                         $this->get_course_module()->id,
                                         get_string('downloadall', 'assign'));
             $result .= $this->get_renderer()->render($header);
@@ -921,11 +921,13 @@ class filerenaming extends assign {
         } else {
             if ($downloadsubmissions) {
                 $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id);
-                $this->handle_download_settings('local_assignsubm_download', $this->get_course_module()->id, $USER->id, $groupid, $groupingid);
+                $this->handle_download_settings('local_assignsubm_download', $this->get_course_module()->id,
+                    $USER->id, $groupid, $groupingid);
             }
             if ($downloadfeedbacks) {
                 $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id, true);
-                $this->handle_download_settings('local_assignsubm_feedback', $this->get_course_module()->id, $USER->id, $groupid, $groupingid);
+                $this->handle_download_settings('local_assignsubm_feedback', $this->get_course_module()->id,
+                    $USER->id, $groupid, $groupingid);
             }
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
 
