@@ -132,6 +132,8 @@ $string['nameofziparchive_help'] = 'Name of the zip archive which contains the d
     <br>
     Example:<br>
     The entry \'[courseshortname]-[assignmentname]_[currentdate]\' will result the following zip archive name: \'EC-exampleassignment_20240401\'';
+$string['downloadtype_submissions'] = 'Download submissions';
+$string['downloadtype_feedbacks'] = 'Download feedbacks';
 $string['onlinetext_defaultfilename'] = 'Onlinetext';
 $string['hiddenuser'] = 'Participant';
 $string['notreuploadable_hint'] = 'Note, if one of the feedback types \'Feedback files\' or \'Offline grading worksheet\' is checked, the renamed download files of this page cannot be uploaded anymore.';
@@ -182,3 +184,31 @@ $string['privacy:metadata:preference:optimum'] = 'Preference on whether to autom
 $string['privacy:metadata:preference:textsize'] = 'Preference on which text size to use when exporting to a pdf file.';
 $string['privacy:metadata:preference:pageorientation'] = 'Preference on which page orientation to use when exporting to a pdf file.';
 $string['privacy:metadata:preference:printheader'] = 'Preference on whether to print header and footer when exporting to a pdf file.';
+$string['privacy:metadata:preference:prevent_nameextension'] = 'Preference on whether to prevent automatic extension of file names when downloading submissions or feedback.';
+$string['privacy:metadata:preference:nameofziparchive'] = 'Preference on the name of the zip archive when downloading submissions or feedback.';
+$string['privacy:metadata:preference:downloadtype_submissions'] = 'Preference on whether to download submissions.';
+$string['privacy:metadata:preference:downloadtype_feedbacks'] = 'Preference on whether to download feedbacks.';
+
+$string['privacy:metadata:local_assignsubm_download'] = 'Table for storing the information about the last download of submissions.';
+$string['privacy:metadata:local_assignsubm_download:id'] = 'The unique identifier of the record.';
+$string['privacy:metadata:local_assignsubm_download:cmid'] = 'The course module id of the assignment.';
+$string['privacy:metadata:local_assignsubm_download:userid'] = 'The user id of the user who downloaded the submissions.';
+$string['privacy:metadata:local_assignsubm_download:lastdownloaded'] = 'The timestamp of the last download of submissions.';
+$string['privacy:metadata:local_assignsubm_download:filenamingscheme'] = 'The filenaming scheme used for the fles for the download.';
+$string['privacy:metadata:local_assignsubm_download:preventnameextension'] = 'Whether automatic extension of file names is prevented.';
+$string['privacy:metadata:local_assignsubm_download:cleanfilenames'] = 'Whether file names are cleaned from special chars.';
+$string['privacy:metadata:local_assignsubm_download:choosegrouping'] = 'The grouping id of the grouping to filter for.';
+$string['privacy:metadata:local_assignsubm_download:choosegroup'] = 'The group id of the group to filter for.';
+$string['privacy:metadata:local_assignsubm_download:zipnamingscheme'] = 'The naming scheme used for the zip archive.';
+
+$string['privacy:metadata:local_assignsubm_feedback'] = 'Table for storing the information about the last download of feedback.';
+$string['privacy:metadata:local_assignsubm_feedback:id'] = 'The unique identifier of the record.';
+$string['privacy:metadata:local_assignsubm_feedback:cmid'] = 'The course module id of the assignment.';
+$string['privacy:metadata:local_assignsubm_feedback:userid'] = 'The user id of the user who downloaded the submissions.';
+$string['privacy:metadata:local_assignsubm_feedback:lastdownloaded'] = 'The timestamp of the last download of submissions.';
+$string['privacy:metadata:local_assignsubm_feedback:filenamingscheme'] = 'The filenaming scheme used for the fles for the download.';
+$string['privacy:metadata:local_assignsubm_feedback:preventnameextension'] = 'Whether automatic extension of file names is prevented.';
+$string['privacy:metadata:local_assignsubm_feedback:cleanfilenames'] = 'Whether file names are cleaned from special chars.';
+$string['privacy:metadata:local_assignsubm_feedback:choosegrouping'] = 'The grouping id of the grouping to filter for.';
+$string['privacy:metadata:local_assignsubm_feedback:choosegroup'] = 'The group id of the group to filter for.';
+$string['privacy:metadata:local_assignsubm_feedback:zipnamingscheme'] = 'The naming scheme used for the zip archive.';
