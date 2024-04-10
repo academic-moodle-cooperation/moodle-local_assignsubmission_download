@@ -37,7 +37,7 @@ use core_privacy\local\request\writer;
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements
-    \core_privacy\local\request\user_preference_provider,
+    user_preference_provider,
     \core_privacy\local\metadata\provider {
     // This plugin does store personal user data, even if its just user preferences.
 
@@ -59,6 +59,44 @@ class provider implements
         $collection->add_user_preference('textsize', 'privacy:metadata:preference:textsize');
         $collection->add_user_preference('pageorientation', 'privacy:metadata:preference:pageorientation');
         $collection->add_user_preference('printheader', 'privacy:metadata:preference:printheader');
+        $collection->add_user_preference('prevent_nameextension', 'privacy:metadata:preference:prevent_nameextension');
+        $collection->add_user_preference('nameofziparchive', 'privacy:metadata:preference:nameofziparchive');
+        $collection->add_user_preference('downloadtype_submissions', 'privacy:metadata:preference:downloadtype_submissions');
+        $collection->add_user_preference('downloadtype_feedbacks', 'privacy:metadata:preference:downloadtype_feedbacks');
+
+        $collection->add_database_table(
+            'local_assignsubm_download', 
+            [
+                'id' => 'privacy:metadata:local_assignsubm_download:id',
+                'cmid' => 'privacy:metadata:local_assignsubm_download:cmid',
+                'userid' => 'privacy:metadata:local_assignsubm_download:userid',
+                'lastdownloaded' => 'privacy:metadata:local_assignsubm_download:lastdownloaded',
+                'filenamingscheme' => 'privacy:metadata:local_assignsubm_download:filenamingscheme',
+                'preventnameextension' => 'privacy:metadata:local_assignsubm_download:preventnameextension',
+                'cleanfilenames' => 'privacy:metadata:local_assignsubm_download:cleanfilenames',
+                'choosegrouping' => 'privacy:metadata:local_assignsubm_download:choosegrouping',
+                'choosegroup' => 'privacy:metadata:local_assignsubm_download:choosegroup',
+                'zipnamingscheme' => 'privacy:metadata:local_assignsubm_download:zipnamingscheme',
+            ],
+            'privacy:metadata:local_assignsubm_download',
+        );
+
+        $collection->add_database_table(
+            'local_assignsubm_feedback',
+            [
+                'id' => 'privacy:metadata:local_assignsubm_feedback:id',
+                'cmid' => 'privacy:metadata:local_assignsubm_feedback:cmid',
+                'userid' => 'privacy:metadata:local_assignsubm_feedback:userid',
+                'lastdownloaded' => 'privacy:metadata:local_assignsubm_feedback:lastdownloaded',
+                'filenamingscheme' => 'privacy:metadata:local_assignsubm_feedback:filenamingscheme',
+                'preventnameextension' => 'privacy:metadata:local_assignsubm_feedback:preventnameextension',
+                'cleanfilenames' => 'privacy:metadata:local_assignsubm_feedback:cleanfilenames',
+                'choosegrouping' => 'privacy:metadata:local_assignsubm_feedback:choosegrouping',
+                'choosegroup' => 'privacy:metadata:local_assignsubm_feedback:choosegroup',
+                'zipnamingscheme' => 'privacy:metadata:local_assignsubm_feedback:zipnamingscheme',
+            ],
+            'privacy:metadata:local_assignsubm_feedback',
+        );
 
         return $collection;
     }
@@ -130,6 +168,34 @@ class provider implements
             $printheaderdescription = get_string('strprintheader', 'local_assignsubmission_download');
             writer::export_user_preference('local_assignsubmission_download', 'assign_printheader',
                     $printheader, $printheaderdescription);
+        }
+
+        $prevent_nameextension = get_user_preferences('assign_prevent_nameextension', null, $userid);
+        if (null !== $prevent_nameextension) {
+            $prevent_nameextensiondescription = get_string('prevent_nameextension', 'local_assignsubmission_download');
+            writer::export_user_preference('local_assignsubmission_download', 'assign_prevent_nameextension',
+                    $prevent_nameextension, $prevent_nameextensiondescription);
+        }
+
+        $nameofziparchive = get_user_preferences('assign_nameofziparchive', null, $userid);
+        if (null !== $nameofziparchive) {
+            $nameofziparchivedescription = get_string('nameofziparchive', 'local_assignsubmission_download');
+            writer::export_user_preference('local_assignsubmission_download', 'assign_nameofziparchive',
+                    $nameofziparchive, $nameofziparchivedescription);
+        }
+
+        $downloadtype_submissions = get_user_preferences('assign_downloadtype_submissions', null, $userid);
+        if (null !== $downloadtype_submissions) {
+            $downloadtype_submissionsdescription = get_string('downloadtype_submissions', 'local_assignsubmission_download');
+            writer::export_user_preference('local_assignsubmission_download', 'assign_downloadtype_submissions',
+                    $downloadtype_submissions, $downloadtype_submissionsdescription);
+        }
+
+        $downloadtype_feedbacks = get_user_preferences('assign_downloadtype_feedbacks', null, $userid);
+        if (null !== $downloadtype_feedbacks) {
+            $downloadtype_feedbacksdescription = get_string('downloadtype_feedbacks', 'local_assignsubmission_download');
+            writer::export_user_preference('local_assignsubmission_download', 'assign_downloadtype_feedbacks',
+                    $downloadtype_feedbacks, $downloadtype_feedbacksdescription);
         }
     }
 
