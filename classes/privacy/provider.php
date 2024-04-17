@@ -206,11 +206,11 @@ class provider implements
     }
 
     /**
-    * Get the list of contexts that contain user information for the specified user.
-    *
-    * @param   int           $userid       The user to search.
-    * @return  contextlist   $contextlist  The list of contexts used in this plugin.
-    */
+     * Get the list of contexts that contain user information for the specified user.
+     *
+     * @param   int           $userid       The user to search.
+     * @return  contextlist   $contextlist  The list of contexts used in this plugin.
+     */
     public static function get_contexts_for_userid(int $userid): contextlist {
         $contextlist = new contextlist();
 
@@ -226,10 +226,10 @@ class provider implements
     }
 
     /**
-    * Export all user data for the specified user, in the specified contexts, using the supplied exporter instance.
-    *
-    * @param   approved_contextlist    $contextlist    The approved contexts to export information for.
-    */
+     * Export all user data for the specified user, in the specified contexts, using the supplied exporter instance.
+     *
+     * @param   approved_contextlist    $contextlist    The approved contexts to export information for.
+     */
     public static function export_user_data(approved_contextlist $contextlist) {
         global $DB;
 
@@ -283,10 +283,10 @@ class provider implements
     }
 
     /**
-    * Get the list of users who have data within a context.
-    *
-    * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
-    */
+     * Get the list of users who have data within a context.
+     *
+     * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
+     */
     public static function get_users_in_context(userlist $userlist) {
         $context = $userlist->get_context();
 
