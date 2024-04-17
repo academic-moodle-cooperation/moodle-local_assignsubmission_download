@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/assignsubmission_download/db" VERSION="20220614" COMMENT="XMLDB file for Moodle local/assignsubmission_download"
+<XMLDB PATH="local/assignsubmission_download/db" VERSION="20240407" COMMENT="XMLDB file for Moodle local/assignsubmission_download"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="local_assignsubm_download" COMMENT="Default comment for the table, please edit me">
+    <TABLE NAME="local_assignsubm_download" COMMENT="Saves settings for assign submission download of files">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="lastdownloaded" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="filenamingscheme" TYPE="char" LENGTH="200" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="preventnameextension" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="cleanfilenames" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="choosegrouping" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="Setting to choose from specific grouping"/>
+        <FIELD NAME="choosegroup" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="Setting to choose specific group"/>
+        <FIELD NAME="zipnamingscheme" TYPE="char" LENGTH="200" NOTNULL="false" SEQUENCE="false" COMMENT="Naming scheme for ZIP archive"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
@@ -25,6 +31,12 @@
         <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="lastdownloaded" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="filenamingscheme" TYPE="char" LENGTH="200" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="preventnameextension" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="cleanfilenames" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="choosegrouping" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="choosegroup" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="zipnamingscheme" TYPE="char" LENGTH="200" NOTNULL="false" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
