@@ -66,7 +66,7 @@ class provider implements
         $collection->add_user_preference('downloadtype_feedbacks', 'privacy:metadata:preference:downloadtype_feedbacks');
 
         $collection->add_database_table(
-            'local_assignsubm_download', 
+            'local_assignsubm_download',
             [
                 'id' => 'privacy:metadata:local_assignsubm_download:id',
                 'cmid' => 'privacy:metadata:local_assignsubm_download:cmid',
@@ -171,11 +171,11 @@ class provider implements
                     $printheader, $printheaderdescription);
         }
 
-        $prevent_nameextension = get_user_preferences('assign_prevent_nameextension', null, $userid);
-        if (null !== $prevent_nameextension) {
-            $prevent_nameextensiondescription = get_string('prevent_nameextension', 'local_assignsubmission_download');
+        $preventnameextension = get_user_preferences('assign_prevent_nameextension', null, $userid);
+        if (null !== $preventnameextension) {
+            $preventnameextensiondescription = get_string('prevent_nameextension', 'local_assignsubmission_download');
             writer::export_user_preference('local_assignsubmission_download', 'assign_prevent_nameextension',
-                    $prevent_nameextension, $prevent_nameextensiondescription);
+                    $preventnameextension, $preventnameextensiondescription);
         }
 
         $nameofziparchive = get_user_preferences('assign_nameofziparchive', null, $userid);
@@ -185,25 +185,24 @@ class provider implements
                     $nameofziparchive, $nameofziparchivedescription);
         }
 
-        $downloadtype_submissions = get_user_preferences('assign_downloadtype_submissions', null, $userid);
-        if (null !== $downloadtype_submissions) {
-            $downloadtype_submissionsdescription = get_string('downloadtype_submissions', 'local_assignsubmission_download');
+        $downloadtypesubmissions = get_user_preferences('assign_downloadtype_submissions', null, $userid);
+        if (null !== $downloadtypesubmissions) {
+            $downloadtypesubmissionsdescription = get_string('downloadtype_submissions', 'local_assignsubmission_download');
             writer::export_user_preference('local_assignsubmission_download', 'assign_downloadtype_submissions',
-                    $downloadtype_submissions, $downloadtype_submissionsdescription);
+                    $downloadtypesubmissions, $downloadtypesubmissionsdescription);
         }
 
-        $downloadtype_feedbacks = get_user_preferences('assign_downloadtype_feedbacks', null, $userid);
-        if (null !== $downloadtype_feedbacks) {
-            $downloadtype_feedbacksdescription = get_string('downloadtype_feedbacks', 'local_assignsubmission_download');
+        $downloadtypefeedbacks = get_user_preferences('assign_downloadtype_feedbacks', null, $userid);
+        if (null !== $downloadtypefeedbacks) {
+            $downloadtypefeedbacksdescription = get_string('downloadtype_feedbacks', 'local_assignsubmission_download');
             writer::export_user_preference('local_assignsubmission_download', 'assign_downloadtype_feedbacks',
-                    $downloadtype_feedbacks, $downloadtype_feedbacksdescription);
+                    $downloadtypefeedbacks, $downloadtypefeedbacksdescription);
         }
     }
 
-
     /**
      * Delete all personal data for all users in the specified context.
-     * 
+     *
      * @param \context $context Context to delete data from.
      */
     public static function delete_data_for_all_users_in_context(\context $context) {
@@ -215,11 +214,10 @@ class provider implements
 
     /**
      * Delete personal data for the specified user in the specified context.
-     * 
+     *
      * @param approved_contextlist $contextlist List of contexts to delete data from.
      */
-    public static function delete_data_for_user(approved_contextlist $contextlist)
-    {
+    public static function delete_data_for_user(approved_contextlist $contextlist) {
         global $DB;
 
         if (empty($contextlist->count())) {
