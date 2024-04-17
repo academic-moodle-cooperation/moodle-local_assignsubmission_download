@@ -168,9 +168,6 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-        // Assignsubmission_download savepoint reached.
-        upgrade_plugin_savepoint(true, 2024012201, 'local', 'assignsubmission_download');
-
         // Changes to table local_assignsubm_feedback.
         $table = new xmldb_table('local_assignsubm_feedback');
         // Define field filenamingscheme to be added to local_assignsubm_feedback.
