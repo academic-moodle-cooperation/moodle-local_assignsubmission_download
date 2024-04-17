@@ -29,6 +29,9 @@ use core_privacy\local\metadata\collection;
 use core_privacy\local\request\user_preference_provider;
 use core_privacy\local\request\writer;
 use core_privacy\local\request\approved_contextlist;
+use core_privacy\local\request\userlist;
+use core_privacy\local\request\contextlist;
+use core_privacy\local\request\approved_userlist;
 
 /**
  * The privacy preference provider.
@@ -40,7 +43,8 @@ use core_privacy\local\request\approved_contextlist;
 class provider implements
     user_preference_provider,
     \core_privacy\local\metadata\provider,
-    \core_privacy\local\request\plugin\provider {
+    \core_privacy\local\request\plugin\provider,
+    \core_privacy\local\request\core_userlist_provider {
     // This plugin does store personal user data, even if its just user preferences.
 
     /**
@@ -205,10 +209,10 @@ class provider implements
     * Get the list of contexts that contain user information for the specified user.
     *
     * @param   int           $userid       The user to search.
-    * @return  \core_privacy\local\request\contextlist   $contextlist  The list of contexts used in this plugin.
+    * @return  contextlist   $contextlist  The list of contexts used in this plugin.
     */
-    public static function get_contexts_for_userid(int $userid): \core_privacy\local\request\contextlist {
-        $contextlist = new \core_privacy\local\request\contextlist();
+    public static function get_contexts_for_userid(int $userid): contextlist {
+        $contextlist = new contextlist();
 
         $params = ['userid' => $userid];
 
@@ -276,5 +280,48 @@ class provider implements
             $DB->delete_records('local_assignsubm_download', ['cmid' => $context->instanceid, 'userid' => $userid]);
             $DB->delete_records('local_assignsubm_feedback', ['cmid' => $context->instanceid, 'userid' => $userid]);
         }
+    }
+
+    /**
+    * Get the list of users who have data within a context.
+    *
+    * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
+    */
+    public static function get_users_in_context(userlist $userlist) {
+        $context = $userlist->get_context();
+
+        if (!$context instanceof \context_module) {
+            return;
+        }
+
+        $cmid = $context->instanceid;
+        $params = ['cmid' => $cmid];
+
+        $sql = "SELECT userid FROM {local_assignsubm_download} WHERE cmid = :cmid";
+        $userlist->add_from_sql('userid', $sql, $params);
+
+        $sql = "SELECT userid FROM {local_assignsubm_feedback} WHERE cmid = :cmid";
+        $userlist->add_from_sql('userid', $sql, $params);
+
+        return $userlist;
+    }
+
+    /**
+     * Delete multiple users within a single context.
+     *
+     * @param approved_userlist $userlist The approved context and user information to delete information for.
+     */
+    public static function delete_data_for_users(approved_userlist $userlist) {
+        global $DB;
+
+        $context = $userlist->get_context();
+        $cmid = $context->instanceid;
+        $userids = $userlist->get_userids();
+
+        $params = ['cmid' => $cmid, 'userids' => $userids];
+        $sql = "cmid = :cmid AND userid IN (:userids)";
+
+        $DB->delete_records_select('local_assignsubm_download', $sql, $params);
+        $DB->delete_records_select('local_assignsubm_feedback', $sql, $params);
     }
 }
