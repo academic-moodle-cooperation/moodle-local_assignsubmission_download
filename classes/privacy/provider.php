@@ -39,7 +39,8 @@ use core_privacy\local\request\approved_contextlist;
  */
 class provider implements
     user_preference_provider,
-    \core_privacy\local\metadata\provider {
+    \core_privacy\local\metadata\provider,
+    \core_privacy\local\request\plugin\provider {
     // This plugin does store personal user data, even if its just user preferences.
 
     /**
@@ -197,6 +198,52 @@ class provider implements
             $downloadtypefeedbacksdescription = get_string('downloadtype_feedbacks', 'local_assignsubmission_download');
             writer::export_user_preference('local_assignsubmission_download', 'assign_downloadtype_feedbacks',
                     $downloadtypefeedbacks, $downloadtypefeedbacksdescription);
+        }
+    }
+
+    /**
+    * Get the list of contexts that contain user information for the specified user.
+    *
+    * @param   int           $userid       The user to search.
+    * @return  \core_privacy\local\request\contextlist   $contextlist  The list of contexts used in this plugin.
+    */
+    public static function get_contexts_for_userid(int $userid): \core_privacy\local\request\contextlist {
+        $contextlist = new \core_privacy\local\request\contextlist();
+
+        $params = ['userid' => $userid];
+
+        $sql = "SELECT cmid FROM {local_assignsubm_download} WHERE userid = :userid";
+        $contextlist->add_from_sql($sql, $params);
+
+        $sql = "SELECT cmid FROM {local_assignsubm_feedback} WHERE userid = :userid";
+        $contextlist->add_from_sql($sql, $params);
+
+        return $contextlist;
+    }
+
+    /**
+    * Export all user data for the specified user, in the specified contexts, using the supplied exporter instance.
+    *
+    * @param   approved_contextlist    $contextlist    The approved contexts to export information for.
+    */
+    public static function export_user_data(approved_contextlist $contextlist) {
+        global $DB;
+
+        if (empty($contextlist->count())) {
+            return;
+        }
+
+        $userid = $contextlist->get_user()->id;
+        foreach ($contextlist->get_contexts() as $context) {
+            $downloads = $DB->get_records('local_assignsubm_download', ['cmid' => $context->instanceid, 'userid' => $userid]);
+            foreach ($downloads as $download) {
+                writer::with_context($context)->export_data([], $download);
+            }
+
+            $feedbacks = $DB->get_records('local_assignsubm_feedback', ['cmid' => $context->instanceid, 'userid' => $userid]);
+            foreach ($feedbacks as $feedback) {
+                writer::with_context($context)->export_data([], $feedback);
+            }
         }
     }
 
