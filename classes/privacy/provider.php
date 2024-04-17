@@ -28,6 +28,7 @@ namespace local_assignsubmission_download\privacy;
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\user_preference_provider;
 use core_privacy\local\request\writer;
+use core_privacy\local\request\approved_contextlist;
 
 /**
  * The privacy preference provider.
@@ -199,4 +200,36 @@ class provider implements
         }
     }
 
+
+    /**
+     * Delete all personal data for all users in the specified context.
+     * 
+     * @param \context $context Context to delete data from.
+     */
+    public static function delete_data_for_all_users_in_context(\context $context) {
+        global $DB;
+
+        $DB->delete_records('local_assignsubm_download', ['cmid' => $context->instanceid]);
+        $DB->delete_records('local_assignsubm_feedback', ['cmid' => $context->instanceid]);
+    }
+
+    /**
+     * Delete personal data for the specified user in the specified context.
+     * 
+     * @param approved_contextlist $contextlist List of contexts to delete data from.
+     */
+    public static function delete_data_for_user(approved_contextlist $contextlist)
+    {
+        global $DB;
+
+        if (empty($contextlist->count())) {
+            return;
+        }
+
+        $userid = $contextlist->get_user()->id;
+        foreach ($contextlist->get_contexts() as $context) {
+            $DB->delete_records('local_assignsubm_download', ['cmid' => $context->instanceid, 'userid' => $userid]);
+            $DB->delete_records('local_assignsubm_feedback', ['cmid' => $context->instanceid, 'userid' => $userid]);
+        }
+    }
 }
