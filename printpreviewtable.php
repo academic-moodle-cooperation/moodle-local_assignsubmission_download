@@ -285,7 +285,7 @@ class printpreview_table extends table_sql implements renderable {
 
         // Grade.
         $columns[] = 'grade';
-        $headers[] = get_string('grade', 'grades');
+        $headers[] = get_string('modgrade', 'grades');
 
         // Time marked.
         $columns[] = 'timemarked';
@@ -864,7 +864,7 @@ class printpreview_table extends table_sql implements renderable {
         } else if (is_null($this->exportclass) && !empty($this->download)) {
             // There is currently (3.1) no writer.php for pdf; we use our mtablepdf.
             if ($this->download === 'pdf') {
-                $this->exportclass = new table_pdf_export_format($this, $this->download);
+                $this->exportclass = new table_pdf_export_format($this);
             } else {
                 $this->exportclass = new table_dataformat_export_format($this, $this->download);
             }
