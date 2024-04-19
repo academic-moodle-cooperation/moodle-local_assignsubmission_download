@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+4.4.0 (2024-04-22)
+------------------
+
+* Moodle 4.4 compatible version
+* [FEATURE] #7485 Option for download to prevent automatic file name extension
+* [FEATURE] #7255 Information to last download settings displayed
+* [FEATURE] #7256 New option to set ZIP archive name for download
+
 4.3.0 (2024-01-22)
 ------------------
 
