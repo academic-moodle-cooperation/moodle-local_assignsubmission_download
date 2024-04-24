@@ -601,7 +601,7 @@ class filerenaming extends assign {
 
     /**
      * Check if content is only HTML structure.
-     * 
+     *
      * @param string $content The content to check.
      * @return bool
      */
