@@ -600,6 +600,16 @@ class filerenaming extends assign {
     }
 
     /**
+     * Check if content is only HTML structure.
+     * 
+     * @param string $content The content to check.
+     * @return bool
+     */
+    public function is_only_html_structure($content) {
+        return $content == '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body></body></html>';
+    }
+
+    /**
      * Download a zip file of all assignment submissions.
      * @param mixed $coursegroup
      * @param mixed $coursegrouping
@@ -796,9 +806,7 @@ class filerenaming extends assign {
                                                 $onlinetextcontents = str_replace(array_keys($onlinetextfilestorename),
                                                     array_values($onlinetextfilestorename), $onlinetextcontents);
                                                 // Adds the onlinetext file only if it is not empty.
-                                                if ($onlinetextcontents !=
-                                                    '<!DOCTYPE html><html><head><meta charset="UTF-8">
-                                                        </head><body></body></html>') {
+                                                if (!$this->is_only_html_structure($onlinetextcontents)) {
                                                     $filesforzipping[$onlinetextfilename] = [$onlinetextcontents];
                                                 }
                                             } else {
