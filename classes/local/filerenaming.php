@@ -793,19 +793,21 @@ class filerenaming extends assign {
                                                     $onlinetextcontents = $file[0];
                                                     $onlinetextfilename = $prefixedfilename;
                                                 }
+                                                $onlinetextcontents = str_replace(array_keys($onlinetextfilestorename),
+                                                    array_values($onlinetextfilestorename), $onlinetextcontents);
+                                                // Adds the onlinetext file only if it is not empty.
+                                                if ($onlinetextcontents !=
+                                                    '<!DOCTYPE html><html><head><meta charset="UTF-8">
+                                                        </head><body></body></html>') {
+                                                    $filesforzipping[$onlinetextfilename] = [$onlinetextcontents];
+                                                }
                                             } else {
-
                                                 $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename,
                                                     $student, $this, $submission, $groupname, $sequence++, $filesforzipping,
                                                     $preventnameextension);
                                                 $filesforzipping[$prefixedfilename] = $file;
                                             }
                                         }
-                                    }
-                                    if ($type == 'onlinetext') {
-                                        $onlinetextcontents = str_replace(array_keys($onlinetextfilestorename),
-                                            array_values($onlinetextfilestorename), $onlinetextcontents);
-                                        $filesforzipping[$onlinetextfilename] = [$onlinetextcontents];
                                     }
                                 }
                             }
