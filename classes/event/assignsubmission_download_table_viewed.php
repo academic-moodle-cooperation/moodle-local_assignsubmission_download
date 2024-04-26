@@ -73,7 +73,7 @@ class assignsubmission_download_table_viewed extends \mod_assign\event\base {
      */
     protected function init() {
         $this->data['crud'] = 'r';
-        $this->data['edulevel'] = self::LEVEL_TEACHING;
+        $this->data['edulevel'] = \core\event\base::LEVEL_TEACHING;
     }
 
     /**
