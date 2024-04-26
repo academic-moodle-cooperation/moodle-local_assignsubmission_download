@@ -174,7 +174,7 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
             $groupname = reset($groupsmenu);
             $output = $groupname;
         } else {
-            $select = new single_select($this->url, 'group', $groupsmenu, $activegroup, null, 'selectgroup');
+            $select = new single_select($this->url, 'group', $groupsmenu, $activegroup, [], 'selectgroup');
             $output = $this->render_single_select($select);
         }
 

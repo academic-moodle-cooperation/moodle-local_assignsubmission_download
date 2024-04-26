@@ -260,7 +260,7 @@ function ziprenaming_rename_zip_archive ($assign) {
 
     // Declare the variables to replace.
     $assignmentname = $assign->get_instance()->name;
-    $assignmentid = $assign->get_instance()->id;
+    $assignmentid = $assign->get_course_module()->id;
     $courseshortname = $assign->get_course()->shortname;
     $currentdate = date('Ymd');
     $currenttime = userdate(time(), '%H%M', 99, false, false);
