@@ -62,15 +62,13 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
         '[filenumber]', '[groupid]', '[courseshortname]', '[currenttime]', '[currentdate]',
     ];
     $filerenaminguserpref = get_user_preferences('filerenamingpattern', '');
+    $cleanfilenameuserpref = get_user_preferences('clean_filerenaming', '');
     $o = '';
     if ($preventprefix && ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
         $o = $filerenaminguserpref;
-    } else if (ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
-        // Use locally set filerenaming.
-        $o = $filerenaminguserpref . $prefixedfilename;
     } else {
-        // Nothing to replace.
-        return clean_custom($prefixedfilename);
+        // Use locally set filerenaming.
+        $o = $preventprefix ? $filerenaminguserpref : $filerenaminguserpref.$prefixedfilename;
     }
 
     // Reduce to a length of max 256, reserve three digits for existing files (max 999 equal filenames in db).
