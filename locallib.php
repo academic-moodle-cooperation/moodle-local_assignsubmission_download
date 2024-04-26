@@ -69,7 +69,7 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
     } else {
         // Use locally set filerenaming.
         $o = $preventprefix ? $filerenaminguserpref : $filerenaminguserpref.$prefixedfilename;
-    } 
+    }
 
     // Reduce to a length of max 256, reserve three digits for existing files (max 999 equal filenames in db).
     $maxlength = 252;
