@@ -62,7 +62,6 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
         '[filenumber]', '[groupid]', '[courseshortname]', '[currenttime]', '[currentdate]',
     ];
     $filerenaminguserpref = get_user_preferences('filerenamingpattern', '');
-    $cleanfilenameuserpref = get_user_preferences('clean_filerenaming', '');
     $o = '';
     if ($preventprefix && ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
         $o = $filerenaminguserpref;
@@ -175,7 +174,6 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
     return $o;
 }
 
-
 /**
  * Helper function to check if the given filerenaming string contains any acceptable pattern.
  *
@@ -194,16 +192,6 @@ function ispatternvalid($acceptedplaceholders, $teststring) {
         }
     }
     return $isvalidpattern;
-}
-
-/**
- * Helper function to create a clean filename.
- *
- * @param string $filename original filename which to clean
- * @return string the clean filename
- */
-function filerenaming_clean_custom($filename) {
-    return clean_custom($filename);
 }
 
 /**
@@ -228,8 +216,9 @@ function replace_custom($o, $maxlength, $pattern, $string) {
 }
 
 /**
- * Helper function to replace "special" characters with regular ones in filenames.
- * Also replaces spaces with underscores.
+ * Helper function to replace umlauts with regular characters in filenames.
+ * Also replaces spaces with underscores. If clean_filerenaming is set, also
+ * removes any other special characters.
  *
  * @param string $filename filename which to clean up
  * @return string the clean filename, without special characters
