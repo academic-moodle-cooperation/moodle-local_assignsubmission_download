@@ -52,9 +52,9 @@ class printpreview_table extends table_sql implements renderable {
     private $gradinginfo = null;
     /** @var int $tablemaxrows */
     private $tablemaxrows = 10000;
-    /** @var boolean $quickgrading */
+    /** @var bool $quickgrading */
     private $quickgrading = false;
-    /** @var boolean $hasgrantextension - Only do the capability check once for the entire table */
+    /** @var bool $hasgrantextension - Only do the capability check once for the entire table */
     private $hasgrantextension = false;
     /** @var array $groupsubmissions - A static cache of group submissions */
     private $groupsubmissions = [];
