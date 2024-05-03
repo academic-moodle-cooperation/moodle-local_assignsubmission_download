@@ -217,12 +217,12 @@ class provider implements
         $params = [
             'modulename' => 'assign',
             'contextlevel' => CONTEXT_MODULE,
-            'userid' => $userid
+            'userid' => $userid,
         ];
 
-        $sql = "SELECT c.id 
-                FROM {context} c 
-                INNER JOIN {course_modules} cm ON cm.id = c.instanceid 
+        $sql = "SELECT c.id
+                FROM {context} c
+                INNER JOIN {course_modules} cm ON cm.id = c.instanceid
                 INNER JOIN {modules} m ON cm.module = m.id AND m.name = :modulename
                 INNER JOIN {local_assignsubm_download} d ON d.cmid = cm.id
                 WHERE ( d.userid = :userid
@@ -230,9 +230,9 @@ class provider implements
 
         $contextlist->add_from_sql($sql, $params);
 
-        $sql = "SELECT c.id 
-                 FROM {context} c 
-                 INNER JOIN {course_modules} cm ON cm.id = c.instanceid 
+        $sql = "SELECT c.id
+                 FROM {context} c
+                 INNER JOIN {course_modules} cm ON cm.id = c.instanceid
                  INNER JOIN {modules} m ON cm.module = m.id AND m.name = :modulename
                  INNER JOIN {local_assignsubm_feedback} d ON d.cmid = cm.id
                  WHERE ( d.userid = :userid
