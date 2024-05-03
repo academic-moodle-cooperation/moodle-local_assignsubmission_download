@@ -206,12 +206,6 @@ class printpreview extends assign {
                                                             $printpreviewsettingsform
                                                             ));
 
-        // Plagiarism update status apearring in the grading book.
-        if (!empty($CFG->enableplagiarism)) {
-            require_once($CFG->libdir . '/plagiarismlib.php');
-            $o .= plagiarism_update_status($this->get_course(), $this->get_course_module()); // TODO fix deprecated function!
-        }
-
         // Load and print the table of submissions.
         $o .= html_writer::start_tag('div', ['class' => 'table_printpreview']);
 
