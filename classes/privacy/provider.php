@@ -176,31 +176,31 @@ class provider implements
                     $printheader, $printheaderdescription);
         }
 
-        $preventnameextension = get_user_preferences('assign_prevent_nameextension', null, $userid);
+        $preventnameextension = get_user_preferences('prevent_nameextension', null, $userid);
         if (null !== $preventnameextension) {
             $preventnameextensiondescription = get_string('prevent_nameextension', 'local_assignsubmission_download');
-            writer::export_user_preference('local_assignsubmission_download', 'assign_prevent_nameextension',
+            writer::export_user_preference('local_assignsubmission_download', 'prevent_nameextension',
                     $preventnameextension, $preventnameextensiondescription);
         }
 
-        $nameofziparchive = get_user_preferences('assign_nameofziparchive', null, $userid);
+        $nameofziparchive = get_user_preferences('nameofziparchive', null, $userid);
         if (null !== $nameofziparchive) {
             $nameofziparchivedescription = get_string('nameofziparchive', 'local_assignsubmission_download');
-            writer::export_user_preference('local_assignsubmission_download', 'assign_nameofziparchive',
+            writer::export_user_preference('local_assignsubmission_download', 'nameofziparchive',
                     $nameofziparchive, $nameofziparchivedescription);
         }
 
-        $downloadtypesubmissions = get_user_preferences('assign_downloadtype_submissions', null, $userid);
+        $downloadtypesubmissions = get_user_preferences('downloadtype_submissions', null, $userid);
         if (null !== $downloadtypesubmissions) {
             $downloadtypesubmissionsdescription = get_string('downloadtype_submissions', 'local_assignsubmission_download');
-            writer::export_user_preference('local_assignsubmission_download', 'assign_downloadtype_submissions',
+            writer::export_user_preference('local_assignsubmission_download', 'downloadtype_submissions',
                     $downloadtypesubmissions, $downloadtypesubmissionsdescription);
         }
 
-        $downloadtypefeedbacks = get_user_preferences('assign_downloadtype_feedbacks', null, $userid);
+        $downloadtypefeedbacks = get_user_preferences('downloadtype_feedbacks', null, $userid);
         if (null !== $downloadtypefeedbacks) {
             $downloadtypefeedbacksdescription = get_string('downloadtype_feedbacks', 'local_assignsubmission_download');
-            writer::export_user_preference('local_assignsubmission_download', 'assign_downloadtype_feedbacks',
+            writer::export_user_preference('local_assignsubmission_download', 'downloadtype_feedbacks',
                     $downloadtypefeedbacks, $downloadtypefeedbacksdescription);
         }
     }
@@ -214,12 +214,29 @@ class provider implements
     public static function get_contexts_for_userid(int $userid): contextlist {
         $contextlist = new contextlist();
 
-        $params = ['userid' => $userid];
+        $params = [
+            'modulename' => 'assign',
+            'contextlevel' => CONTEXT_MODULE,
+            'userid' => $userid,
+        ];
 
-        $sql = "SELECT cmid FROM {local_assignsubm_download} WHERE userid = :userid";
+        $sql = "SELECT c.id
+                FROM {context} c
+                INNER JOIN {course_modules} cm ON cm.id = c.instanceid
+                INNER JOIN {modules} m ON cm.module = m.id AND m.name = :modulename
+                INNER JOIN {local_assignsubm_download} d ON d.cmid = cm.id
+                WHERE ( d.userid = :userid
+                    AND c.contextlevel = :contextlevel )";
+
         $contextlist->add_from_sql($sql, $params);
 
-        $sql = "SELECT cmid FROM {local_assignsubm_feedback} WHERE userid = :userid";
+        $sql = "SELECT c.id
+                 FROM {context} c
+                 INNER JOIN {course_modules} cm ON cm.id = c.instanceid
+                 INNER JOIN {modules} m ON cm.module = m.id AND m.name = :modulename
+                 INNER JOIN {local_assignsubm_feedback} d ON d.cmid = cm.id
+                 WHERE ( d.userid = :userid
+                     AND c.contextlevel = :contextlevel )";
         $contextlist->add_from_sql($sql, $params);
 
         return $contextlist;
@@ -239,15 +256,18 @@ class provider implements
 
         $userid = $contextlist->get_user()->id;
         foreach ($contextlist->get_contexts() as $context) {
-            $downloads = $DB->get_records('local_assignsubm_download', ['cmid' => $context->instanceid, 'userid' => $userid]);
-            foreach ($downloads as $download) {
-                writer::with_context($context)->export_data([], $download);
+            $exportdata = new \stdClass();
+            $feedbacks = $DB->get_records('local_assignsubm_feedback', ['userid' => $userid, 'cmid' => $context->instanceid]);
+            foreach ($feedbacks as $feedback) {
+                $exportdata->feedback = $feedback;
             }
 
-            $feedbacks = $DB->get_records('local_assignsubm_feedback', ['cmid' => $context->instanceid, 'userid' => $userid]);
-            foreach ($feedbacks as $feedback) {
-                writer::with_context($context)->export_data([], $feedback);
+            $downloads = $DB->get_records('local_assignsubm_download', ['userid' => $userid, 'cmid' => $context->instanceid]);
+            foreach ($downloads as $download) {
+                $exportdata->download = $download;
             }
+
+            writer::with_context($context)->export_data([], $exportdata);
         }
     }
 
@@ -318,8 +338,13 @@ class provider implements
         $cmid = $context->instanceid;
         $userids = $userlist->get_userids();
 
-        $params = ['cmid' => $cmid, 'userids' => $userids];
-        $sql = "cmid = :cmid AND userid IN (:userids)";
+        if (empty($userids)) {
+            return;
+        }
+
+        list($insql, $params) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+        $params['cmid'] = $cmid;
+        $sql = "cmid = :cmid AND userid $insql";
 
         $DB->delete_records_select('local_assignsubm_download', $sql, $params);
         $DB->delete_records_select('local_assignsubm_feedback', $sql, $params);
