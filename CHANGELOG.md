@@ -5,9 +5,12 @@ CHANGELOG
 ------------------
 
 * Moodle 4.4 compatible version
-* [FEATURE] #7485 Option for download to prevent automatic file name extension
+* [FEATURE] #7482 Option for download to prevent automatic file name extension
 * [FEATURE] #7255 Information to last download settings displayed
 * [FEATURE] #7256 New option to set ZIP archive name for download
+* [FIXED] #7914 Fix function to download all submissions that are newer than a given time
+* [FIXED] #7916 Update of an incorrect help text of the function to clean filenames
+
 
 4.3.0 (2024-01-22)
 ------------------
