@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+4.4.1 (2024-09-15)
+------------------
+
+* [FIXED] #8041 Changed hard-coded string to correct string with an identifier
+
 4.4.0 (2024-04-22)
 ------------------
 
