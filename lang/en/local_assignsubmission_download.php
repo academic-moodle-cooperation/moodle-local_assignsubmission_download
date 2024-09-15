@@ -77,6 +77,8 @@ $string['lastdownloaded_title'] = 'User\'s last download submissions';
 $string['lastdownloaded_title_help'] = 'The date shows the last download of the user of submissions from students.';
 $string['lastdownloadedfeedbacks_title'] = 'User\'s last download feedback files';
 $string['lastdownloadedfeedbacks_title_help'] = 'The date shows the last download of the user of feedback files from teachers.';
+$string['lastfeedbackdownloadsettings'] = 'Last feedback file download settings';
+$string['lastsubmissionsdownloadsettings'] = 'Last file submissions download settings';
 $string['nameofziparchive'] = 'Name of the zip archive';
 $string['nameofziparchive_help'] = 'Name of the zip archive which contains the downloaded files. The following bracket terms (\'tags\') are available:<br>
     <br>
