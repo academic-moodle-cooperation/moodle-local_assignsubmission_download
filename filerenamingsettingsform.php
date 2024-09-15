@@ -202,7 +202,8 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         }
 
         // Add new collabsible area for settings of last submissions download.
-        $mform->addElement('header', 'lastdownloadsettings', 'Last file submissions download settings', '');
+        $mform->addElement('header', 'lastdownloadsettings',
+            get_string('lastsubmissionsdownloadsettings', 'local_assignsubmission_download'), '');
         $mform->setExpanded('lastdownloadsettings', false);
 
         $mform->addElement('static', 'lastfilenamingscheme', get_string('filerenamingpattern',
@@ -223,7 +224,8 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->closeHeaderBefore('lastfeedbacksettings');
 
         // Add new collabsible area for settings of last submissions download.
-        $mform->addElement('header', 'lastfeedbacksettings', 'Last feedback file download settings', '');
+        $mform->addElement('header', 'lastfeedbacksettings',
+            get_string('lastfeedbackdownloadsettings', 'local_assignsubmission_download'), '');
         $mform->setExpanded('lastfeedbacksettings', false);
 
         $mform->addElement('static', 'lastfilenamingscheme', get_string('filerenamingpattern',
