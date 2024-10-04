@@ -51,7 +51,7 @@ class local_assignsubmission_download_renderer extends plugin_renderer_base {
         $this->page->requires->string_for_js('batchoperationconfirmaddattempt', 'assign');
         $this->page->requires->string_for_js('batchoperationconfirmsetmarkingworkflowstate', 'assign');
         $this->page->requires->string_for_js('batchoperationconfirmsetmarkingallocation', 'assign');
-        $this->page->requires->string_for_js('editaction', 'assign');
+        $this->page->requires->string_for_js('actions', 'moodle');
         foreach ($table->plugingradingbatchoperations as $plugin => $operations) {
             foreach ($operations as $operation => $description) {
                 $this->page->requires->string_for_js('batchoperationconfirm' . $operation,

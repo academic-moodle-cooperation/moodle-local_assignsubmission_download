@@ -139,7 +139,7 @@ class printpreview extends assign {
             }
         }
         $gradingactions = new url_select($links);
-        $gradingactions->set_label(get_string('choosegradingaction', 'assign'));
+        $gradingactions->set_label(get_string('choosegradingaction', 'local_assignsubmission_download'));
         $gradingmanager = get_grading_manager($this->get_context(), 'mod_assign', 'submissions');
 
         $filter  = get_user_preferences('assign_filter', '');
