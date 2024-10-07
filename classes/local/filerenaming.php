@@ -57,17 +57,14 @@ class filerenaming extends assign {
      * @return string
      */
     protected function view_grading_page() {
-        global $CFG, $SESSION, $PAGE;
-
-        $id = required_param('id', PARAM_INT);
-        $o = '';
+        global $SESSION;
 
         // Ugly hack, dont try this at home!
         if (empty($SESSION->assignment)) {
             $SESSION->assignment = new stdClass();
         }
 
-        $o .= $this->view_filerenaming_page();
+        $o = $this->view_filerenaming_page();
 
         return $o;
     }
@@ -144,7 +141,7 @@ class filerenaming extends assign {
         }
 
         $gradingactions = new url_select($links);
-        $gradingactions->set_label(get_string('choosegradingaction', 'assign'));
+        $gradingactions->set_label(get_string('choosegradingaction', 'local_assignsubmission_download'));
 
         $filerenamingsettingsform = $this->get_filenrenaming_form();
         $filerenamingsettingsdata = $this->generate_filerenaming_settings_data($cmid, $USER->id);

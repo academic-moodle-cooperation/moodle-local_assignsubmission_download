@@ -28,6 +28,7 @@
 
 $string['all'] = 'All';
 $string['assignsubmission_download:view'] = 'Grant access to file renaming and submission export';
+$string['choosegradingaction'] = 'Grading action';
 $string['clean_filerenaming'] = 'Clean filenames';
 $string['clean_filerenaming_help'] = 'Removes special characters from filenames. White spaces and umlauts are always replaced, e.g. \'Übung 1-Gruppe$4\' becomes \'Uebung_1-Gruppe4\'';
 $string['data_preview'] = 'Data preview';
