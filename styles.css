@@ -48,6 +48,11 @@
     margin-left: 10px;
 }
 
+.path-mod-assign.local-assignsubmission_download .gradingtable thead tr {
+    position: inherit;
+    top: 0px;
+}
+
 .path-mod-assign div.data_bold {
     padding: 12px;
     font-weight: bold;
