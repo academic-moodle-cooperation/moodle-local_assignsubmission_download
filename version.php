@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2024091500;
+$plugin->version   = 2024042201;
 $plugin->requires  = 2024042200;           // Requires this Moodle version!
 $plugin->component = 'local_assignsubmission_download';    // To check on upgrade, that module sits in correct place.
 $plugin->maturity  = MATURITY_STABLE;
