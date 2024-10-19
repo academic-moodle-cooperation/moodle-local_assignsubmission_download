@@ -67,13 +67,13 @@ class local_assignsubmission_download_renderer extends plugin_renderer_base {
     /**
      * Helper method dealing with the fact we can not just fetch the output of flexible_table
      *
-     * @param flexible_table $table The table to render
+     * @param core_table\sql_table $table The table to render
      * @param int $rowsperpage How many assignments to render in a page
      * @param bool $displaylinks - Whether to render links in the table
      *                             (e.g. downloads would not enable this)
      * @return string HTML
      */
-    protected function flexible_table(flexible_table $table, $rowsperpage, $displaylinks) {
+    protected function flexible_table(core_table\sql_table $table, $rowsperpage, $displaylinks) {
 
         $o = '';
         ob_start();
