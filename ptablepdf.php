@@ -35,7 +35,7 @@ require_once('printpreviewsettingsform.php');
  * @copyright     2014 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class table_pdf_export_format extends table_default_export_format_parent {
+class table_pdf_export_format extends core_table\base_export_format {
     /**
      * @var MTablePDF pdf object
      */

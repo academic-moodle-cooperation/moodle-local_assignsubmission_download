@@ -175,6 +175,21 @@ class printpreview extends assign {
             'printheader' => $printheader,
         ];
 
+        // Load and print the table of submissions.
+        $tablehtml = html_writer::start_tag('div', ['class' => 'table_printpreview']);
+
+        $helpicon = new help_icon('data_preview', 'local_assignsubmission_download');
+        $tablehtml .= html_writer::tag('div', get_string('data_preview', 'local_assignsubmission_download')
+            .$OUTPUT->render($helpicon), ['class' => 'data_bold']);
+
+        $gradingtable = new printpreview_table($this, $perpage, $filter, 0, null);
+
+        $tablehtml .= $PAGE->get_renderer('local_assignsubmission_download')->render($gradingtable);
+
+        $tablehtml .= html_writer::end_tag('div');
+
+        $printpreviewsettingsformparams['tablehtml'] = $tablehtml;
+
         $formoptions = ['class' => 'gradingbatchoperationsform', 'data-double-submit-protection' => 'off'];
         // Print options for changing the filter and changing the number of results per page.
         $printpreviewsettingsform = new mod_assign_printpreview_settings_form(
@@ -206,18 +221,6 @@ class printpreview extends assign {
                                                             $printpreviewsettingsform
                                                             ));
 
-        // Load and print the table of submissions.
-        $o .= html_writer::start_tag('div', ['class' => 'table_printpreview']);
-
-        $helpicon = new help_icon('data_preview', 'local_assignsubmission_download');
-        $o .= html_writer::tag('div', get_string('data_preview', 'local_assignsubmission_download')
-           .$OUTPUT->render($helpicon), ['class' => 'data_bold']);
-
-        $gradingtable = new printpreview_table($this, $perpage, $filter, 0, null);
-
-        $o .= $PAGE->get_renderer('local_assignsubmission_download')->render($gradingtable);
-
-        $o .= html_writer::end_tag('div');
         return $o;
     }
 
@@ -262,7 +265,9 @@ class printpreview extends assign {
             set_user_preference('assign_pageorientation', isset($data->pageorientation) ? $data->pageorientation : 0);
             set_user_preference('assign_printheader', $data->printheader);
 
-            $SESSION->selectedusers = explode(',', $data->selectedusers);
+            $selectedusers = optional_param_array('selectedusers', [], PARAM_INT);
+
+            $SESSION->selectedusers = $selectedusers;
             // Download submissions.
             if (isset($data->submittoprint)) {
                 $this->export_printpreview_table();

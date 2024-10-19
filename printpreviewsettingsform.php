@@ -128,13 +128,15 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $mform->setType('id', PARAM_INT);
         $mform->addElement('hidden', 'userid', $instance['userid']);
         $mform->setType('userid', PARAM_INT);
-        $mform->addElement('hidden', 'selectedusers', '', ['class' => 'selectedusers']);
-        $mform->setType('selectedusers', PARAM_SEQUENCE);
         $mform->addElement('hidden', 'action', 'grading');
         $mform->setType('action', PARAM_ALPHA);
 
-        // Button.
+        // Button to submit.
         $mform->addElement('submit', 'submittoprint', get_string('strprint', 'local_assignsubmission_download'));
 
+        // Add data preview table. Workaround to add table to form to be able to use the selectedusers[] field.
+        if (isset($this->_customdata['tablehtml'])) {
+            $mform->addElement('html', $this->_customdata['tablehtml']);
+        }
     }
 }

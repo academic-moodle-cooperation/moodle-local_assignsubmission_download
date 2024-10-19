@@ -485,7 +485,7 @@ class printpreview_table extends table_sql implements renderable {
         $selectcol .= '</label>';
         $selectcol .= '<input type="checkbox"
                               id="selectuser_' . $row->userid . '"
-                              name="selectedusers"
+                              name="selectedusers[]"
                               value="' . $row->userid . '"/>';
         $selectcol .= '<input type="hidden"
                               name="grademodified_' . $row->userid . '"
