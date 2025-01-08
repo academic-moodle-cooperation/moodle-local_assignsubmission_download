@@ -93,6 +93,8 @@ class MTablePDF extends \pdf {
 
     /** @var $data tables data */
     private $data = [];
+    /** @var $header header titles */
+    private $header = [];
 
     /**
      * Constructor
