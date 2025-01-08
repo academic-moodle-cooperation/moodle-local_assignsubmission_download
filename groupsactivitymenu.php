@@ -50,6 +50,10 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
      * @var int groupmode
      */
     private $groupmode;
+    /**
+     * @var bool render
+     */
+    private $render;
 
     /**
      * Summary of __construct
