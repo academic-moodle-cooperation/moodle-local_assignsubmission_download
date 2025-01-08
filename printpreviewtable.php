@@ -89,7 +89,7 @@ class printpreview_table extends table_sql implements renderable {
 
         foreach ($assignment->get_feedback_plugins() as $plugin) {
             if ($plugin->is_visible() && $plugin->is_enabled()) {
-                foreach ($plugin->get_grading_batch_operations() as $action => $description) {
+                foreach ($plugin->get_grading_batch_operation_details() as $action => $description) {
                     if (empty($this->plugingradingbatchoperations)) {
                         $this->plugingradingbatchoperations[$plugin->get_type()] = [];
                     }
