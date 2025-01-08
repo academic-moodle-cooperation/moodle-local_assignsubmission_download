@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+4.5.1 (2025-01-08)
+------------------
+
+* [FIXED] #8141 Fixed language string [github pr #11 - germanvaleroelizondo]
+
 4.5.0 (2024-10-04)
 ------------------
 
@@ -9,7 +14,7 @@ CHANGELOG
 4.4.1 (2024-09-15)
 ------------------
 
-* [FIXED] #8041 Changed hard-coded string to correct string with an identifier
+* [FIXED] #8041 Changed hard-coded string to correct string with an identifier
 
 4.4.0 (2024-04-22)
 ------------------
