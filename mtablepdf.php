@@ -95,6 +95,8 @@ class MTablePDF extends \pdf {
     private $data = [];
     /** @var $header header titles */
     private $header = [];
+    /** @var $align alignment of columns */
+    private $align = [];
 
     /**
      * Constructor
