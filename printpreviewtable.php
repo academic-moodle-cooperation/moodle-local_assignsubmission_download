@@ -60,7 +60,7 @@ class printpreview_table extends table_sql implements renderable {
     private $groupsubmissions = [];
     /** @var array $submissiongroups - A static cache of submission groups */
     private $submissiongroups = [];
-    /** @var string $plugingradingbatchoperations - List of plugin supported batch operations */
+    /** @var array $plugingradingbatchoperations - List of plugin supported batch operations */
     public $plugingradingbatchoperations = [];
     /** @var array $plugincache - A cache of plugin lookups to match a column name to a plugin efficiently */
     private $plugincache = [];
