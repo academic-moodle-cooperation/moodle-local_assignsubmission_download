@@ -50,25 +50,7 @@ $string['exportformat'] = 'Format';
 $string['filenumberinfo'] = 'Maximum number of uploaded files is larger than 1. Consider using [filenumber] to number all uploads of a student in order to improve sorting.';
 $string['filerenamesettingstitle'] = 'Download renamed submissions';
 $string['filerenamingpattern'] = 'Naming scheme';
-$string['filerenamingpattern_help'] = 'The parameter \'naming scheme\' determines the naming of the filenames. The following bracket terms (\'tags\') are available:<br>
-    <br>
-    [idnumber] matriculation number<br>
-    [lastname] last name<br>
-    [firstname] first name<br>
-    [fullname] full name<br>
-    [group] group, in case the participant is enroled into a group<br>
-    [groupid] group id, in case the participant is enroled into a group and it has an id<br>
-    [filename] original filename<br>
-    [filenumber] sequential number for files uploaded by a single student<br>
-    [assignmentname] name of the assignment<br>
-    [courseshortname] short name of the course<br>
-    [currentdate] current date in format YYYYMMDD (YearMonthDay)<br>
-    [currenttime] current time HHMM (HoursMinutes)<br>
-    <br>
-    If you add any alphanumeric characters (without brackets), these characters will be added to all the uploaded/downloaded assignments<br>
-    <br>
-    Example:<br>
-    The entry \'[idnumber]-[lastname]_[assignmentname]\' will result the following filename: \'01234567-Muster_assignmentname\'';
+$string['filerenamingpattern_help'] = 'The parameter \'naming scheme\' determines the naming of the filenames. The following bracket terms (\'tags\') are available:<br><br>[idnumber] matriculation number<br>[lastname] last name<br>[firstname] first name<br>[fullname] full name<br>[group] group, in case the participant is enroled into a group<br>[groupid] group id, in case the participant is enroled into a group and it has an id<br>[filename] original filename<br>[filenumber] sequential number for files uploaded by a single student<br>[assignmentname] name of the assignment<br>[courseshortname] short name of the course<br>[currentdate] current date in format YYYYMMDD (YearMonthDay)<br>[currenttime] current time HHMM (HoursMinutes)<br><br>If you add any alphanumeric characters (without brackets), these characters will be added to all the uploaded/downloaded assignments<br><br>Example:<br>The entry \'[idnumber]-[lastname]_[assignmentname]\' will result the following filename: \'01234567-Muster_assignmentname\'';
 $string['hiddenuser'] = 'Participant';
 $string['labelgroup'] = 'Focus download on group';
 $string['labelgroup_help'] = 'Download assignments of students from a specific group only.';
@@ -81,18 +63,7 @@ $string['lastdownloadedfeedbacks_title_help'] = 'The date shows the last downloa
 $string['lastfeedbackdownloadsettings'] = 'Last feedback file download settings';
 $string['lastsubmissionsdownloadsettings'] = 'Last file submissions download settings';
 $string['nameofziparchive'] = 'Name of the zip archive';
-$string['nameofziparchive_help'] = 'Name of the zip archive which contains the downloaded files. The following bracket terms (\'tags\') are available:<br>
-    <br>
-    [assignmentname] name of the assignment<br>
-    [assignmentid] id of the assignment<br>
-    [courseshortname] short name of the course<br>
-    [currentdate] current date in format YYYYMMDD (YearMonthDay)<br>
-    [currenttime] current time HHMM (HoursMinutes)<br>
-    <br>
-    If you add any alphanumeric characters (without brackets), these characters will be added to the zip archive name<br>
-    <br>
-    Example:<br>
-    The entry \'[courseshortname]-[assignmentname]_[currentdate]\' will result the following zip archive name: \'EC-exampleassignment_20240401\'';
+$string['nameofziparchive_help'] = 'Name of the zip archive which contains the downloaded files. The following bracket terms (\'tags\') are available:<br><br>[assignmentname] name of the assignment<br>[assignmentid] id of the assignment<br>[courseshortname] short name of the course<br>[currentdate] current date in format YYYYMMDD (YearMonthDay)<br>[currenttime] current time HHMM (HoursMinutes)<br><br>If you add any alphanumeric characters (without brackets), these characters will be added to the zip archive name<br><br>Example:<br>The entry \'[courseshortname]-[assignmentname]_[currentdate]\' will result the following zip archive name: \'EC-exampleassignment_20240401\'';
 $string['nodownloadsyet'] = 'no downloads yet';
 $string['nosubmissionneweras'] = 'No submission was made after {$a}';
 $string['notreuploadable_hint'] = 'Note, if one of the feedback types \'Feedback files\' or \'Offline grading worksheet\' is checked, the renamed download files of this page cannot be uploaded anymore.';
@@ -108,11 +79,9 @@ $string['pdf_nogroup'] = 'No group';
 $string['pdf_notactive'] = 'not activated';
 $string['pdf_view'] = 'Print preview';
 $string['perpage'] = 'Submissions shown per page';
-$string['perpage_help'] = 'This sets the number of submissions which are displayed per page in the pdf.
-    Choose "Optimum" to optimize the distribution of list entries according to the chosen textsize and page orientation, if there are plenty of participants registered in your course.';
+$string['perpage_help'] = 'This sets the number of submissions which are displayed per page in the pdf. Choose "Optimum" to optimize the distribution of list entries according to the chosen textsize and page orientation, if there are plenty of participants registered in your course.';
 $string['perpage_propertydefault'] = '100';
-$string['perpage_propertydescription'] = 'This sets the number of submissions which are displayed per page, when teachers are viewing assignment submissions.
-    <br>It is overwritten by the teacher\'s individual preferences. Input will be absolute-valued.';
+$string['perpage_propertydescription'] = 'This sets the number of submissions which are displayed per page, when teachers are viewing assignment submissions.<br>It is overwritten by the teacher\'s individual preferences. Input will be absolute-valued.';
 $string['perpage_propertyname'] = 'Default - Displayed Submissions';
 $string['pluginname'] = 'Export- and file renaming of submissions';
 $string['pluginname_print'] = 'Export';
@@ -181,8 +150,7 @@ $string['strrefreshdata'] = 'Update data preview';
 $string['strsmall'] = 'small';
 $string['strtextsize'] = 'Textsize';
 $string['submissionneweras'] = 'Submission newer as';
-$string['submissionneweras_help'] = 'Only download files that were modified after a given time. If a submissiontype does not have
-    a timestamp (like onlinetext), the timestamp of the submission is used.';
+$string['submissionneweras_help'] = 'Only download files that were modified after a given time. If a submissiontype does not have a timestamp (like onlinetext), the timestamp of the submission is used.';
 $string['submissions'] = 'Submissions';
 $string['userfilter'] = 'User filter';
 $string['viewprintpreviewtable'] = 'View submission export table.';
