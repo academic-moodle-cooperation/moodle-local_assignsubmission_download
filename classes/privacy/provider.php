@@ -71,7 +71,7 @@ class provider implements
         $collection->add_user_preference('downloadtype_feedbacks', 'privacy:metadata:preference:downloadtype_feedbacks');
 
         $collection->add_database_table(
-            'local_assignsubm_download',
+            'local_assignsubmission_download',
             [
                 'id' => 'privacy:metadata:local_assignsubm_download:id',
                 'cmid' => 'privacy:metadata:local_assignsubm_download:cmid',
@@ -88,7 +88,7 @@ class provider implements
         );
 
         $collection->add_database_table(
-            'local_assignsubm_feedback',
+            'local_assignsubmission_download_feedback',
             [
                 'id' => 'privacy:metadata:local_assignsubm_feedback:id',
                 'cmid' => 'privacy:metadata:local_assignsubm_feedback:cmid',
@@ -224,7 +224,7 @@ class provider implements
                 FROM {context} c
                 INNER JOIN {course_modules} cm ON cm.id = c.instanceid
                 INNER JOIN {modules} m ON cm.module = m.id AND m.name = :modulename
-                INNER JOIN {local_assignsubm_download} d ON d.cmid = cm.id
+                INNER JOIN {local_assignsubmission_download} d ON d.cmid = cm.id
                 WHERE ( d.userid = :userid
                     AND c.contextlevel = :contextlevel )";
 
@@ -234,7 +234,7 @@ class provider implements
                  FROM {context} c
                  INNER JOIN {course_modules} cm ON cm.id = c.instanceid
                  INNER JOIN {modules} m ON cm.module = m.id AND m.name = :modulename
-                 INNER JOIN {local_assignsubm_feedback} d ON d.cmid = cm.id
+                 INNER JOIN {local_assignsubmission_download_feedback} d ON d.cmid = cm.id
                  WHERE ( d.userid = :userid
                      AND c.contextlevel = :contextlevel )";
         $contextlist->add_from_sql($sql, $params);
@@ -257,12 +257,12 @@ class provider implements
         $userid = $contextlist->get_user()->id;
         foreach ($contextlist->get_contexts() as $context) {
             $exportdata = new \stdClass();
-            $feedbacks = $DB->get_records('local_assignsubm_feedback', ['userid' => $userid, 'cmid' => $context->instanceid]);
+            $feedbacks = $DB->get_records('local_assignsubmission_download_feedback', ['userid' => $userid, 'cmid' => $context->instanceid]);
             foreach ($feedbacks as $feedback) {
                 $exportdata->feedback = $feedback;
             }
 
-            $downloads = $DB->get_records('local_assignsubm_download', ['userid' => $userid, 'cmid' => $context->instanceid]);
+            $downloads = $DB->get_records('local_assignsubmission_download', ['userid' => $userid, 'cmid' => $context->instanceid]);
             foreach ($downloads as $download) {
                 $exportdata->download = $download;
             }
@@ -279,8 +279,8 @@ class provider implements
     public static function delete_data_for_all_users_in_context(\context $context) {
         global $DB;
 
-        $DB->delete_records('local_assignsubm_download', ['cmid' => $context->instanceid]);
-        $DB->delete_records('local_assignsubm_feedback', ['cmid' => $context->instanceid]);
+        $DB->delete_records('local_assignsubmission_download', ['cmid' => $context->instanceid]);
+        $DB->delete_records('local_assignsubmission_download_feedback', ['cmid' => $context->instanceid]);
     }
 
     /**
@@ -297,8 +297,8 @@ class provider implements
 
         $userid = $contextlist->get_user()->id;
         foreach ($contextlist->get_contexts() as $context) {
-            $DB->delete_records('local_assignsubm_download', ['cmid' => $context->instanceid, 'userid' => $userid]);
-            $DB->delete_records('local_assignsubm_feedback', ['cmid' => $context->instanceid, 'userid' => $userid]);
+            $DB->delete_records('local_assignsubmission_download', ['cmid' => $context->instanceid, 'userid' => $userid]);
+            $DB->delete_records('local_assignsubmission_download_feedback', ['cmid' => $context->instanceid, 'userid' => $userid]);
         }
     }
 
@@ -317,10 +317,10 @@ class provider implements
         $cmid = $context->instanceid;
         $params = ['cmid' => $cmid];
 
-        $sql = "SELECT userid FROM {local_assignsubm_download} WHERE cmid = :cmid";
+        $sql = "SELECT userid FROM {local_assignsubmission_download} WHERE cmid = :cmid";
         $userlist->add_from_sql('userid', $sql, $params);
 
-        $sql = "SELECT userid FROM {local_assignsubm_feedback} WHERE cmid = :cmid";
+        $sql = "SELECT userid FROM {local_assignsubmission_download_feedback} WHERE cmid = :cmid";
         $userlist->add_from_sql('userid', $sql, $params);
 
         return $userlist;
@@ -346,7 +346,7 @@ class provider implements
         $params['cmid'] = $cmid;
         $sql = "cmid = :cmid AND userid $insql";
 
-        $DB->delete_records_select('local_assignsubm_download', $sql, $params);
-        $DB->delete_records_select('local_assignsubm_feedback', $sql, $params);
+        $DB->delete_records_select('local_assignsubmission_download', $sql, $params);
+        $DB->delete_records_select('local_assignsubmission_download_feedback', $sql, $params);
     }
 }

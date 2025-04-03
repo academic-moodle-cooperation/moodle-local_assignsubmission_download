@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/assignsubmission_download/db" VERSION="20240407" COMMENT="XMLDB file for Moodle local/assignsubmission_download"
+<XMLDB PATH="local/assignsubmission_download/db" VERSION="20250403" COMMENT="XMLDB file for Moodle local/assignsubmission_download"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="local_assignsubm_download" COMMENT="Saves settings for assign submission download of files">
+    <TABLE NAME="local_assignsubmission_download" COMMENT="Saves settings for assign submission download of files">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
@@ -25,7 +25,7 @@
         <INDEX NAME="userid" UNIQUE="false" FIELDS="userid"/>
       </INDEXES>
     </TABLE>
-    <TABLE NAME="local_assignsubm_feedback" COMMENT="Default comment for the table, please edit me">
+    <TABLE NAME="local_assignsubmission_download_feedback" COMMENT="Saves the settings for downloading assignment submission feedback">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>

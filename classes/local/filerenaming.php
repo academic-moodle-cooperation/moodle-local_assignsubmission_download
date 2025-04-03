@@ -180,20 +180,23 @@ class filerenaming extends assign {
             $cmid = $this->get_course_module()->id;
             $userid = $USER->id;
 
+            $downloadtable = 'local_assignsubmission_download';
+            $feedbacktable = 'local_assignsubmission_download_feedback';
+
             $lastdownloaded = $this->get_lastdownloaded_date($cmid, $userid);
             $lastdownloadedfeedback = $this->get_lastdownloaded_date($cmid, $userid, true);
-            $lastfilenamingscheme = $this->get_filenamingscheme($cmid, $userid, 'local_assignsubm_download');
-            $lastfilenamingschemefeedback = $this->get_filenamingscheme($cmid, $userid, 'local_assignsubm_feedback');
-            $lastpreventnameext = $this->get_preventnameextension_as_string($cmid, $userid, 'local_assignsubm_download');
-            $lastpreventnameextfeedback = $this->get_preventnameextension_as_string($cmid, $userid, 'local_assignsubm_feedback');
-            $lastcleanfilename = $this->get_cleanfilename_as_string($cmid, $userid, 'local_assignsubm_download');
-            $lastcleanfilenamefeedback = $this->get_cleanfilename_as_string($cmid, $userid, 'local_assignsubm_feedback');
-            $lastgroup = $this->get_group($cmid, $userid, 'local_assignsubm_download');
-            $lastgroupfeedback = $this->get_group($cmid, $userid, 'local_assignsubm_feedback');
-            $lastgrouping = $this->get_grouping($cmid, $userid, 'local_assignsubm_download');
-            $lastgroupingfeedback = $this->get_grouping($cmid, $userid, 'local_assignsubm_feedback');
-            $lastzipnamingscheme = $this->get_zipnamingscheme($cmid, $userid, 'local_assignsubm_download');
-            $lastzipnamingschemefeedback = $this->get_zipnamingscheme($cmid, $userid, 'local_assignsubm_feedback');
+            $lastfilenamingscheme = $this->get_filenamingscheme($cmid, $userid, $downloadtable);
+            $lastfilenamingschemefeedback = $this->get_filenamingscheme($cmid, $userid, $feedbacktable);
+            $lastpreventnameext = $this->get_preventnameextension_as_string($cmid, $userid, $downloadtable);
+            $lastpreventnameextfeedback = $this->get_preventnameextension_as_string($cmid, $userid, $feedbacktable);
+            $lastcleanfilename = $this->get_cleanfilename_as_string($cmid, $userid, $downloadtable);
+            $lastcleanfilenamefeedback = $this->get_cleanfilename_as_string($cmid, $userid, $feedbacktable);
+            $lastgroup = $this->get_group($cmid, $userid, $downloadtable);
+            $lastgroupfeedback = $this->get_group($cmid, $userid, $feedbacktable);
+            $lastgrouping = $this->get_grouping($cmid, $userid, $downloadtable);
+            $lastgroupingfeedback = $this->get_grouping($cmid, $userid, $feedbacktable);
+            $lastzipnamingscheme = $this->get_zipnamingscheme($cmid, $userid, $downloadtable);
+            $lastzipnamingschemefeedback = $this->get_zipnamingscheme($cmid, $userid, $feedbacktable);
 
             $shownotreuploadablehint = $this->get_feedback_plugin_by_type('offline')->is_enabled()
                 || $this->get_feedback_plugin_by_type('file')->is_enabled();
@@ -307,7 +310,7 @@ class filerenaming extends assign {
      */
     protected function get_lastdownloaded_date($cmid, $userid, $feedback = false) {
         global $DB;
-        $tablename = $feedback ? 'local_assignsubm_feedback' : 'local_assignsubm_download';
+        $tablename = $feedback ? 'local_assignsubmission_download_feedback' : 'local_assignsubmission_download';
         $lastdownload = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
         if ($lastdownload) {
             return userdate($lastdownload->lastdownloaded);
@@ -326,7 +329,7 @@ class filerenaming extends assign {
      */
     protected function update_lastdownloaded_date($cmid, $userid, $feedback = false) {
         global $DB;
-        $tablename = $feedback ? 'local_assignsubm_feedback' : 'local_assignsubm_download';
+        $tablename = $feedback ? 'local_assignsubmission_download_feedback' : 'local_assignsubmission_download';
         $lastdownload = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
         if ($lastdownload) {
             $lastdownload->lastdownloaded = time();
@@ -396,7 +399,7 @@ class filerenaming extends assign {
      * Return the last clean filename setting for module and user as string from database
      * @param int $cmid int coursemodule id
      * @param int $userid int user id
-     * @param int $tablename
+     * @param string $tablename
      * @return string last clean filename setting as 'yes'/'no'
      */
     protected function get_cleanfilename_as_string($cmid, $userid, $tablename) {
@@ -413,7 +416,7 @@ class filerenaming extends assign {
      * Return the last clean filename setting for module and user as boolean (int) from database
      * @param int $cmid int coursemodule id
      * @param int $userid int user id
-     * @param int $tablename
+     * @param string $tablename
      * @return bool (int) last clean filename setting as 0/1
      */
     protected function get_cleanfilename_as_bool($cmid, $userid, $tablename) {
@@ -520,8 +523,8 @@ class filerenaming extends assign {
      */
     private function get_latest_download_settings_tablename($cmid, $userid) {
         global $DB;
-        $downloadtablename = 'local_assignsubm_download';
-        $feedbacktablename = 'local_assignsubm_feedback';
+        $downloadtablename = 'local_assignsubmission_download';
+        $feedbacktablename = 'local_assignsubmission_download_feedback';
         $lastdownload = $DB->get_record($downloadtablename, ['userid' => $userid, 'cmid' => $cmid]);
         $lastfeedback = $DB->get_record($feedbacktablename, ['userid' => $userid, 'cmid' => $cmid]);
         if ($lastdownload && $lastfeedback) {
@@ -922,12 +925,12 @@ class filerenaming extends assign {
         } else {
             if ($downloadsubmissions) {
                 $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id);
-                $this->handle_download_settings('local_assignsubm_download', $this->get_course_module()->id,
+                $this->handle_download_settings('local_assignsubmission_download', $this->get_course_module()->id,
                     $USER->id, $groupid, $groupingid);
             }
             if ($downloadfeedbacks) {
                 $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id, true);
-                $this->handle_download_settings('local_assignsubm_feedback', $this->get_course_module()->id,
+                $this->handle_download_settings('local_assignsubmission_download_feedback', $this->get_course_module()->id,
                     $USER->id, $groupid, $groupingid);
             }
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
