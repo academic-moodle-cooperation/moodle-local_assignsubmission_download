@@ -221,5 +221,22 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         // Assignsubmission_download savepoint reached.
         upgrade_plugin_savepoint(true, 2024012201, 'local', 'assignsubmission_download');
     }
+    if ($oldversion < 2024100402) {
+
+        // Define table local_assignsubm_download to be renamed to local_assignsubmission_download.
+        $table = new xmldb_table('local_assignsubm_download');
+
+        // Launch rename table for local_assignsubm_download.
+        $dbman->rename_table($table, 'local_assignsubmission_download');
+
+        // Define table local_assignsubm_feedback to be renamed to local_assignsubmission_download_feedback.
+        $table = new xmldb_table('local_assignsubm_feedback');
+
+        // Launch rename table for local_assignsubm_feedback.
+        $dbman->rename_table($table, 'local_assignsubmission_download_feedback');
+
+        // Assignsubmission_download savepoint reached.
+        upgrade_plugin_savepoint(true, 2024100402, 'local', 'assignsubmission_download');
+    }
     return true;
 }
