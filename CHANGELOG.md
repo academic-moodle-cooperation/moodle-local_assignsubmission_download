@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+4.5.2 (2025-04-07)
+------------------
+
+* [FIXED] #8308 Fix CSV download problem with ';' in text fields
+
 4.5.1 (2025-01-08)
 ------------------
 
