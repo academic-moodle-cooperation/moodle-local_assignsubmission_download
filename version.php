@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2024100402;
+$plugin->version   = 2024100402;    // TODO IMPORTANT: CHANGE THE FINAL 5.0 VERSION ALSO IN upgrade.php; currently '2024100402'.
 $plugin->requires  = 2024100700;           // Requires this Moodle version!
 $plugin->component = 'local_assignsubmission_download';    // To check on upgrade, that module sits in correct place.
 $plugin->maturity  = MATURITY_STABLE;
