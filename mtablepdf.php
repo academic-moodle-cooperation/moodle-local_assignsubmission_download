@@ -912,7 +912,8 @@ class MTablePDF extends \pdf {
                     $cell['data'] = $prev[$idx]['data'];
                 }
 
-                $r[] = $cell['data'];
+                // Wrap the data in quotes to avoid problems with ';' in the data.
+                $r[] = "\"" . $cell['data'] . "\"";
                 $prev[$idx] = $cell;
             }
 

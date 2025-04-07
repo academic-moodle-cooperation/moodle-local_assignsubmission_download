@@ -29,7 +29,7 @@ $plugin->version   = 2024100402;    // TODO IMPORTANT: CHANGE THE FINAL 5.0 VERS
 $plugin->requires  = 2024100700;           // Requires this Moodle version!
 $plugin->component = 'local_assignsubmission_download';    // To check on upgrade, that module sits in correct place.
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'v4.5.1';            // User-friendly version number.
+$plugin->release   = 'v4.5.2';            // User-friendly version number.
 
 $plugin->dependencies = [
     'mod_assign' => 2021110900,
