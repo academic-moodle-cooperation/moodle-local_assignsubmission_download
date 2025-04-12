@@ -31,6 +31,7 @@ define(['jquery', 'core/log'], function($, log) {
      * @alias module:local_assignsubmission_download/filerenaming_tagsupport
      */
     var Tagsupport = function() {
+        // Initialize empty constructor
     };
 
     Tagsupport.prototype.addTag = function(e) {

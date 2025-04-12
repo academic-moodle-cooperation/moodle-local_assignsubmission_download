@@ -31,15 +31,16 @@ define(['jquery', 'core/log'], function($, log) {
      * @alias module:local_assignsubmission_download/printpreviewer
      */
     var Printpreviewer = function() {
+        // Initialize empty constructor
     };
 
-    Printpreviewer.prototype.change_in_perpage = function(e) {
+    Printpreviewer.prototype.changeInPerpage = function(e) {
         // Stop the event's default behavior.
         e.preventDefault();
         // Stop the event from bubbling up the DOM tree.
         e.stopPropagation();
 
-        if($(window.combo[1]).val() == 0) {
+        if ($(window.combo[1]).val() == 0) {
             // Check checkbox and disable text field.
             $(window.combo[0]).prop('checked', true);
             $(window.combo[1]).prop('disabled', true);
@@ -51,13 +52,13 @@ define(['jquery', 'core/log'], function($, log) {
         }
     };
 
-    Printpreviewer.prototype.change_in_optimum = function(e) {
+    Printpreviewer.prototype.changeInOptimum = function(e) {
         // Stop the event's default behavior.
         e.preventDefault();
         // Stop the event from bubbling up the DOM tree.
         e.stopPropagation();
 
-        if($(window.combo[0]).prop('checked')) {
+        if ($(window.combo[0]).prop('checked')) {
             // Save last value, set to 0 and disable textfield.
             window.stdperpage = $(window.combo[1]).val();
             $(window.combo[1]).val(0);
@@ -73,17 +74,19 @@ define(['jquery', 'core/log'], function($, log) {
 
     instance.initializer = function() {
         // Woraround: prevent second loading of javascript code, which happens don't know why (AK).
-        if (window.washere) {return true;}
+        if (window.washere) {
+            return true;
+        }
         window.washere = 1;
         log.info('Initialise printpreview handling js...', 'local_assignsubmission_download');
 
         var filterelement = $('#id_filter');
-        var groupelement  = $('#id_group');
-        var exportformat  = $('#id_exportformat');
+        var groupelement = $('#id_group');
+        var exportformat = $('#id_exportformat');
         var selectall = $('#selectall');
         var select = $('td.cell input[type=checkbox]');
 
-        var toggleprintsettings = function (exportformat) {
+        var toggleprintsettings = function(exportformat) {
             if (exportformat == 0) {
                 $('#id_grpperpage_perpage').prop('disabled', false);
                 $('#id_grpperpage_optimum').prop('disabled', false);
@@ -126,14 +129,14 @@ define(['jquery', 'core/log'], function($, log) {
 
         window.stdperpage = $(window.combo[1]).val();
 
-        if($(window.combo[0]).checked) {
+        if ($(window.combo[0]).checked) {
             $(window.combo[1]).prop('disabled', true);
         } else {
             $(window.combo[1]).prop('disabled', false);
         }
 
-        $(window.combo[1]).change(this.change_in_perpage);
-        $(window.combo[0]).change(this.change_in_optimum);
+        $(window.combo[1]).change(this.changeInPerpage);
+        $(window.combo[0]).change(this.changeInOptimum);
 
         toggleprintsettings(exportformat.val());
         return true;

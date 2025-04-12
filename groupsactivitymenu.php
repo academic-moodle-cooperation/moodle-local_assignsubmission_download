@@ -136,7 +136,7 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
      * @return string
      */
     public function tohtml() {
-        global $USER, $OUTPUT;
+        global $USER;
 
         if (!($this->url instanceof moodle_url)) {
             if (strpos($this->url, 'http') !== 0) { // Will also work for https
@@ -152,8 +152,6 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
         if (!$groupmode = groups_get_activity_groupmode($this->cm)) {
             return '';
         }
-
-        $context = context_module::instance($this->cm->id);
 
         if ($groupmode == VISIBLEGROUPS || $this->aag) {
             $allowedgroups = groups_get_all_groups($this->cm->course, 0, $this->cm->groupingid); // Any group in grouping.
@@ -191,8 +189,6 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
      * @return string
      */
     public function render_single_select(single_select $select) {
-        global $PAGE;
-
         $select = clone($select);
         if (empty($select->formid)) {
             $select->formid = html_writer::random_id('single_select_f');
