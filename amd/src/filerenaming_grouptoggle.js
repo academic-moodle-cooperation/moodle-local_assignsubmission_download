@@ -31,6 +31,7 @@ define(['jquery', 'core/log'], function($, log) {
      * @alias module:local_assignsubmission_download/filerenaming_grouptoggle
      */
     var Grouptoggle = function() {
+        // Initialize empty constructor
     };
 
     var instance = new Grouptoggle();

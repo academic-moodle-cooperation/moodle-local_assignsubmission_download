@@ -41,11 +41,10 @@ class mod_assign_filerenaming_settings_form extends moodleform {
      * Define this form - called from the parent constructor
      */
     public function definition() {
-        global $CFG, $OUTPUT, $PAGE;
+        global $OUTPUT, $PAGE;
 
         $mform = $this->_form;
         $instance = $this->_customdata;
-        $dirtyclass = ['class' => 'ignoredirty'];
 
         $mform->disable_form_change_checker();
 

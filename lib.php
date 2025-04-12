@@ -31,7 +31,7 @@
  * @return void
  */
 function local_assignsubmission_download_extend_settings_navigation(settings_navigation $navref, context $context) {
-    global $PAGE, $USER, $SESSION, $CFG;
+    global $PAGE;
     // Only add this settings item on non-site course pages.
     if (!$PAGE->course || $PAGE->course->id == SITEID) {
         return;

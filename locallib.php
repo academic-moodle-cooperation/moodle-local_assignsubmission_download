@@ -55,12 +55,6 @@ const ZIPRENAMING_TAGS = ['[assignmentname]', '[assignmentid]', '[courseshortnam
  */
 function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
         $submission, $groupname, $sequence, $zipfiles = null, $preventprefix = false) {
-    global $CFG;
-
-    // Select filerenaming pattern out of (session|moodle default) in this order.
-    $placeholders = ['[idnumber]', '[lastname]', '[firstname]', '[fullname]', '[assignmentname]', '[group]', '[filename]',
-        '[filenumber]', '[groupid]', '[courseshortname]', '[currenttime]', '[currentdate]',
-    ];
     $filerenaminguserpref = get_user_preferences('filerenamingpattern', '');
     $o = '';
     if ($preventprefix && ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
@@ -224,7 +218,6 @@ function replace_custom($o, $maxlength, $pattern, $string) {
  * @return string the clean filename, without special characters
  */
 function clean_custom($filename) {
-    global $CFG;
     $replace = [
         'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 's', ' ' => '_',
     ];

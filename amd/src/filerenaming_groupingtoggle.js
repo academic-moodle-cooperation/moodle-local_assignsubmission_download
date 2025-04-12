@@ -31,6 +31,7 @@ define(['jquery', 'core/log'], function($, log) {
      * @alias module:local_assignsubmission_download/filerenaming_grouptoggle
      */
     var Grouptoggle = function() {
+        // Initialize empty constructor
     };
 
     var instance = new Grouptoggle();
@@ -53,11 +54,11 @@ define(['jquery', 'core/log'], function($, log) {
                 var curgrouping = $(this).children("option:selected").val();
                 if (coursegroups) {
                     $('#id_coursegroup').empty();
-                    $.each(groupings, function (groupingid, groupingitem) {
+                    $.each(groupings, function(groupingid, groupingitem) {
                         if (groupingid == curgrouping) {
-                            $.each(groupingitem, function (i, item) {
+                            $.each(groupingitem, function(i, item) {
                                 if (i == "groups") {
-                                    $.each(item, function (unused, ginfo) {
+                                    $.each(item, function(unused, ginfo) {
                                         $('#id_coursegroup').append($('<option>', {value: ginfo.gid, text: ginfo.name}));
                                     });
                                 }

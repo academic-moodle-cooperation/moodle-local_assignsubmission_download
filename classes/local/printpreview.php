@@ -52,9 +52,8 @@ class printpreview extends assign {
      * @return string
      */
     protected function view_grading_page() {
-        global $CFG, $SESSION, $PAGE;
+        global $SESSION;
 
-        $id = required_param('id', PARAM_INT);
         $o = '';
 
         // Ugly hack, dont try this at home!
@@ -158,8 +157,6 @@ class printpreview extends assign {
         $printheader = get_user_preferences('assign_printheader', 1);
 
         $controller = $gradingmanager->get_active_controller();
-        $showquickgrading = empty($controller);
-        $quickgrading = get_user_preferences('assign_quickgrading', false);
 
         $urlparams = ['id' => $this->get_course_module()->id, 'action' => 'grading'];
         $currenturl = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_printpreview.php', $urlparams);
@@ -279,7 +276,7 @@ class printpreview extends assign {
      * Finally export to pdf
      */
     protected function export_printpreview_table() {
-        global $CFG, $USER, $SESSION, $PAGE;
+        global $CFG, $SESSION, $PAGE;
 
         require_once($CFG->dirroot.'/local/assignsubmission_download/mtablepdf.php');
         require_once($CFG->dirroot.'/local/assignsubmission_download/ptablepdf.php');

@@ -99,7 +99,7 @@ class filerenaming extends assign {
      * @return string
      */
     protected function view_filerenaming_table() {
-        global $CFG, $USER, $OUTPUT;
+        global $USER, $OUTPUT;
 
         $o = '';
         $cmid = $this->get_course_module()->id;
@@ -241,7 +241,7 @@ class filerenaming extends assign {
      * @return void
      */
     protected function process_save_filerenaming_settings() {
-        global $CFG, $USER, $SESSION;
+        global $CFG;
 
         // Include grading options form.
         require_once($CFG->dirroot . '/local/assignsubmission_download/filerenamingsettingsform.php');
@@ -615,7 +615,7 @@ class filerenaming extends assign {
      */
     protected function download_submissions($coursegroup = false, $coursegrouping = false, $submissionneweras = 0,
             $downloadsubmissions = true, $downloadfeedbacks = false, $preventnameextension = false) {
-        global $CFG, $DB, $USER;
+        global $CFG, $USER;
 
         // More efficient to load this here.
         require_once($CFG->libdir.'/filelib.php');

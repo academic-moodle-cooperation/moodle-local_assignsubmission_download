@@ -257,12 +257,14 @@ class provider implements
         $userid = $contextlist->get_user()->id;
         foreach ($contextlist->get_contexts() as $context) {
             $exportdata = new \stdClass();
-            $feedbacks = $DB->get_records('local_assignsubmission_download_feedback', ['userid' => $userid, 'cmid' => $context->instanceid]);
+            $feedbacks = $DB->get_records('local_assignsubmission_download_feedback',
+                ['userid' => $userid, 'cmid' => $context->instanceid]);
             foreach ($feedbacks as $feedback) {
                 $exportdata->feedback = $feedback;
             }
 
-            $downloads = $DB->get_records('local_assignsubmission_download', ['userid' => $userid, 'cmid' => $context->instanceid]);
+            $downloads = $DB->get_records('local_assignsubmission_download',
+                ['userid' => $userid, 'cmid' => $context->instanceid]);
             foreach ($downloads as $download) {
                 $exportdata->download = $download;
             }

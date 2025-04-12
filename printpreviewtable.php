@@ -170,7 +170,6 @@ class printpreview_table extends table_sql implements renderable {
                          LEFT JOIN {assign_user_flags} uf ON u.id = uf.userid AND uf.assignment = :assignmentid3';
 
         $userparams = [];
-        $userindex = 0;
 
         list($userwhere, $userparams) = $DB->get_in_or_equal($users, SQL_PARAMS_NAMED, 'user');
         $where = 'u.id ' . $userwhere;
@@ -532,19 +531,6 @@ class printpreview_table extends table_sql implements renderable {
     }
 
     /**
-     * Return a users grades from the listing of all grade data for this assignment.
-     *
-     * @param int $userid
-     * @return mixed stdClass or false
-     */
-    private function get_gradebook_data_for_user($userid) {
-        if (isset($this->gradinginfo->items[0]) && $this->gradinginfo->items[0]->grades[$userid]) {
-            return $this->gradinginfo->items[0]->grades[$userid];
-        }
-        return false;
-    }
-
-    /**
      * For download only - list all the valid options for this custom scale.
      *
      * @param stdClass $row - The row of data
@@ -571,8 +557,6 @@ class printpreview_table extends table_sql implements renderable {
      * @return string
      */
     public function col_grade(stdClass $row) {
-        $o = '';
-
         $link = '';
         $separator = $this->output->spacer([], true);
         $grade = '';
