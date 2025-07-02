@@ -221,7 +221,7 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         // Assignsubmission_download savepoint reached.
         upgrade_plugin_savepoint(true, 2024012201, 'local', 'assignsubmission_download');
     }
-    if ($oldversion < 2024100402) {
+    if ($oldversion < 2025050700) {
 
         // Define table local_assignsubm_download to be renamed to local_assignsubmission_download.
         $table = new xmldb_table('local_assignsubm_download');
@@ -236,7 +236,7 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         $dbman->rename_table($table, 'local_assignsubmission_download_feedback');
 
         // Assignsubmission_download savepoint reached.
-        upgrade_plugin_savepoint(true, 2024100402, 'local', 'assignsubmission_download');
+        upgrade_plugin_savepoint(true, 2025050700, 'local', 'assignsubmission_download');
     }
     return true;
 }
