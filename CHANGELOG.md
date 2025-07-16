@@ -5,6 +5,7 @@ CHANGELOG
 ------------------
 
 * Moodle 5.0 compatible version
+* [FIXED]  #8404 - fix hiding columns in the download table being visible in exported file
 
 4.5.2 (2025-04-07)
 ------------------

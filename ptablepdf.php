@@ -129,7 +129,7 @@ class table_pdf_export_format extends core_table\base_export_format {
         $sum = 0;
 
         foreach ($this->columns as $key => $field) {
-            if (empty($SESSION->flextable['mod_assign_grading']->collapse[$field])) {
+            if (empty($SESSION->flextable['mod_assign_grading']['collapse'][$field])) {
                 $w = (array_key_exists($field, $this->widths)) ? $this->widths[$field] : 0;
                 $pdftitles[] = $titles[$key];
                 $pdfwidths[] = ['mode' => 'Relativ', 'value' => $w];
@@ -225,7 +225,7 @@ class table_pdf_export_format extends core_table\base_export_format {
         // Hide columns.
         $pdfrow = [];
         foreach ($this->columns as $key => $field) {
-            if (empty($SESSION->flextable['mod_assign_grading']->collapse[$field])) {
+            if (empty($SESSION->flextable['mod_assign_grading']['collapse'][$field])) {
                 $pdfrow[] = strip_tags($row[$key]);
             }
         }

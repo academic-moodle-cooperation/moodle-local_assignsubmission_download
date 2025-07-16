@@ -1,0 +1,101 @@
+diff --git a/classes/local/printpreview.php b/classes/local/printpreview.php
+index 80fde46..3818d1d 100644
+--- a/classes/local/printpreview.php
++++ b/classes/local/printpreview.php
+@@ -175,6 +175,24 @@ class printpreview extends assign {
+             'printheader' => $printheader,
+         ];
+ 
++
++        // Load and print the table of submissions.
++        $tablehtml = html_writer::start_tag('div', ['class' => 'table_printpreview']);
++
++        $helpicon = new help_icon('data_preview', 'local_assignsubmission_download');
++        $tablehtml .= html_writer::tag('div', get_string('data_preview', 'local_assignsubmission_download')
++            .$OUTPUT->render($helpicon), ['class' => 'data_bold']);
++
++        $gradingtable = new printpreview_table($this, $perpage, $filter, 0, null);
++
++        $tablehtml .= $PAGE->get_renderer('local_assignsubmission_download')->render($gradingtable);
++
++        $tablehtml .= html_writer::end_tag('div');
++
++        $printpreviewsettingsformparams['tablehtml'] = $tablehtml;
++
++
++
+         $formoptions = ['class' => 'gradingbatchoperationsform', 'data-double-submit-protection' => 'off'];
+         // Print options for changing the filter and changing the number of results per page.
+         $printpreviewsettingsform = new mod_assign_printpreview_settings_form(
+@@ -202,22 +220,14 @@ class printpreview extends assign {
+                                     $actionformtext);
+         $o .= $this->get_renderer()->render($header);
+ 
+-        $o .= $this->get_renderer()->render(new assign_form('printpreviewsettingsform',
+-                                                            $printpreviewsettingsform
+-                                                            ));
+ 
+-        // Load and print the table of submissions.
+-        $o .= html_writer::start_tag('div', ['class' => 'table_printpreview']);
+ 
+-        $helpicon = new help_icon('data_preview', 'local_assignsubmission_download');
+-        $o .= html_writer::tag('div', get_string('data_preview', 'local_assignsubmission_download')
+-           .$OUTPUT->render($helpicon), ['class' => 'data_bold']);
+ 
+-        $gradingtable = new printpreview_table($this, $perpage, $filter, 0, null);
++        $o .= $this->get_renderer()->render(new assign_form('printpreviewsettingsform',
++                                                            $printpreviewsettingsform
++                                                            ));
+ 
+-        $o .= $PAGE->get_renderer('local_assignsubmission_download')->render($gradingtable);
+ 
+-        $o .= html_writer::end_tag('div');
+         return $o;
+     }
+ 
+@@ -262,7 +272,9 @@ class printpreview extends assign {
+             set_user_preference('assign_pageorientation', isset($data->pageorientation) ? $data->pageorientation : 0);
+             set_user_preference('assign_printheader', $data->printheader);
+ 
+-            $SESSION->selectedusers = explode(',', $data->selectedusers);
++            $selectedusers = optional_param_array('selectedusers', [], PARAM_INT);
++
++            $SESSION->selectedusers = $selectedusers; //explode(',', $data->selectedusers);
+             // Download submissions.
+             if (isset($data->submittoprint)) {
+                 $this->export_printpreview_table();
+diff --git a/printpreviewsettingsform.php b/printpreviewsettingsform.php
+index 75a51a7..89b3463 100644
+--- a/printpreviewsettingsform.php
++++ b/printpreviewsettingsform.php
+@@ -128,11 +128,15 @@ class mod_assign_printpreview_settings_form extends moodleform {
+         $mform->setType('id', PARAM_INT);
+         $mform->addElement('hidden', 'userid', $instance['userid']);
+         $mform->setType('userid', PARAM_INT);
+-        $mform->addElement('hidden', 'selectedusers', '', ['class' => 'selectedusers']);
+-        $mform->setType('selectedusers', PARAM_SEQUENCE);
++        $mform->addElement('hidden', 'selectedusers[]', '', ['class' => 'selectedusers']);
++        $mform->setType('selectedusers[]', PARAM_INT);
+         $mform->addElement('hidden', 'action', 'grading');
+         $mform->setType('action', PARAM_ALPHA);
+ 
++        if (isset($this->_customdata['tablehtml'])) {
++            $mform->addElement('html', $this->_customdata['tablehtml']);
++        }
++
+         // Button.
+         $mform->addElement('submit', 'submittoprint', get_string('strprint', 'local_assignsubmission_download'));
+ 
+diff --git a/printpreviewtable.php b/printpreviewtable.php
+index 01b7a82..c35a9c4 100644
+--- a/printpreviewtable.php
++++ b/printpreviewtable.php
+@@ -485,7 +485,7 @@ class printpreview_table extends table_sql implements renderable {
+         $selectcol .= '</label>';
+         $selectcol .= '<input type="checkbox"
+                               id="selectuser_' . $row->userid . '"
+-                              name="selectedusers"
++                              name="selectedusers[]"
+                               value="' . $row->userid . '"/>';
+         $selectcol .= '<input type="hidden"
+                               name="grademodified_' . $row->userid . '"
