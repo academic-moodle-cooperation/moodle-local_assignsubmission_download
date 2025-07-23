@@ -437,6 +437,8 @@ class filerenaming extends assign {
         $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
         if ($databaseentry && $databaseentry->choosegroup !== null) {
             return $databaseentry->choosegroup;
+        } else if ($databaseentry && $databaseentry->choosegroup === null) {
+            return get_string('functionnotused', 'local_assignsubmission_download');
         } else {
             return get_string('nodownloadsyet', 'local_assignsubmission_download');
         }
@@ -454,6 +456,8 @@ class filerenaming extends assign {
         $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
         if ($databaseentry && $databaseentry->choosegrouping !== null) {
             return $databaseentry->choosegrouping;
+        } else if ($databaseentry && $databaseentry->choosegrouping === null) {
+            return get_string('functionnotused', 'local_assignsubmission_download');
         } else {
             return get_string('nodownloadsyet', 'local_assignsubmission_download');
         }

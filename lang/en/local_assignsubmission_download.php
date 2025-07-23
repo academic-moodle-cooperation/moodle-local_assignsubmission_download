@@ -51,6 +51,7 @@ $string['filenumberinfo'] = 'Maximum number of uploaded files is larger than 1. 
 $string['filerenamesettingstitle'] = 'Download renamed submissions';
 $string['filerenamingpattern'] = 'Naming scheme';
 $string['filerenamingpattern_help'] = 'The parameter \'naming scheme\' determines the naming of the filenames. The following bracket terms (\'tags\') are available:<br><br>[idnumber] matriculation number<br>[lastname] last name<br>[firstname] first name<br>[fullname] full name<br>[group] group, in case the participant is enroled into a group<br>[groupid] group id, in case the participant is enroled into a group and it has an id<br>[filename] original filename<br>[filenumber] sequential number for files uploaded by a single student<br>[assignmentname] name of the assignment<br>[courseshortname] short name of the course<br>[currentdate] current date in format YYYYMMDD (YearMonthDay)<br>[currenttime] current time HHMM (HoursMinutes)<br><br>If you add any alphanumeric characters (without brackets), these characters will be added to all the uploaded/downloaded assignments<br><br>Example:<br>The entry \'[idnumber]-[lastname]_[assignmentname]\' will result the following filename: \'01234567-Muster_assignmentname\'';
+$string['functionnotused'] = 'Function not used';
 $string['hiddenuser'] = 'Participant';
 $string['labelgroup'] = 'Focus download on group';
 $string['labelgroup_help'] = 'Download assignments of students from a specific group only.';
