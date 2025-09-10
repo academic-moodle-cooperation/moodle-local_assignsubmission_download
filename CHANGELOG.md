@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+5.1.0 (2025-XX-XX)
+------------------
+
+* [FIXED] #8471 Updated file name cleaning by keeping special characters [github pull #13 @jboulen]
+
 5.0.0 (2025-05-07)
 ------------------
 
