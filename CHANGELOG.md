@@ -6,6 +6,7 @@ CHANGELOG
 
 * Moodle 5.1 compatible version
 * [FIXED] #8471 Updated file name cleaning by keeping special characters [github pull #13 @jboulen]
+* [FEATURE] #8142 New tags for user phonetic name, user name and alternate name [github pull #14 @topstone]
 
 5.0.0 (2025-05-07)
 ------------------
@@ -21,7 +22,7 @@ CHANGELOG
 4.5.1 (2025-01-08)
 ------------------
 
-* [FIXED] #8141 Fixed language string [github pr #11 - germanvaleroelizondo]
+* [FIXED] #8141 Fixed language string [github pull #11 @germanvaleroelizondo]
 
 4.5.0 (2024-10-04)
 ------------------
