@@ -1,9 +1,10 @@
 CHANGELOG
 =========
 
-5.1.0 (2025-XX-XX)
+5.1.0 (2025-10-06)
 ------------------
 
+* Moodle 5.1 compatible version
 * [FIXED] #8471 Updated file name cleaning by keeping special characters [github pull #13 @jboulen]
 
 5.0.0 (2025-05-07)
