@@ -8,6 +8,7 @@ CHANGELOG
 * [FIXED] #8471 Updated file name cleaning by keeping special characters [github pull #13 @jboulen]
 * [FEATURE] #8142 New tags for user phonetic name, user name and alternate name [github pull #14 @topstone]
 * [FEATURE] #8378 Setting "submission newer as" added to saved last download settings
+* [FEATURE] #8354 New setting to download only one group submission if activated
 
 5.0.0 (2025-05-07)
 ------------------
