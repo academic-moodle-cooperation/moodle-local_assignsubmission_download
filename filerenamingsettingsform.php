@@ -41,7 +41,7 @@ class mod_assign_filerenaming_settings_form extends moodleform {
      * Define this form - called from the parent constructor
      */
     public function definition() {
-        global $OUTPUT, $PAGE;
+        global $OUTPUT, $PAGE, $DB;
 
         $mform = $this->_form;
         $instance = $this->_customdata;
@@ -141,7 +141,17 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->setDefault('clean_filerenaming', true);
         $mform->addHelpButton('clean_filerenaming', 'clean_filerenaming', 'local_assignsubmission_download');
 
+        // Detect assignment team submission setting (aka "Students submit in groups").
         $cm = $PAGE->cm;
+        $assignrecord = $DB->get_record('assign', ['id' => $cm->instance], 'id, teamsubmission, teamsubmissiongroupingid');
+        $teamsubmissionenabled = (!empty($assignrecord) && !empty($assignrecord->teamsubmission));
+
+        if ($teamsubmissionenabled) {
+            $mform->addElement('advcheckbox', 'onegroupsubmission',
+                get_string('onegroupsubmission', 'local_assignsubmission_download'), ' ');
+            $mform->addHelpButton('onegroupsubmission', 'onegroupsubmission', 'local_assignsubmission_download');
+        }
+
         $groupmode = groups_get_activity_groupmode($cm);
 
         $course = $PAGE->course;
