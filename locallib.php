@@ -225,7 +225,8 @@ function clean_custom($filename) {
 
     $cleanfilenameuserpref = get_user_preferences('clean_filerenaming', '');
     if ((isset($cleanfilenameuserpref) && $cleanfilenameuserpref)) {
-        $filename = preg_replace('/[^A-Za-z0-9\_\-\.]/', '', $filename);
+        $filename = core_text::specialtoascii($filename);
+        $filename = preg_replace('/[^A-Za-z0-9\_\-\.]/', '_', $filename);
     }
     return clean_filename($filename);
 }
