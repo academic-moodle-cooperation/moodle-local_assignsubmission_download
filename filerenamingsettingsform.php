@@ -25,9 +25,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir.'/formslib.php');
+require_once($CFG->libdir . '/formslib.php');
 require_once('mtablepdf.php'); // For constants.
-require_once($CFG->dirroot.'/local/assignsubmission_download/locallib.php');
+require_once($CFG->dirroot . '/local/assignsubmission_download/locallib.php');
 
 /**
  * Filerenaming form, to enter pattern and clean filename checkbox
@@ -49,34 +49,48 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->disable_form_change_checker();
 
         // Filerename-settings.
-        $mform->addElement('header', 'filerenamesettings',
-                get_string('filerenamesettingstitle', 'local_assignsubmission_download'));
+        $mform->addElement(
+            'header',
+            'filerenamesettings',
+            get_string('filerenamesettingstitle', 'local_assignsubmission_download')
+        );
 
         if ($instance['show_notreuploadable_hint']) {
             $mform->addElement('html', $OUTPUT->notification(
-                    get_string('notreuploadable_hint', 'local_assignsubmission_download'), 'info'));
+                get_string('notreuploadable_hint', 'local_assignsubmission_download'),
+                'info'
+            ));
         }
 
         $downloadtypegroup = [];
 
         $downloadtypegroup[] =&
-            $mform->createElement('advcheckbox',
+            $mform->createElement(
+                'advcheckbox',
                 'downloadtype_submissions',
                 '',
                 get_string('downloadtype:submissions', 'local_assignsubmission_download'),
-                [], [0, 1]);
+                [],
+                [0, 1]
+            );
 
         $downloadtypegroup[] =&
-            $mform->createElement('advcheckbox',
+            $mform->createElement(
+                'advcheckbox',
                 'downloadtype_feedbacks',
                 '',
                 get_string('downloadtype:feedbacks', 'local_assignsubmission_download'),
-                [], [0, 1]);
+                [],
+                [0, 1]
+            );
 
-        $mform->addGroup($downloadtypegroup, 'downloadtype',
+        $mform->addGroup(
+            $downloadtypegroup,
+            'downloadtype',
             get_string('downloadtype', 'local_assignsubmission_download'),
             '<br />',
-            false);
+            false
+        );
         $mform->addHelpButton('downloadtype', 'downloadtype', 'local_assignsubmission_download');
         $mform->setDefault('downloadtype_submissions', 1);
 
@@ -91,23 +105,39 @@ class mod_assign_filerenaming_settings_form extends moodleform {
             }
         }
 
-        $mform->addElement('text', 'filerenamingpattern',
-                get_string('filerenamingpattern', 'local_assignsubmission_download'),  ['size' => '100']);
+        $mform->addElement(
+            'text',
+            'filerenamingpattern',
+            get_string('filerenamingpattern', 'local_assignsubmission_download'),
+            ['size' => '100']
+        );
         $mform->setType('filerenamingpattern', PARAM_RAW_TRIMMED);
         $mform->setDefault('filerenamingpattern', get_string('defaultfilerenamingpattern', 'local_assignsubmission_download'));
-        $mform->addElement('static', 'tags', '',
-                get_string('rename_propertydescription', 'local_assignsubmission_download', implode("", $filerenamingtags)));
+        $mform->addElement(
+            'static',
+            'tags',
+            '',
+            get_string('rename_propertydescription', 'local_assignsubmission_download', implode("", $filerenamingtags))
+        );
         $mform->addHelpButton('filerenamingpattern', 'filerenamingpattern', 'local_assignsubmission_download');
 
         $PAGE->requires->js_call_amd('local_assignsubmission_download/filerenaming_tagsupport', 'initializer', []);
 
-        $mform->addElement('advcheckbox', 'prevent_nameextension',
-                get_string('prevent_nameextension', 'local_assignsubmission_download'), ' ');
+        $mform->addElement(
+            'advcheckbox',
+            'prevent_nameextension',
+            get_string('prevent_nameextension', 'local_assignsubmission_download'),
+            ' '
+        );
         $mform->setDefault('prevent_nameextension', true);
         $mform->addHelpButton('prevent_nameextension', 'prevent_nameextension', 'local_assignsubmission_download');
 
-        $mform->addElement('advcheckbox', 'clean_filerenaming',
-                get_string('clean_filerenaming', 'local_assignsubmission_download'), ' ');
+        $mform->addElement(
+            'advcheckbox',
+            'clean_filerenaming',
+            get_string('clean_filerenaming', 'local_assignsubmission_download'),
+            ' '
+        );
         $mform->setDefault('clean_filerenaming', true);
         $mform->addHelpButton('clean_filerenaming', 'clean_filerenaming', 'local_assignsubmission_download');
 
@@ -128,8 +158,11 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         array_unshift($activitygroupings, $groupingallparticipants);
         $jsgroupings = [];
         if (($groupmode != NOGROUPS)) {
-            $selectgrouping = $mform->createElement('select', 'coursegrouping',
-                get_string('labelgrouping', 'local_assignsubmission_download'));
+            $selectgrouping = $mform->createElement(
+                'select',
+                'coursegrouping',
+                get_string('labelgrouping', 'local_assignsubmission_download')
+            );
             foreach ($activitygroupings as $index => $curgrouping) {
                 $selectgrouping->addOption($curgrouping->name, $curgrouping->id, null);
                 $jsgroupings[$curgrouping->id] = new stdClass();
@@ -152,8 +185,11 @@ class mod_assign_filerenaming_settings_form extends moodleform {
 
         $activitygroups = groups_get_activity_allowed_groups($cm);
         if (($groupmode != NOGROUPS)) {
-            $selectgroup = $mform->createElement('select', 'coursegroup',
-                get_string('labelgroup', 'local_assignsubmission_download'));
+            $selectgroup = $mform->createElement(
+                'select',
+                'coursegroup',
+                get_string('labelgroup', 'local_assignsubmission_download')
+            );
             $selectgroup->addOption(get_string('allparticipants'), 0);
             foreach ($activitygroups as $index => $curgroup) {
                 $selectgroup->addOption($curgroup->name, $index, null);
@@ -163,10 +199,17 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         }
 
         // Datetimepicker for including only files submitted past a given time.
-        $mform->addElement('date_time_selector', 'submissionneweras',
-                get_string('submissionneweras', 'local_assignsubmission_download'), ['optional' => true]);
-        $mform->addHelpButton('submissionneweras', 'submissionneweras',
-                'local_assignsubmission_download');
+        $mform->addElement(
+            'date_time_selector',
+            'submissionneweras',
+            get_string('submissionneweras', 'local_assignsubmission_download'),
+            ['optional' => true]
+        );
+        $mform->addHelpButton(
+            'submissionneweras',
+            'submissionneweras',
+            'local_assignsubmission_download'
+        );
 
         // Rename ZIP-Archive.
         $ziprenamingtags = [];
@@ -175,72 +218,124 @@ class mod_assign_filerenaming_settings_form extends moodleform {
             $ziprenamingtags[] = html_writer::tag('span', $tag, ['class' => 'nametag', 'data-zip-nametag' => $tag]);
         }
 
-        $mform->addElement('text', 'nameofziparchive',
-                get_string('nameofziparchive', 'local_assignsubmission_download'), ['size' => '100']);
+        $mform->addElement(
+            'text',
+            'nameofziparchive',
+            get_string('nameofziparchive', 'local_assignsubmission_download'),
+            ['size' => '100']
+        );
         $mform->setType('nameofziparchive', PARAM_RAW_TRIMMED);
         $mform->setDefault('nameofziparchive', get_string('defaultziprenamingpattern', 'local_assignsubmission_download'));
-        $mform->addElement('static', 'ziptags', '',
-                get_string('rename_propertydescription', 'local_assignsubmission_download', implode("", $ziprenamingtags)));
+        $mform->addElement(
+            'static',
+            'ziptags',
+            '',
+            get_string('rename_propertydescription', 'local_assignsubmission_download', implode("", $ziprenamingtags))
+        );
         $mform->addHelpButton('nameofziparchive', 'nameofziparchive', 'local_assignsubmission_download');
 
         $PAGE->requires->js_call_amd('local_assignsubmission_download/ziprenaming_tagsupport', 'init', []);
 
         if (!empty($this->_customdata['lastdownloaded'])) {
-            $mform->addElement('static', 'lastdownloaded',
+            $mform->addElement(
+                'static',
+                'lastdownloaded',
                 get_string('lastdownloaded_title', 'local_assignsubmission_download'),
-                $this->_customdata['lastdownloaded']);
-            $mform->addHelpButton('lastdownloaded', 'lastdownloaded_title',
-                'local_assignsubmission_download');
+                $this->_customdata['lastdownloaded']
+            );
+            $mform->addHelpButton(
+                'lastdownloaded',
+                'lastdownloaded_title',
+                'local_assignsubmission_download'
+            );
         }
         if (!empty($this->_customdata['lastdownloadedfeedback'])) {
-            $mform->addElement('static', 'lastdownloadedfeedback',
+            $mform->addElement(
+                'static',
+                'lastdownloadedfeedback',
                 get_string('lastdownloadedfeedbacks_title', 'local_assignsubmission_download'),
-                $this->_customdata['lastdownloadedfeedback']);
-            $mform->addHelpButton('lastdownloadedfeedback', 'lastdownloadedfeedbacks_title',
-                'local_assignsubmission_download');
+                $this->_customdata['lastdownloadedfeedback']
+            );
+            $mform->addHelpButton(
+                'lastdownloadedfeedback',
+                'lastdownloadedfeedbacks_title',
+                'local_assignsubmission_download'
+            );
         }
 
         // Add new collabsible area for settings of last submissions download.
-        $mform->addElement('header', 'lastdownloadsettings',
-            get_string('lastsubmissionsdownloadsettings', 'local_assignsubmission_download'), '');
+        $mform->addElement(
+            'header',
+            'lastdownloadsettings',
+            get_string('lastsubmissionsdownloadsettings', 'local_assignsubmission_download'),
+            ''
+        );
         $mform->setExpanded('lastdownloadsettings', false);
 
-        $mform->addElement('static', 'lastfilenamingscheme', get_string('filerenamingpattern',
-            'local_assignsubmission_download'), $this->_customdata['lastfilenamingscheme']);
-        $mform->addElement('static', 'lastpreventextension', get_string('prevent_nameextension',
-            'local_assignsubmission_download'), $this->_customdata['lastpreventnameextension']);
-        $mform->addElement('static', 'lastcleanfilenames', get_string('clean_filerenaming',
-            'local_assignsubmission_download'), $this->_customdata['lastcleanfilename']);
+        $mform->addElement('static', 'lastfilenamingscheme', get_string(
+            'filerenamingpattern',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastfilenamingscheme']);
+        $mform->addElement('static', 'lastpreventextension', get_string(
+            'prevent_nameextension',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastpreventnameextension']);
+        $mform->addElement('static', 'lastcleanfilenames', get_string(
+            'clean_filerenaming',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastcleanfilename']);
         if (($groupmode != NOGROUPS)) {
-            $mform->addElement('static', 'lastgrouping', get_string('labelgrouping',
-                'local_assignsubmission_download'), $this->_customdata['lastgrouping']);
-            $mform->addElement('static', 'lastusedgroup', get_string('labelgroup',
-                'local_assignsubmission_download'), $this->_customdata['lastgroup']);
+            $mform->addElement('static', 'lastgrouping', get_string(
+                'labelgrouping',
+                'local_assignsubmission_download'
+            ), $this->_customdata['lastgrouping']);
+            $mform->addElement('static', 'lastusedgroup', get_string(
+                'labelgroup',
+                'local_assignsubmission_download'
+            ), $this->_customdata['lastgroup']);
         }
-        $mform->addElement('static', 'lastziparchivescheme', get_string('nameofziparchive',
-            'local_assignsubmission_download'), $this->_customdata['lastzipnamingscheme']);
+        $mform->addElement('static', 'lastziparchivescheme', get_string(
+            'nameofziparchive',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastzipnamingscheme']);
 
         $mform->closeHeaderBefore('lastfeedbacksettings');
 
         // Add new collabsible area for settings of last submissions download.
-        $mform->addElement('header', 'lastfeedbacksettings',
-            get_string('lastfeedbackdownloadsettings', 'local_assignsubmission_download'), '');
+        $mform->addElement(
+            'header',
+            'lastfeedbacksettings',
+            get_string('lastfeedbackdownloadsettings', 'local_assignsubmission_download'),
+            ''
+        );
         $mform->setExpanded('lastfeedbacksettings', false);
 
-        $mform->addElement('static', 'lastfilenamingscheme', get_string('filerenamingpattern',
-            'local_assignsubmission_download'), $this->_customdata['lastfilenamingschemefeedback']);
-        $mform->addElement('static', 'lastpreventextension', get_string('prevent_nameextension',
-            'local_assignsubmission_download'), $this->_customdata['lastpreventnameextensionfeedback']);
-        $mform->addElement('static', 'lastcleanfilenames', get_string('clean_filerenaming',
-            'local_assignsubmission_download'), $this->_customdata['lastcleanfilenamefeedback']);
+        $mform->addElement('static', 'lastfilenamingscheme', get_string(
+            'filerenamingpattern',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastfilenamingschemefeedback']);
+        $mform->addElement('static', 'lastpreventextension', get_string(
+            'prevent_nameextension',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastpreventnameextensionfeedback']);
+        $mform->addElement('static', 'lastcleanfilenames', get_string(
+            'clean_filerenaming',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastcleanfilenamefeedback']);
         if (($groupmode != NOGROUPS)) {
-            $mform->addElement('static', 'lastgrouping', get_string('labelgrouping',
-                'local_assignsubmission_download'), $this->_customdata['lastgroupingfeedback']);
-            $mform->addElement('static', 'lastusedgroup', get_string('labelgroup',
-                'local_assignsubmission_download'), $this->_customdata['lastgroupfeedback']);
+            $mform->addElement('static', 'lastgrouping', get_string(
+                'labelgrouping',
+                'local_assignsubmission_download'
+            ), $this->_customdata['lastgroupingfeedback']);
+            $mform->addElement('static', 'lastusedgroup', get_string(
+                'labelgroup',
+                'local_assignsubmission_download'
+            ), $this->_customdata['lastgroupfeedback']);
         }
-        $mform->addElement('static', 'lastziparchivescheme', get_string('nameofziparchive',
-            'local_assignsubmission_download'), $this->_customdata['lastzipnamingschemefeedback']);
+        $mform->addElement('static', 'lastziparchivescheme', get_string(
+            'nameofziparchive',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastzipnamingschemefeedback']);
 
         $mform->closeHeaderBefore('submittodownload');
 

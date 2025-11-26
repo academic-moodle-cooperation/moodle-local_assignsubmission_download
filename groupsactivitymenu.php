@@ -62,10 +62,12 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
      * @param mixed $options
      * @param mixed $attributes
      */
-    public function __construct($elementname = null,
-                                                       $elementlabel = null,
-                                                       $options = null,
-                                                       $attributes = null) {
+    public function __construct(
+        $elementname = null,
+        $elementlabel = null,
+        $options = null,
+        $attributes = null
+    ) {
         parent::__construct($elementname, $elementlabel, $attributes);
     }
 
@@ -141,10 +143,12 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
         if (!($this->url instanceof moodle_url)) {
             if (strpos($this->url, 'http') !== 0) { // Will also work for https
                 // Display error if urlroot is not absolute (this causes the non-JS version to break).
-                debugging('groups_print_activity_menu requires absolute URL for ' .
+                debugging(
+                    'groups_print_activity_menu requires absolute URL for ' .
                           '$currenturl, not <tt>' . s($this->url) . '</tt>. Example: ' .
                           'groups_print_activity_menu($cm, $CFG->wwwroot . \'/mod/mymodule/view.php?id=13\');',
-                          DEBUG_DEVELOPER);
+                    DEBUG_DEVELOPER
+                );
             }
             $this->url = new moodle_url($this->url);
         }
@@ -180,7 +184,7 @@ class moodlequickform_groupsactivitymenu extends HTML_QuickForm_element {
             $output = $this->render_single_select($select);
         }
 
-        return '<div class="groupselector">'.$output.'</div>';
+        return '<div class="groupselector">' . $output . '</div>';
     }
 
     /**

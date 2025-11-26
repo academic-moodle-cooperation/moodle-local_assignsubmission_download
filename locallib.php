@@ -53,15 +53,24 @@ const ZIPRENAMING_TAGS = ['[assignmentname]', '[assignmentid]', '[courseshortnam
  * @param bool $preventprefix if true, the prefix will not be added to the filename
  * @return string The renamed filename
  */
-function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
-        $submission, $groupname, $sequence, $zipfiles = null, $preventprefix = false) {
+function filerenaming_rename_file(
+    $prefixedfilename,
+    $original,
+    $user,
+    $assign,
+    $submission,
+    $groupname,
+    $sequence,
+    $zipfiles = null,
+    $preventprefix = false
+) {
     $filerenaminguserpref = get_user_preferences('filerenamingpattern', '');
     $o = '';
     if ($preventprefix && ispatternvalid(FILERENAMING_TAGS, $filerenaminguserpref)) {
         $o = $filerenaminguserpref;
     } else {
         // Use locally set filerenaming.
-        $o = $preventprefix ? $filerenaminguserpref : $filerenaminguserpref.$prefixedfilename;
+        $o = $preventprefix ? $filerenaminguserpref : $filerenaminguserpref . $prefixedfilename;
     }
 
     // Reduce to a length of max 256, reserve three digits for existing files (max 999 equal filenames in db).
@@ -71,12 +80,12 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
     $filename  = pathinfo($original, PATHINFO_FILENAME);
     $extension = pathinfo($original, PATHINFO_EXTENSION);
 
-    $extension = ($extension != '') ? '.'.$extension : $extension;
+    $extension = ($extension != '') ? '.' . $extension : $extension;
 
     // Handle special double extension 'tar.gz' (ie. do not split it during file renaming).
     if ($extension == '.gz') {
         $tmpextension = pathinfo($filename, PATHINFO_EXTENSION);
-        $tmpextension = ($tmpextension != '') ? '.'.$tmpextension : $tmpextension;
+        $tmpextension = ($tmpextension != '') ? '.' . $tmpextension : $tmpextension;
         $tmpfilename = pathinfo($filename, PATHINFO_FILENAME);
         if ($tmpextension == '.tar') {
             $extension = '.tar.gz';
@@ -123,17 +132,17 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
 
     // Replace pattern.
     if ($assign->is_blind_marking()) {
-        $blind = get_string('hiddenuser', 'local_assignsubmission_download').'_'.$assign->get_uniqueid_for_user($user->id);
+        $blind = get_string('hiddenuser', 'local_assignsubmission_download') . '_' . $assign->get_uniqueid_for_user($user->id);
 
         $o = str_replace('[idnumber]', $blind, $o);
-        $o = (strpos($o, $blind) === false) ? str_replace('[fullname]',  $blind, $o) : str_replace('[fullname]',  '', $o);
+        $o = (strpos($o, $blind) === false) ? str_replace('[fullname]', $blind, $o) : str_replace('[fullname]', '', $o);
         $o = (strpos($o, $blind) === false) ? str_replace('[firstname]', $blind, $o) : str_replace('[firstname]', '', $o);
-        $o = (strpos($o, $blind) === false) ? str_replace('[lastname]',  $blind, $o) : str_replace('[lastname]',  '', $o);
+        $o = (strpos($o, $blind) === false) ? str_replace('[lastname]', $blind, $o) : str_replace('[lastname]', '', $o);
     } else {
-        $o = str_replace('[idnumber]',  $user->idnumber, $o);
-        $o = str_replace('[fullname]',  fullname($user), $o);
+        $o = str_replace('[idnumber]', $user->idnumber, $o);
+        $o = str_replace('[fullname]', fullname($user), $o);
         $o = str_replace('[firstname]', $user->firstname, $o);
-        $o = str_replace('[lastname]',  $user->lastname, $o);
+        $o = str_replace('[lastname]', $user->lastname, $o);
     }
 
     $o = replace_custom($o, $maxlength, '[assignmentname]', $assignmentname);
@@ -156,15 +165,16 @@ function filerenaming_rename_file($prefixedfilename, $original, $user, $assign,
     // Check for existing files in download archive.
     $o = clean_custom($o);
     if (!empty($zipfiles)) {
-        $temp = $o; $i = 1;
-        while (array_key_exists($temp.$extension, $zipfiles)) {
-            $temp = $o.'-'.$i++;
+        $temp = $o;
+        $i = 1;
+        while (array_key_exists($temp . $extension, $zipfiles)) {
+            $temp = $o . '-' . $i++;
         }
         $o = $temp;
     }
 
     // Just to be sure clean_custom once more, should not be necessary.
-    $o = clean_custom($o.$extension);
+    $o = clean_custom($o . $extension);
     return $o;
 }
 
@@ -237,7 +247,7 @@ function clean_custom($filename) {
  *
  * @param assign $assign assign instance the files inside the zip archive belong to
  */
-function ziprenaming_rename_zip_archive ($assign) {
+function ziprenaming_rename_zip_archive($assign) {
     $ziprenaminguserpref = get_user_preferences('nameofziparchive', '');
     $o = '';
 
@@ -257,6 +267,6 @@ function ziprenaming_rename_zip_archive ($assign) {
 
     // Cleaned name and added .zip extension.
     $o = clean_custom($o);
-    $o = $o.'.zip';
+    $o = $o . '.zip';
     return $o;
 }

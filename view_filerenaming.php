@@ -28,7 +28,7 @@ require_once($CFG->dirroot . '/mod/assign/locallib.php');
 
 $id = required_param('id', PARAM_INT);
 
-list ($course, $cm) = get_course_and_cm_from_cmid($id, 'assign');
+ [$course, $cm] = get_course_and_cm_from_cmid($id, 'assign');
 
 require_login($course, true, $cm);
 
@@ -49,9 +49,13 @@ $url = new moodle_url('/local/assignsubmission_download/view_filerenaming.php', 
 $PAGE->set_url($url);
 $PAGE->add_body_class('local-assignsubmission_download');
 
-$PAGE->navbar->add(get_string('pluginname_submissions', 'local_assignsubmission_download'),
-                   new moodle_url('/local/assignsubmission_download/view_filerenaming.php',
-                                  ['id' => $id]));
+$PAGE->navbar->add(
+    get_string('pluginname_submissions', 'local_assignsubmission_download'),
+    new moodle_url(
+        '/local/assignsubmission_download/view_filerenaming.php',
+        ['id' => $id]
+    )
+);
 
 $output = $PAGE->get_renderer('local_assignsubmission_download');
 

@@ -41,17 +41,19 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         foreach ($configs as $oldname => $newname) {
             $config = $DB->get_record('config', ['name' => $oldname]);
             if ($config) {
-                $newconfig = new \stdClass;
+                $newconfig = new \stdClass();
                 $newconfig->plugin = 'local_assignsubmission_download';
                 $newconfig->name = $newname;
                 $newconfig->value = $config->value;
-                if (!$DB->record_exists(
-                    'config_plugins',
-                    [
+                if (
+                    !$DB->record_exists(
+                        'config_plugins',
+                        [
                         'plugin' => 'local_assignsubmission_download',
                         'name' => $newname,
-                    ]
-                )) {
+                        ]
+                    )
+                ) {
                     $DB->insert_record('config_plugins', $newconfig);
                 }
                 $DB->delete_records('config', ['id' => $config->id]);
@@ -61,7 +63,6 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2021051800, 'local', 'assignsubmission_download');
     }
     if ($oldversion < 2021051802) {
-
         // Define table local_assignsubm_download to be created.
         $table = new xmldb_table('local_assignsubm_download');
 
@@ -222,7 +223,6 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2024012201, 'local', 'assignsubmission_download');
     }
     if ($oldversion < 2025050700) {
-
         // Define table local_assignsubm_download to be renamed to local_assignsubmission_download.
         $table = new xmldb_table('local_assignsubm_download');
 

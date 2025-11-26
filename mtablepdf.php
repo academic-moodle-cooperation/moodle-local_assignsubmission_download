@@ -153,8 +153,20 @@ class MTablePDF extends \pdf {
      * @param string $title6
      * @param string $desc6
      */
-    public function setheadertext($title1, $desc1, $title2, $desc2, $title3, $desc3,
-            $title4, $desc4, $title5, $desc5, $title6, $desc6) {
+    public function setheadertext(
+        $title1,
+        $desc1,
+        $title2,
+        $desc2,
+        $title3,
+        $desc3,
+        $title4,
+        $desc4,
+        $title5,
+        $desc5,
+        $title6,
+        $desc6
+    ) {
         $this->header = [
             $title1, $desc1, $title2, $desc2, $title3, $desc3,
             $title4, $desc4, $title5, $desc5, $title6, $desc6,
@@ -172,7 +184,6 @@ class MTablePDF extends \pdf {
         $header = $this->header;
 
         if ($this->showheaderfooter) {
-
             $pagewidth = $this->getPageWidth();
             $scale = $pagewidth / 200;
             $oldfontsize = $this->getFontSize();
@@ -242,7 +253,7 @@ class MTablePDF extends \pdf {
             $this->SetY(-15);
 
             // Page number.
-            $this->Cell(0, 10, $this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+            $this->Cell(0, 10, $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
         }
     }
 
@@ -358,7 +369,7 @@ class MTablePDF extends \pdf {
      * @param int $fontsize
      * @param string $out (optional)
      */
-    public function setfontsize($fontsize, $out=true) {
+    public function setfontsize($fontsize, $out = true) {
         if ($fontsize <= self::FONTSIZE_SMALL) {
             $fontsize = self::FONTSIZE_SMALL;
         } else if ($fontsize > self::FONTSIZE_SMALL && $fontsize < self::FONTSIZE_LARGE) {
@@ -394,7 +405,7 @@ class MTablePDF extends \pdf {
 
         $filename = clean_filename($filename);
 
-        switch($this->outputformat) {
+        switch ($this->outputformat) {
             case self::OUTPUT_FORMAT_XLS:
                 $this->get_xls($filename);
                 break;
@@ -455,12 +466,14 @@ class MTablePDF extends \pdf {
         foreach ($this->columnwidths as $idx => $width) {
             if ($allfixed) {
                 $w[$idx] = round(
-                        ($pdf->getPageWidth() - 20) / $sum * $width['value']);
+                    ($pdf->getPageWidth() - 20) / $sum * $width['value']
+                );
             } else if ($width["mode"] == "Fixed") {
                 $w[$idx] = $width['value'];
             } else {
                 $w[$idx] = round(
-                        ($pdf->getPageWidth() - 20 - $sumfix) / $sumrelativ * $width['value']);
+                    ($pdf->getPageWidth() - 20 - $sumfix) / $sumrelativ * $width['value']
+                );
             }
         }
 
@@ -575,7 +588,6 @@ class MTablePDF extends \pdf {
                 $spaceonpage[0] = 40;
                 $spaceonpage[1] = 42;
             }
-
         } else if ($this->fontsize == self::FONTSIZE_MEDIUM) {
             if ($this->orientation == self::PORTRAIT) {
                 $spaceonpage[0] = 49;
@@ -584,7 +596,6 @@ class MTablePDF extends \pdf {
                 $spaceonpage[0] = 32;
                 $spaceonpage[1] = 33;
             }
-
         } else if ($this->fontsize == self::FONTSIZE_LARGE) {
             if ($this->orientation == self::PORTRAIT) {
                 $spaceonpage[0] = 41;
@@ -633,7 +644,6 @@ class MTablePDF extends \pdf {
                     $pdf->addPage();
                     $fullrows = $rowheights[$rownum];
                     $forcebreakonnextpage = false;
-
                 }
                 // Break because of fixed rows per page.
             } else if ($this->rowsperpage && $this->rowsperpage > 0 && $rownum != 0 && $rownum % $this->rowsperpage == 0) {
@@ -691,9 +701,19 @@ class MTablePDF extends \pdf {
                         $value['data'] = $debuginfo . substr($value['data'], 0, strlen($value['data']) - (strlen($debuginfo)));
                     }
 
-                    $pdf->MultiCell($w[$key], $numlines * $cellsize, $value['data'], 'LR'.$bottomborder,
-                            $cf['align'], $cf['fill'], 0, '', '', true, '0');
-
+                    $pdf->MultiCell(
+                        $w[$key],
+                        $numlines * $cellsize,
+                        $value['data'],
+                        'LR' . $bottomborder,
+                        $cf['align'],
+                        $cf['fill'],
+                        0,
+                        '',
+                        '',
+                        true,
+                        '0'
+                    );
                 } else if ($rowspans[$key] > 0) {
                     if ($debug) {
                         $value['data'] = $value['rowspan'] . "/_";
@@ -845,7 +865,7 @@ class MTablePDF extends \pdf {
 
         $this->fill_workbook($workbook);
 
-        $workbook->send($filename.'.xls');
+        $workbook->send($filename . '.xls');
         $workbook->close();
     }
 
@@ -881,7 +901,7 @@ class MTablePDF extends \pdf {
 
         $this->fill_workbook($workbook);
 
-        $workbook->send($filename.'.ods');
+        $workbook->send($filename . '.ods');
         $workbook->close();
     }
 
@@ -933,10 +953,11 @@ class MTablePDF extends \pdf {
         ob_clean();
         header('Content-Type: text/plain');
         header('Content-Length: ' . strlen($filecontent));
-        header('Content-Disposition: attachment; filename="'.$filename.'"; filename*="'.
+        header('Content-Disposition: attachment; filename="' . $filename . '"; filename*="' .
                 rawurlencode($filename));
                 header('Content-Transfer-Encoding: binary');
                 header('Content-Encoding: utf-8');
-                echo $filecontent;die();
+                echo $filecontent;
+        die();
     }
 }

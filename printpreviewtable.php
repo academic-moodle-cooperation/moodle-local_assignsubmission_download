@@ -28,9 +28,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir.'/tablelib.php');
-require_once($CFG->libdir.'/gradelib.php');
-require_once($CFG->dirroot.'/mod/assign/locallib.php');
+require_once($CFG->libdir . '/tablelib.php');
+require_once($CFG->libdir . '/gradelib.php');
+require_once($CFG->dirroot . '/mod/assign/locallib.php');
 
 /**
  * Printpreview table definition
@@ -77,12 +77,14 @@ class printpreview_table extends table_sql implements renderable {
      * @param string $downloadfilename
      * @param array $selectedusers
      */
-    public function __construct(assign $assignment,
-                                $perpage,
-                                $filter,
-                                $rowoffset,
-                                $downloadfilename = null,
-                                $selectedusers = null) {
+    public function __construct(
+        assign $assignment,
+        $perpage,
+        $filter,
+        $rowoffset,
+        $downloadfilename = null,
+        $selectedusers = null
+    ) {
         global $CFG, $PAGE, $DB, $USER;
         parent::__construct('mod_assign_grading');
         $this->assignment = $assignment;
@@ -112,7 +114,7 @@ class printpreview_table extends table_sql implements renderable {
             $this->rownum = $rowoffset - 1;
         }
 
-        $users = isset($selectedusers) ? $selectedusers : array_keys( $assignment->list_participants($currentgroup, true));
+        $users = isset($selectedusers) ? $selectedusers : array_keys($assignment->list_participants($currentgroup, true));
         if (count($users) == 0) {
             // Insert a record that will never match to the sql is still valid.
             $users[] = -1;
@@ -171,7 +173,7 @@ class printpreview_table extends table_sql implements renderable {
 
         $userparams = [];
 
-        list($userwhere, $userparams) = $DB->get_in_or_equal($users, SQL_PARAMS_NAMED, 'user');
+        [$userwhere, $userparams] = $DB->get_in_or_equal($users, SQL_PARAMS_NAMED, 'user');
         $where = 'u.id ' . $userwhere;
         $params = array_merge($params, $userparams);
 
@@ -181,7 +183,6 @@ class printpreview_table extends table_sql implements renderable {
                 $where .= ' AND (s.timemodified IS NOT NULL AND
                                  s.status = :submitted) ';
                 $params['submitted'] = ASSIGN_SUBMISSION_STATUS_SUBMITTED;
-
             } else if ($filter == ASSIGN_FILTER_REQUIRE_GRADING) {
                 $where .= ' AND (s.timemodified IS NOT NULL AND
                                  s.status = :submitted AND
@@ -195,7 +196,6 @@ class printpreview_table extends table_sql implements renderable {
 
                 $where .= '))';
                 $params['submitted'] = ASSIGN_SUBMISSION_STATUS_SUBMITTED;
-
             } else if (strpos($filter, ASSIGN_FILTER_SINGLE_USER) === 0) {
                 $filters = explode('=', $filter);
                 $userfilter = (int) array_pop($filters);
@@ -223,8 +223,8 @@ class printpreview_table extends table_sql implements renderable {
             if (!empty($workflowstates)) {
                 $workflowfilter = get_user_preferences('assign_workflowfilter', '');
                 if ($workflowfilter == ASSIGN_MARKING_WORKFLOW_STATE_NOTMARKED) {
-                    $where .= ' AND (uf.workflowstate = :workflowstate OR uf.workflowstate IS NULL OR '.
-                        $DB->sql_isempty('assign_user_flags', 'workflowstate', true, true).')';
+                    $where .= ' AND (uf.workflowstate = :workflowstate OR uf.workflowstate IS NULL OR ' .
+                        $DB->sql_isempty('assign_user_flags', 'workflowstate', true, true) . ')';
                     $params['workflowstate'] = $workflowfilter;
                 } else if (array_key_exists($workflowfilter, $workflowstates)) {
                     $where .= ' AND uf.workflowstate = :workflowstate';
@@ -252,7 +252,6 @@ class printpreview_table extends table_sql implements renderable {
 
         // Fullname.
         if (!$this->assignment->is_blind_marking()) {
-
             $columns[] = 'fullname';
             $headers[] = get_string('fullname');
 
@@ -269,8 +268,10 @@ class printpreview_table extends table_sql implements renderable {
         // Submission plugins.
         if ($assignment->is_any_submission_plugin_enabled()) {
             foreach ($this->assignment->get_submission_plugins() as $plugin) {
-                if ($plugin->is_visible() && $plugin->is_enabled()
-                &&  $plugin->has_user_summary() && $plugin->get_type() != 'comments') {
+                if (
+                    $plugin->is_visible() && $plugin->is_enabled()
+                    &&  $plugin->has_user_summary() && $plugin->get_type() != 'comments'
+                ) {
                     $index = 'plugin' . count($this->plugincache);
                     $this->plugincache[$index] = [$plugin];
                     $columns[] = $index;
@@ -311,13 +312,17 @@ class printpreview_table extends table_sql implements renderable {
         }
 
         // Load the grading info for all users.
-        $this->gradinginfo = grade_get_grades($this->assignment->get_course()->id,
-                                              'mod',
-                                              'assign',
-                                              $this->assignment->get_instance()->id,
-                                              $users);
-        $this->hasgrantextension = has_capability('mod/assign:grantextension',
-                                                  $this->assignment->get_context());
+        $this->gradinginfo = grade_get_grades(
+            $this->assignment->get_course()->id,
+            'mod',
+            'assign',
+            $this->assignment->get_instance()->id,
+            $users
+        );
+        $this->hasgrantextension = has_capability(
+            'mod/assign:grantextension',
+            $this->assignment->get_context()
+        );
 
         if (!empty($CFG->enableoutcomes) && !empty($this->gradinginfo->outcomes)) {
             $columns[] = 'outcomes';
@@ -359,10 +364,13 @@ class printpreview_table extends table_sql implements renderable {
 
         // When there is no data we still want the column headers printed in the csv file.
         if ($this->is_downloading()) {
-            $this->export_class_instance()->setup_table($this->assignment->get_course()->shortname,
-                                                        $this->assignment->get_course_module(),
-                                                        $this->assignment->get_instance(),
-                                                        $columns, $headers);
+            $this->export_class_instance()->setup_table(
+                $this->assignment->get_course()->shortname,
+                $this->assignment->get_course_module(),
+                $this->assignment->get_instance(),
+                $columns,
+                $headers
+            );
             $this->start_output();
         }
     }
@@ -374,11 +382,11 @@ class printpreview_table extends table_sql implements renderable {
      * @param bool $useinitialsbar do you want to use the initials bar. Bar
      * will only be used if there is a fullname column defined for the table.
      */
-    public function query_db($pagesize, $useinitialsbar=true) {
+    public function query_db($pagesize, $useinitialsbar = true) {
         global $DB;
 
         if ($this->countsql === null) {
-            $this->countsql = 'SELECT COUNT(1) FROM '.$this->sql->from.' WHERE '.$this->sql->where;
+            $this->countsql = 'SELECT COUNT(1) FROM ' . $this->sql->from . ' WHERE ' . $this->sql->where;
             $this->countparams = $this->sql->params;
         }
         $grandtotal = $DB->count_records_sql($this->countsql, $this->countparams);
@@ -386,12 +394,12 @@ class printpreview_table extends table_sql implements renderable {
             $this->initialbars($grandtotal > $pagesize);
         }
 
-        list($wsql, $wparams) = $this->get_sql_where();
+        [$wsql, $wparams] = $this->get_sql_where();
         if ($wsql) {
-            $this->countsql .= ' AND '.$wsql;
+            $this->countsql .= ' AND ' . $wsql;
             $this->countparams = array_merge($this->countparams, $wparams);
 
-            $this->sql->where .= ' AND '.$wsql;
+            $this->sql->where .= ' AND ' . $wsql;
             $this->sql->params = array_merge($this->sql->params, $wparams);
 
             $total  = $DB->count_records_sql($this->countsql, $this->countparams);
@@ -523,8 +531,7 @@ class printpreview_table extends table_sql implements renderable {
             $fullname .= ' ' . html_writer::empty_tag('img', [
                     'src' => $this->output->image_url('i/enrolmentsuspended'),
                     'title' => $suspendedstring, 'alt' => $suspendedstring, 'class' => 'usersuspendedicon',
-                ]
-            );
+                ]);
             $fullname = html_writer::tag('span', $fullname, ['class' => 'usersuspended']);
         }
         return $fullname;
@@ -583,10 +590,12 @@ class printpreview_table extends table_sql implements renderable {
             $grade .= $link . $separator;
         }
 
-        $grade .= $this->display_grade($row->grade,
-                                       $this->quickgrading && !$gradingdisabled,
-                                       $row->userid,
-                                       $row->timemarked);
+        $grade .= $this->display_grade(
+            $row->grade,
+            $this->quickgrading && !$gradingdisabled,
+            $row->userid,
+            $row->timemarked
+        );
 
         return $grade;
     }
@@ -616,7 +625,7 @@ class printpreview_table extends table_sql implements renderable {
                 if ($grade == -1 || $grade === null) {
                     return '';
                 }
-                return format_float($grade, 2).' / '.
+                return format_float($grade, 2) . ' / ' .
                        format_float($this->assignment->get_instance()->grade, 2);
             } else {
                 // This is a custom scale.
@@ -677,10 +686,12 @@ class printpreview_table extends table_sql implements renderable {
      *                             page (the current page)
      * @return string The summary with an optional link
      */
-    private function format_plugin_summary_with_link(assign_plugin $plugin,
-                                                     stdClass $item,
-                                                     $returnaction,
-                                                     $returnparams) {
+    private function format_plugin_summary_with_link(
+        assign_plugin $plugin,
+        stdClass $item,
+        $returnaction,
+        $returnparams
+    ) {
         $link = '';
         $showviewlink = false;
 
@@ -745,10 +756,12 @@ class printpreview_table extends table_sql implements renderable {
                         if (isset($field)) {
                             return $plugin->get_editor_text($field, $submission->id);
                         }
-                        return $this->format_plugin_summary_with_link($plugin,
-                                                                      $submission,
-                                                                      'grading',
-                                                                      []);
+                        return $this->format_plugin_summary_with_link(
+                            $plugin,
+                            $submission,
+                            'grading',
+                            []
+                        );
                     }
                 } else if ($row->submissionid) {
                     if ($row->status == ASSIGN_SUBMISSION_STATUS_REOPENED) {
@@ -767,10 +780,12 @@ class printpreview_table extends table_sql implements renderable {
                     if (isset($field)) {
                         return $plugin->get_editor_text($field, $submission->id);
                     }
-                    return $this->format_plugin_summary_with_link($plugin,
-                                                                  $submission,
-                                                                  'grading',
-                                                                  []);
+                    return $this->format_plugin_summary_with_link(
+                        $plugin,
+                        $submission,
+                        'grading',
+                        []
+                    );
                 }
             } else {
                 $grade = null;
@@ -792,10 +807,12 @@ class printpreview_table extends table_sql implements renderable {
                 if ($this->quickgrading && $plugin->supports_quickgrading()) {
                     return $plugin->get_quickgrading_html($row->userid, $grade);
                 } else if ($grade) {
-                    return $this->format_plugin_summary_with_link($plugin,
-                                                                  $grade,
-                                                                  'grading',
-                                                                  []);
+                    return $this->format_plugin_summary_with_link(
+                        $plugin,
+                        $grade,
+                        'grading',
+                        []
+                    );
                 }
             }
         }
@@ -937,5 +954,4 @@ class printpreview_table extends table_sql implements renderable {
         $this->initialbars(true);
         return parent::start_html();
     }
-
 }

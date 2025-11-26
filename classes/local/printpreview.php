@@ -111,8 +111,10 @@ class printpreview extends assign {
         $cmid = $this->get_course_module()->id;
 
         $links = [];
-        if (has_capability('gradereport/grader:view', $this->get_course_context()) &&
-                has_capability('moodle/grade:viewall', $this->get_course_context())) {
+        if (
+            has_capability('gradereport/grader:view', $this->get_course_context()) &&
+                has_capability('moodle/grade:viewall', $this->get_course_context())
+        ) {
             $gradebookurl = '/grade/report/grader/index.php?id=' . $this->get_course()->id;
             $links[$gradebookurl] = get_string('viewgradebook', 'assign');
         }
@@ -120,8 +122,10 @@ class printpreview extends assign {
             $downloadurl = '/mod/assign/view.php?id=' . $cmid . '&action=downloadall';
             $links[$downloadurl] = get_string('downloadall', 'assign');
         }
-        if ($this->is_blind_marking() &&
-                has_capability('mod/assign:revealidentities', $this->get_context())) {
+        if (
+            $this->is_blind_marking() &&
+                has_capability('mod/assign:revealidentities', $this->get_context())
+        ) {
             $revealidentitiesurl = '/mod/assign/view.php?id=' . $cmid . '&action=revealidentities';
             $links[$revealidentitiesurl] = get_string('revealidentities', 'assign');
         }
@@ -177,7 +181,7 @@ class printpreview extends assign {
 
         $helpicon = new help_icon('data_preview', 'local_assignsubmission_download');
         $tablehtml .= html_writer::tag('div', get_string('data_preview', 'local_assignsubmission_download')
-            .$OUTPUT->render($helpicon), ['class' => 'data_bold']);
+            . $OUTPUT->render($helpicon), ['class' => 'data_bold']);
 
         $gradingtable = new printpreview_table($this, $perpage, $filter, 0, null);
 
@@ -206,17 +210,20 @@ class printpreview extends assign {
         $printpreviewsettingsform->set_data($printpreviewsettingsdata);
 
         $actionformtext = $this->get_renderer()->render($gradingactions);
-        $header = new assign_header($this->get_instance(),
-                                    $this->get_context(),
-                                    false,
-                                    $this->get_course_module()->id,
-                                    get_string('grading', 'assign'),
-                                    $actionformtext);
+        $header = new assign_header(
+            $this->get_instance(),
+            $this->get_context(),
+            false,
+            $this->get_course_module()->id,
+            get_string('grading', 'assign'),
+            $actionformtext
+        );
         $o .= $this->get_renderer()->render($header);
 
-        $o .= $this->get_renderer()->render(new assign_form('printpreviewsettingsform',
-                                                            $printpreviewsettingsform
-                                                            ));
+        $o .= $this->get_renderer()->render(new assign_form(
+            'printpreviewsettingsform',
+            $printpreviewsettingsform
+        ));
 
         return $o;
     }
@@ -246,8 +253,13 @@ class printpreview extends assign {
             'submissionsenabled' => $this->is_any_submission_plugin_enabled(),
         ];
 
-        $mform = new mod_assign_printpreview_settings_form(null, $printpreviewsettingsparams,
-                'post', '', ['data-double-submit-protection' => 'off']);
+        $mform = new mod_assign_printpreview_settings_form(
+            null,
+            $printpreviewsettingsparams,
+            'post',
+            '',
+            ['data-double-submit-protection' => 'off']
+        );
 
         if ($data = $mform->get_data()) {
             set_user_preference('assign_filter', $data->filter);
@@ -278,9 +290,9 @@ class printpreview extends assign {
     protected function export_printpreview_table() {
         global $CFG, $SESSION, $PAGE;
 
-        require_once($CFG->dirroot.'/local/assignsubmission_download/mtablepdf.php');
-        require_once($CFG->dirroot.'/local/assignsubmission_download/ptablepdf.php');
-        require_once($CFG->dirroot.'/local/assignsubmission_download/printpreviewtable.php');
+        require_once($CFG->dirroot . '/local/assignsubmission_download/mtablepdf.php');
+        require_once($CFG->dirroot . '/local/assignsubmission_download/ptablepdf.php');
+        require_once($CFG->dirroot . '/local/assignsubmission_download/printpreviewtable.php');
 
         $PAGE->set_pagelayout('popup');
 
@@ -295,7 +307,7 @@ class printpreview extends assign {
 
         \local_assignsubmission_download\event\assignsubmission_download_table_downloaded::create_from_assign($this)->trigger();
 
-        $filename = $this->get_course()->fullname.'-'.$this->get_instance()->name;
+        $filename = $this->get_course()->fullname . '-' . $this->get_instance()->name;
         $export = new printpreview_table($this, $perpage, $filter, 0, $filename, $selectedusers);
         $PAGE->get_renderer('local_assignsubmission_download')->render($export);
 

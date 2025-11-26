@@ -25,7 +25,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir.'/formslib.php');
+require_once($CFG->libdir . '/formslib.php');
 require_once('mtablepdf.php'); // For constants.
 
 /**
@@ -58,23 +58,38 @@ class mod_assign_printpreview_settings_form extends moodleform {
             MTablePDF::OUTPUT_FORMAT_CSV_COMMA => 'CSV (;)',
             MTablePDF::OUTPUT_FORMAT_CSV_TAB => 'CSV (tab)',
         ];
-        $mform->addElement('select', 'exportformat',
-                get_string('exportformat', 'local_assignsubmission_download'), $options, $dirtyclass);
+        $mform->addElement(
+            'select',
+            'exportformat',
+            get_string('exportformat', 'local_assignsubmission_download'),
+            $options,
+            $dirtyclass
+        );
 
         $mform->addElement('html', html_writer::div(html_writer::span(
-                get_string('onlypdf', 'local_assignsubmission_download'), null), 'bold'));
+            get_string('onlypdf', 'local_assignsubmission_download'),
+            null
+        ), 'bold'));
 
         $grpperpage = [];
-        $grpperpage[] =& $mform->createElement('text', 'perpage',
-                get_string('perpage', 'local_assignsubmission_download'), 'size="3"');
+        $grpperpage[] =& $mform->createElement(
+            'text',
+            'perpage',
+            get_string('perpage', 'local_assignsubmission_download'),
+            'size="3"'
+        );
         $mform->setType('perpage', PARAM_INT);
         $mform->setDefault(
             'perpage',
             get_user_preferences('assign_perpage', get_config('local_assignsubmission_download', 'assignmentpatch_perpage'))
         );
 
-        $grpperpage[] =& $mform->createElement('advcheckbox', 'optimum', '',
-                get_string('optimum', 'local_assignsubmission_download'));
+        $grpperpage[] =& $mform->createElement(
+            'advcheckbox',
+            'optimum',
+            '',
+            get_string('optimum', 'local_assignsubmission_download')
+        );
         $mform->setDefault('optimum', get_user_preferences('assign_optimum', 0));
 
         $mform->addGroup($grpperpage, 'grpperpage', get_string('assignmentsperpage', 'assign'), '', true);
@@ -86,15 +101,25 @@ class mod_assign_printpreview_settings_form extends moodleform {
             1 => get_string('strmedium', 'local_assignsubmission_download'),
             2 => get_string('strlarge', 'local_assignsubmission_download'),
         ];
-        $mform->addElement('select', 'textsize',
-            get_string('strtextsize', 'local_assignsubmission_download'), $options, $dirtyclass);
+        $mform->addElement(
+            'select',
+            'textsize',
+            get_string('strtextsize', 'local_assignsubmission_download'),
+            $options,
+            $dirtyclass
+        );
 
         $options = [
             0 => get_string('strportrait', 'local_assignsubmission_download'),
             1 => get_string('strlandscape', 'local_assignsubmission_download'),
         ];
-        $mform->addElement('select', 'pageorientation',
-            get_string('strpageorientation', 'local_assignsubmission_download'), $options, $dirtyclass);
+        $mform->addElement(
+            'select',
+            'pageorientation',
+            get_string('strpageorientation', 'local_assignsubmission_download'),
+            $options,
+            $dirtyclass
+        );
 
         $mform->addElement('advcheckbox', 'printheader', get_string('strprintheader', 'local_assignsubmission_download'), ' ');
         $mform->addHelpButton('printheader', 'strprintheader', 'local_assignsubmission_download');
@@ -113,8 +138,11 @@ class mod_assign_printpreview_settings_form extends moodleform {
             $mform->setDefault('filter', get_user_preferences('assign_filter', ''));
         }
 
-        MoodleQuickForm::registerElementType('groupsactivitymenu',
-            $CFG->dirroot.'/local/assignsubmission_download/groupsactivitymenu.php', 'MoodleQuickForm_groupsactivitymenu');
+        MoodleQuickForm::registerElementType(
+            'groupsactivitymenu',
+            $CFG->dirroot . '/local/assignsubmission_download/groupsactivitymenu.php',
+            'MoodleQuickForm_groupsactivitymenu'
+        );
         $groupsactivitymenu = $mform->addElement('groupsactivitymenu', 'group');
         $groupsactivitymenu->set_data($instance['cm'], $instance['currenturl']);
 
