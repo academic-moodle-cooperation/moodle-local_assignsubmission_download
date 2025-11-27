@@ -34,42 +34,6 @@ define(['jquery', 'core/log'], function($, log) {
         // Initialize empty constructor
     };
 
-    Printpreviewer.prototype.changeInPerpage = function(e) {
-        // Stop the event's default behavior.
-        e.preventDefault();
-        // Stop the event from bubbling up the DOM tree.
-        e.stopPropagation();
-
-        if ($(window.combo[1]).val() == 0) {
-            // Check checkbox and disable text field.
-            $(window.combo[0]).prop('checked', true);
-            $(window.combo[1]).prop('disabled', true);
-        } else {
-            // Save last value, uncheck checkbox and enable textfield if checked/disabled.
-            window.stdperpage = $(window.combo[1]).val();
-            $(window.combo[0]).prop('checked', false);
-            $(window.combo[1]).prop('disabled', false);
-        }
-    };
-
-    Printpreviewer.prototype.changeInOptimum = function(e) {
-        // Stop the event's default behavior.
-        e.preventDefault();
-        // Stop the event from bubbling up the DOM tree.
-        e.stopPropagation();
-
-        if ($(window.combo[0]).prop('checked')) {
-            // Save last value, set to 0 and disable textfield.
-            window.stdperpage = $(window.combo[1]).val();
-            $(window.combo[1]).val(0);
-            $(window.combo[1]).prop('disabled', true);
-        } else {
-            // Restore last value and enable again.
-            $(window.combo[1]).val(window.stdperpage);
-            $(window.combo[1]).prop('disabled', false);
-        }
-    };
-
     var instance = new Printpreviewer();
 
     instance.initializer = function() {
@@ -99,21 +63,6 @@ define(['jquery', 'core/log'], function($, log) {
 
         selectall.prop('checked', 'checked');
         select.prop('checked', 'checked');
-
-        window.combo = new Array();
-        window.combo[0] = 'input[id=id_grpperpage_optimum]';
-        window.combo[1] = 'input[id=id_grpperpage_perpage]';
-
-        window.stdperpage = $(window.combo[1]).val();
-
-        if ($(window.combo[0]).checked) {
-            $(window.combo[1]).prop('disabled', true);
-        } else {
-            $(window.combo[1]).prop('disabled', false);
-        }
-
-        $(window.combo[1]).change(this.changeInPerpage);
-        $(window.combo[0]).change(this.changeInOptimum);
 
         return true;
     };
