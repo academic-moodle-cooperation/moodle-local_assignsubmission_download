@@ -82,25 +82,8 @@ define(['jquery', 'core/log'], function($, log) {
 
         var filterelement = $('#id_filter');
         var groupelement = $('#id_group');
-        var exportformat = $('#id_exportformat');
         var selectall = $('#selectall');
         var select = $('td.cell input[type=checkbox]');
-
-        var toggleprintsettings = function(exportformat) {
-            if (exportformat == 0) {
-                $('#id_grpperpage_perpage').prop('disabled', false);
-                $('#id_grpperpage_optimum').prop('disabled', false);
-                $('#id_textsize').prop('disabled', false);
-                $('#id_pageorientation').prop('disabled', false);
-                $('#id_printheader').prop('disabled', false);
-            } else {
-                $('#id_grpperpage_perpage').prop('disabled', true);
-                $('#id_grpperpage_optimum').prop('disabled', true);
-                $('#id_textsize').prop('disabled', true);
-                $('#id_pageorientation').prop('disabled', true);
-                $('#id_printheader').prop('disabled', true);
-            }
-        };
 
         if (filterelement) {
             filterelement.on('change', function() {
@@ -111,12 +94,6 @@ define(['jquery', 'core/log'], function($, log) {
         if (groupelement) {
             groupelement.on('change', function() {
                 $('form.mform').submit();
-            });
-        }
-
-        if (exportformat) {
-            exportformat.on('change', function() {
-                toggleprintsettings(exportformat.val());
             });
         }
 
@@ -138,7 +115,6 @@ define(['jquery', 'core/log'], function($, log) {
         $(window.combo[1]).change(this.changeInPerpage);
         $(window.combo[0]).change(this.changeInOptimum);
 
-        toggleprintsettings(exportformat.val());
         return true;
     };
 

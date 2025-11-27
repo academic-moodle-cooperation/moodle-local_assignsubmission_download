@@ -66,10 +66,10 @@ class mod_assign_printpreview_settings_form extends moodleform {
             $dirtyclass
         );
 
-        $mform->addElement('html', html_writer::div(html_writer::span(
-            get_string('onlypdf', 'local_assignsubmission_download'),
-            null
-        ), 'bold'));
+        $mform->addElement('static', 'onlypdfsettings', '',
+                html_writer::div(html_writer::span(
+                    get_string('onlypdf', 'local_assignsubmission_download'), null), 'bold'));
+        $mform->hideIf('onlypdfsettings', 'exportformat', 'neq', MTablePDF::OUTPUT_FORMAT_PDF);
 
         $grpperpage = [];
         $grpperpage[] =& $mform->createElement(
@@ -95,35 +95,29 @@ class mod_assign_printpreview_settings_form extends moodleform {
         $mform->addGroup($grpperpage, 'grpperpage', get_string('assignmentsperpage', 'assign'), '', true);
         $mform->setType('grpperpage', PARAM_RAW);
         $mform->addHelpButton('grpperpage', 'perpage', 'local_assignsubmission_download');
+        $mform->hideIf('grpperpage', 'exportformat', 'neq', MTablePDF::OUTPUT_FORMAT_PDF);
 
         $options = [
             0 => get_string('strsmall', 'local_assignsubmission_download'),
             1 => get_string('strmedium', 'local_assignsubmission_download'),
             2 => get_string('strlarge', 'local_assignsubmission_download'),
         ];
-        $mform->addElement(
-            'select',
-            'textsize',
-            get_string('strtextsize', 'local_assignsubmission_download'),
-            $options,
-            $dirtyclass
-        );
+        $mform->addElement('select', 'textsize',
+            get_string('strtextsize', 'local_assignsubmission_download'), $options, $dirtyclass);
+        $mform->hideIf('textsize', 'exportformat', 'neq', MTablePDF::OUTPUT_FORMAT_PDF);
 
         $options = [
             0 => get_string('strportrait', 'local_assignsubmission_download'),
             1 => get_string('strlandscape', 'local_assignsubmission_download'),
         ];
-        $mform->addElement(
-            'select',
-            'pageorientation',
-            get_string('strpageorientation', 'local_assignsubmission_download'),
-            $options,
-            $dirtyclass
-        );
+        $mform->addElement('select', 'pageorientation',
+            get_string('strpageorientation', 'local_assignsubmission_download'), $options, $dirtyclass);
+        $mform->hideIf('pageorientation', 'exportformat', 'neq', MTablePDF::OUTPUT_FORMAT_PDF);
 
         $mform->addElement('advcheckbox', 'printheader', get_string('strprintheader', 'local_assignsubmission_download'), ' ');
         $mform->addHelpButton('printheader', 'strprintheader', 'local_assignsubmission_download');
         $mform->setDefault('printheader', true);
+        $mform->hideIf('printheader', 'exportformat', 'neq', MTablePDF::OUTPUT_FORMAT_PDF);
 
         // Datasettings.
         $mform->addElement('header', 'datasettings', get_string('datasettingstitle', 'local_assignsubmission_download'));
