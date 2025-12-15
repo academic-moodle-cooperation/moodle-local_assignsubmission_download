@@ -46,10 +46,10 @@ use zip_packer;
  */
 class filerenaming extends assign {
     /**
-     * @var null|\moodleform $_filerenamingform Holds the instance of the file renaming form.
+     * @var null|\moodleform $filerenamingform Holds the instance of the file renaming form.
      * Initially set to null.
      */
-    private $_filerenamingform = null;
+    private $filerenamingform = null;
 
     /**
      * Main view setup
@@ -106,8 +106,10 @@ class filerenaming extends assign {
         $filenumberinfo = false;
 
         $links = [];
-        if (has_capability('gradereport/grader:view', $this->get_course_context()) &&
-                has_capability('moodle/grade:viewall', $this->get_course_context())) {
+        if (
+            has_capability('gradereport/grader:view', $this->get_course_context()) &&
+                has_capability('moodle/grade:viewall', $this->get_course_context())
+        ) {
             $gradebookurl = '/grade/report/grader/index.php?id=' . $this->get_course()->id;
             $links[$gradebookurl] = get_string('viewgradebook', 'assign');
         }
@@ -115,8 +117,10 @@ class filerenaming extends assign {
             $downloadurl = '/mod/assign/view.php?id=' . $cmid . '&action=downloadall';
             $links[$downloadurl] = get_string('downloadall', 'assign');
         }
-        if ($this->is_blind_marking() &&
-                has_capability('mod/assign:revealidentities', $this->get_context())) {
+        if (
+            $this->is_blind_marking() &&
+                has_capability('mod/assign:revealidentities', $this->get_context())
+        ) {
             $revealidentitiesurl = '/mod/assign/view.php?id=' . $cmid . '&action=revealidentities';
             $links[$revealidentitiesurl] = get_string('revealidentities', 'assign');
         }
@@ -148,21 +152,26 @@ class filerenaming extends assign {
         $filerenamingsettingsform->set_data($filerenamingsettingsdata);
 
         $actionformtext = "";
-        $header = new assign_header($this->get_instance(),
-                                    $this->get_context(),
-                                    false,
-                                    $this->get_course_module()->id,
-                                    get_string('grading', 'assign'),
-                                    $actionformtext);
+        $header = new assign_header(
+            $this->get_instance(),
+            $this->get_context(),
+            false,
+            $this->get_course_module()->id,
+            get_string('grading', 'assign'),
+            $actionformtext
+        );
         $o .= $this->get_renderer()->render($header);
         // Show info dialogue if more than one file can be uploaded.
         if ($filenumberinfo) {
-            $o .= $OUTPUT->box($OUTPUT->notification(get_string('filenumberinfo',
-                    'local_assignsubmission_download'), 'info'), 'generalbox', 'nogroupsinfo');
+            $o .= $OUTPUT->box($OUTPUT->notification(get_string(
+                'filenumberinfo',
+                'local_assignsubmission_download'
+            ), 'info'), 'generalbox', 'nogroupsinfo');
         }
-        $o .= $this->get_renderer()->render(new assign_form('filerenamingsettingsform',
-                                                            $filerenamingsettingsform
-                                                            ));
+        $o .= $this->get_renderer()->render(new assign_form(
+            'filerenamingsettingsform',
+            $filerenamingsettingsform
+        ));
 
         return $o;
     }
@@ -173,7 +182,7 @@ class filerenaming extends assign {
      */
     private function get_filenrenaming_form() {
         global $USER, $CFG;
-        if (empty($this->_filerenamingform)) {
+        if (empty($this->filerenamingform)) {
             $urlparams = ['id' => $this->get_course_module()->id, 'action' => 'grading'];
             $currenturl = new moodle_url($CFG->wwwroot . '/local/assignsubmission_download/view_filerenaming.php', $urlparams);
 
@@ -226,13 +235,15 @@ class filerenaming extends assign {
 
             $classoptions = ['class' => 'gradingbatchoperationsform', 'data-double-submit-protection' => 'off'];
 
-            $this->_filerenamingform = new mod_assign_filerenaming_settings_form(null,
+            $this->filerenamingform = new mod_assign_filerenaming_settings_form(
+                null,
                 $filerenamingsettingsformparams,
                 'post',
                 '',
-                $classoptions);
+                $classoptions
+            );
         }
-        return $this->_filerenamingform;
+        return $this->filerenamingform;
     }
 
     /**
@@ -272,8 +283,14 @@ class filerenaming extends assign {
             $downloadsubmissions = $data->downloadtype_submissions == '1';
             $downloadfeedbacks = $data->downloadtype_feedbacks == '1';
             if (isset($data->submittodownload)) {
-                $this->download_submissions($data->coursegroup, $data->coursegrouping,
-                    $data->submissionneweras, $downloadsubmissions, $downloadfeedbacks, $data->prevent_nameextension);
+                $this->download_submissions(
+                    $data->coursegroup,
+                    $data->coursegrouping,
+                    $data->submissionneweras,
+                    $downloadsubmissions,
+                    $downloadfeedbacks,
+                    $data->prevent_nameextension
+                );
             }
         }
     }
@@ -489,8 +506,17 @@ class filerenaming extends assign {
      * @param string|null $coursegroupingname course grouping name
      * @return void
      */
-    public function update_database_entry($cmid, $userid, $tablename, $filenamingscheme, $preventnameextension, $cleanfilenames,
-    $zipnamingscheme, $coursegroupname, $coursegroupingname) {
+    public function update_database_entry(
+        $cmid,
+        $userid,
+        $tablename,
+        $filenamingscheme,
+        $preventnameextension,
+        $cleanfilenames,
+        $zipnamingscheme,
+        $coursegroupname,
+        $coursegroupingname
+    ) {
         global $DB;
         $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
         if ($databaseentry) {
@@ -617,13 +643,19 @@ class filerenaming extends assign {
      * @param bool $preventnameextension Select if the automatic extension of file names should be prevented.
      * @return string - If an error occurs, this will contain the error page.
      */
-    protected function download_submissions($coursegroup = false, $coursegrouping = false, $submissionneweras = 0,
-            $downloadsubmissions = true, $downloadfeedbacks = false, $preventnameextension = false) {
+    protected function download_submissions(
+        $coursegroup = false,
+        $coursegrouping = false,
+        $submissionneweras = 0,
+        $downloadsubmissions = true,
+        $downloadfeedbacks = false,
+        $preventnameextension = false
+    ) {
         global $CFG, $USER;
 
         // More efficient to load this here.
-        require_once($CFG->libdir.'/filelib.php');
-        require_once($CFG->dirroot.'/local/assignsubmission_download/locallib.php');
+        require_once($CFG->libdir . '/filelib.php');
+        require_once($CFG->dirroot . '/local/assignsubmission_download/locallib.php');
 
         // Increase the server timeout to handle the creation and sending of large zip files.
         core_php_time_limit::raise();
@@ -631,8 +663,16 @@ class filerenaming extends assign {
         $this->require_view_grades();
 
         // Load all users with submit.
-        $students = get_enrolled_users($this->get_context(), "mod/assign:submit", $coursegroup, 'u.*', null, 0, 0,
-                        $this->show_only_active_users());
+        $students = get_enrolled_users(
+            $this->get_context(),
+            "mod/assign:submit",
+            $coursegroup,
+            'u.*',
+            null,
+            0,
+            0,
+            $this->show_only_active_users()
+        );
 
         // Build a list of files to zip.
         $filesforzipping = [];
@@ -644,7 +684,7 @@ class filerenaming extends assign {
 
         $groupname = '';
         if ($groupmode) {
-            $groupname = groups_get_group_name($groupid).'-';
+            $groupname = groups_get_group_name($groupid) . '-';
         }
 
         $fs = get_file_storage();
@@ -672,7 +712,7 @@ class filerenaming extends assign {
 
             $groupsforuser = groups_get_all_groups($this->get_course()->id, $userid);
             if (count($groupsforuser) == 1) {
-                $groupname = array_values($groupsforuser)[0]->name."-";
+                $groupname = array_values($groupsforuser)[0]->name . "-";
                 $resetgroupname = true;
             }
 
@@ -716,7 +756,6 @@ class filerenaming extends assign {
                     // TODO is this ever been used / when did it last work? TBD whether it will be used - 15.06.2022.
                     $downloadasfolders = false;
                     if ($downloadsubmissions) {
-
                         foreach ($this->get_submission_plugins() as $plugin) {
                             if ($plugin->is_enabled() && $plugin->is_visible()) {
                                 if ($downloadasfolders) {
@@ -730,10 +769,12 @@ class filerenaming extends assign {
                                         $type = $plugin->get_type();
                                         // Compare $submissionneweras against the file timestamp if type is file.
                                         // Otherwise compare against the timestamp of the submission.
-                                        if (($type == 'file'
+                                        if (
+                                            ($type == 'file'
                                                 && $file->get_timemodified() >= $submissionneweras)
-                                            || ($type != 'file' &&
-                                                $submission->timemodified >= $submissionneweras)) {
+                                            || ($type != 'file'
+                                                && $submission->timemodified >= $submissionneweras)
+                                        ) {
                                             $subtype = $plugin->get_subtype();
                                             $zipfilename = basename($zipfilepath);
                                             $prefixedfilename = clean_filename(/*$prefix . */
@@ -741,7 +782,8 @@ class filerenaming extends assign {
                                                 $subtype .
                                                 '_' .
                                                 $type .
-                                                '_');
+                                                '_'
+                                            );
                                             if ($type == 'file') {
                                                 $pathfilename = $prefixedfilename . $file->get_filepath() . $zipfilename;
                                             } else if ($type == 'onlinetext') {
@@ -750,9 +792,17 @@ class filerenaming extends assign {
                                                 $pathfilename = $prefixedfilename . '/' . $zipfilename;
                                             }
                                             // AMC moodle university code start.
-                                            $pathfilename = filerenaming_rename_file($pathfilename, $zipfilename, $student,
-                                                $this, $submission, $groupname, $sequence++, $filesforzipping,
-                                                $preventnameextension);
+                                            $pathfilename = filerenaming_rename_file(
+                                                $pathfilename,
+                                                $zipfilename,
+                                                $student,
+                                                $this,
+                                                $submission,
+                                                $groupname,
+                                                $sequence++,
+                                                $filesforzipping,
+                                                $preventnameextension
+                                            );
                                             // AMC moodle university code end.
                                             $pathfilename = clean_param($pathfilename, PARAM_PATH);
                                             $filesforzipping[$pathfilename] = $file;
@@ -773,44 +823,73 @@ class filerenaming extends assign {
                                     foreach ($pluginfiles as $zipfilename => $file) {
                                         // Compare $submissionneweras against the file timestamp if type is file.
                                         // Otherwise compare against the timestamp of the submission.
-                                        if (($type == 'file'
+                                        if (
+                                            ($type == 'file'
                                                 && $file->get_timemodified() >= $submissionneweras)
-                                            || ($type != 'file' &&
-                                                $submission->timemodified >= $submissionneweras)) {
+                                            || ($type != 'file'
+                                                && $submission->timemodified >= $submissionneweras)
+                                        ) {
                                             $subtype = get_string('submission', 'mod_assign');
                                             $prefixedfilename = clean_filename(/*$prefix .*/
                                                 '_' .
                                                 $subtype .
                                                 '_' .
-                                                $typestr);
+                                                $typestr
+                                            );
                                             // AMC moodle university code start.
                                             // AMC moodle university code end.
                                             if ($type == 'onlinetext') {
                                                 if ($zipfilename != 'onlinetext.html') {
-                                                    $dirname = filerenaming_rename_file($prefixedfilename, '', $student,
-                                                        $this, $submission, $groupname, $sequence, $filesforzipping,
-                                                        $preventnameextension);
+                                                    $dirname = filerenaming_rename_file(
+                                                        $prefixedfilename,
+                                                        '',
+                                                        $student,
+                                                        $this,
+                                                        $submission,
+                                                        $groupname,
+                                                        $sequence,
+                                                        $filesforzipping,
+                                                        $preventnameextension
+                                                    );
                                                     $prefixedfilename = $dirname . '_files/' . $zipfilename;
                                                     $filesforzipping[$prefixedfilename] = $file;
                                                     $onlinetextfilestorename[$zipfilename] = $prefixedfilename;
                                                 } else {
-
-                                                    $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename,
-                                                        $student, $this, $submission, $groupname, $sequence++, $filesforzipping,
-                                                        $preventnameextension);
+                                                    $prefixedfilename = filerenaming_rename_file(
+                                                        $prefixedfilename,
+                                                        $zipfilename,
+                                                        $student,
+                                                        $this,
+                                                        $submission,
+                                                        $groupname,
+                                                        $sequence++,
+                                                        $filesforzipping,
+                                                        $preventnameextension
+                                                    );
                                                     $onlinetextcontents = $file[0];
                                                     $onlinetextfilename = $prefixedfilename;
                                                 }
-                                                $onlinetextcontents = str_replace(array_keys($onlinetextfilestorename),
-                                                    array_values($onlinetextfilestorename), $onlinetextcontents);
+                                                $onlinetextcontents = str_replace(
+                                                    array_keys($onlinetextfilestorename),
+                                                    array_values($onlinetextfilestorename),
+                                                    $onlinetextcontents
+                                                );
                                                 // Adds the onlinetext file only if it is not empty.
                                                 if (!$this->is_only_html_structure($onlinetextcontents)) {
                                                     $filesforzipping[$onlinetextfilename] = [$onlinetextcontents];
                                                 }
                                             } else {
-                                                $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename,
-                                                    $student, $this, $submission, $groupname, $sequence++, $filesforzipping,
-                                                    $preventnameextension);
+                                                $prefixedfilename = filerenaming_rename_file(
+                                                    $prefixedfilename,
+                                                    $zipfilename,
+                                                    $student,
+                                                    $this,
+                                                    $submission,
+                                                    $groupname,
+                                                    $sequence++,
+                                                    $filesforzipping,
+                                                    $preventnameextension
+                                                );
                                                 $filesforzipping[$prefixedfilename] = $file;
                                             }
                                         }
@@ -823,13 +902,12 @@ class filerenaming extends assign {
                         $feedback = $this->get_assign_feedback_status_renderable($student);
                         // The feedback for our latest submission.
                         if ($feedback && $feedback->grade) {
-
                             $sequence = 1;
                             foreach ($this->get_feedback_plugins() as $feedbackplugin) {
                                 if (!$feedbackplugin->is_enabled() || !$feedbackplugin->is_visible()) {
                                     continue;
                                 }
-                                $component = $feedbackplugin->get_subtype().'_'.$feedbackplugin->get_type();
+                                $component = $feedbackplugin->get_subtype() . '_' . $feedbackplugin->get_type();
                                 $subtype = get_string('feedback');
                                 $type = $feedbackplugin->get_type();
                                 $typestr = $feedbackplugin->get_name();
@@ -841,20 +919,30 @@ class filerenaming extends assign {
                                 $commentsfilestorename = [];
 
                                 foreach ($fileareas as $filearea => $name) {
-                                    if ($areafiles = $fs->get_area_files(
-                                        $this->get_context()->id,
-                                        $component,
-                                        $filearea,
-                                        $feedback->grade->id,
-                                        'itemid, filepath, filename',
-                                        false)) {
+                                    if (
+                                        $areafiles = $fs->get_area_files(
+                                            $this->get_context()->id,
+                                            $component,
+                                            $filearea,
+                                            $feedback->grade->id,
+                                            'itemid, filepath, filename',
+                                            false
+                                        )
+                                    ) {
                                         foreach ($areafiles as $file) {
                                             $zipfilename = $file->get_filename();
                                             if ($type == 'comments') {
-
-                                                $dirname = filerenaming_rename_file($prefixedfilename, '', $student,
-                                                    $this, $submission, $groupname, $sequence, $filesforzipping,
-                                                    $preventnameextension);
+                                                $dirname = filerenaming_rename_file(
+                                                    $prefixedfilename,
+                                                    '',
+                                                    $student,
+                                                    $this,
+                                                    $submission,
+                                                    $groupname,
+                                                    $sequence,
+                                                    $filesforzipping,
+                                                    $preventnameextension
+                                                );
                                                 $prefixedfilename = $dirname . '_files/' . $zipfilename;
                                                 $filesforzipping[$prefixedfilename] = $file;
                                                 $commentsfilestorename[$zipfilename] = $prefixedfilename;
@@ -863,11 +951,20 @@ class filerenaming extends assign {
                                                     '_' .
                                                     $subtype .
                                                     '_' .
-                                                    $typestr);
+                                                    $typestr
+                                                );
                                                 // AMC moodle university code start.
-                                                $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename,
-                                                    $student, $this, $submission, $groupname, $sequence++, $filesforzipping,
-                                                    $preventnameextension);
+                                                $prefixedfilename = filerenaming_rename_file(
+                                                    $prefixedfilename,
+                                                    $zipfilename,
+                                                    $student,
+                                                    $this,
+                                                    $submission,
+                                                    $groupname,
+                                                    $sequence++,
+                                                    $filesforzipping,
+                                                    $preventnameextension
+                                                );
                                                 $filesforzipping[$prefixedfilename] = $file;
                                             }
                                         }
@@ -877,8 +974,11 @@ class filerenaming extends assign {
                                 if ($type == 'comments') {
                                     $comments = $feedbackplugin->get_editor_text('comments', $feedback->grade->id);
                                     $comments = str_replace('@@PLUGINFILE@@/', '', $comments);
-                                    $comments = str_replace(array_keys($commentsfilestorename),
-                                        array_values($commentsfilestorename), $comments);
+                                    $comments = str_replace(
+                                        array_keys($commentsfilestorename),
+                                        array_values($commentsfilestorename),
+                                        $comments
+                                    );
                                     if (mb_strlen(trim($comments)) > 0) {
                                         $comments = self::convert_content_to_html_doc($feedbackplugin->get_name(), $comments);
                                         $zipfilename = $typestr . '.html';
@@ -886,11 +986,20 @@ class filerenaming extends assign {
                                             '_' .
                                             $subtype .
                                             '_' .
-                                            $typestr);
+                                            $typestr
+                                        );
                                         // AMC moodle university code start.
-                                        $prefixedfilename = filerenaming_rename_file($prefixedfilename, $zipfilename, $student,
-                                            $this, $submission, $groupname, $sequence++, $filesforzipping,
-                                            $preventnameextension);
+                                        $prefixedfilename = filerenaming_rename_file(
+                                            $prefixedfilename,
+                                            $zipfilename,
+                                            $student,
+                                            $this,
+                                            $submission,
+                                            $groupname,
+                                            $sequence++,
+                                            $filesforzipping,
+                                            $preventnameextension
+                                        );
 
                                         $filesforzipping[$prefixedfilename] = [$comments];
                                     }
@@ -903,18 +1012,23 @@ class filerenaming extends assign {
         }
         $result = '';
         if (count($filesforzipping) == 0) {
-            $header = new assign_header($this->get_instance(),
-                                        $this->get_context(),
-                                        false,
-                                        $this->get_course_module()->id,
-                                        get_string('downloadall', 'assign'));
+            $header = new assign_header(
+                $this->get_instance(),
+                $this->get_context(),
+                false,
+                $this->get_course_module()->id,
+                get_string('downloadall', 'assign')
+            );
             $result .= $this->get_renderer()->render($header);
 
             // Print nosubmissionneweras warning if files were found and $submissionneweras was set.
             // Otherwise print nosubmission warning.
             if ((isset($pluginfiles) && count($pluginfiles) > 0) || $submissionneweras > 0) {
-                $result .= $this->get_renderer()->notification(get_string('nosubmissionneweras',
-                        'local_assignsubmission_download', userdate($submissionneweras)));
+                $result .= $this->get_renderer()->notification(get_string(
+                    'nosubmissionneweras',
+                    'local_assignsubmission_download',
+                    userdate($submissionneweras)
+                ));
             } else {
                 $result .= $this->get_renderer()->notification(get_string('nosubmission', 'assign'));
             }
@@ -929,13 +1043,23 @@ class filerenaming extends assign {
         } else {
             if ($downloadsubmissions) {
                 $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id);
-                $this->handle_download_settings('local_assignsubmission_download', $this->get_course_module()->id,
-                    $USER->id, $groupid, $groupingid);
+                $this->handle_download_settings(
+                    'local_assignsubmission_download',
+                    $this->get_course_module()->id,
+                    $USER->id,
+                    $groupid,
+                    $groupingid
+                );
             }
             if ($downloadfeedbacks) {
                 $this->update_lastdownloaded_date($this->get_course_module()->id, $USER->id, true);
-                $this->handle_download_settings('local_assignsubmission_download_feedback', $this->get_course_module()->id,
-                    $USER->id, $groupid, $groupingid);
+                $this->handle_download_settings(
+                    'local_assignsubmission_download_feedback',
+                    $this->get_course_module()->id,
+                    $USER->id,
+                    $groupid,
+                    $groupingid
+                );
             }
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
 

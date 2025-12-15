@@ -78,7 +78,8 @@ function local_assignsubmission_download_extend_settings_navigation(settings_nav
             $link,
             navigation_node::TYPE_SETTING,
             'assignsubmission_download_export_print',
-            'assignsubmission_download_export_print');
+            'assignsubmission_download_export_print'
+        );
         $modulesettings->add_node($childnode, $beforekey);
     }
 
@@ -94,5 +95,4 @@ function local_assignsubmission_download_extend_settings_navigation(settings_nav
         );
         $modulesettings->add_node($childnode, $beforekey);
     }
-
 }

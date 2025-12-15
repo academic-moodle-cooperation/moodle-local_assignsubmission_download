@@ -28,7 +28,7 @@ require_once($CFG->dirroot . '/mod/assign/locallib.php');
 
 $id = required_param('id', PARAM_INT);
 
-list ($course, $cm) = get_course_and_cm_from_cmid($id, 'assign');
+ [$course, $cm] = get_course_and_cm_from_cmid($id, 'assign');
 
 require_login($course, true, $cm);
 

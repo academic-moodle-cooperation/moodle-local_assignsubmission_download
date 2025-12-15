@@ -154,11 +154,15 @@ class table_pdf_export_format extends core_table\base_export_format {
 
         $headerallowsubmissionfromdate = get_string('pdf_availablefrom', 'local_assignsubmission_download') . ':';
         $allowsubmissionsfromdate = ($assignment->allowsubmissionsfromdate == 0) ? get_string(
-                'pdf_notactive', 'local_assignsubmission_download') : userdate($assignment->allowsubmissionsfromdate);
+            'pdf_notactive',
+            'local_assignsubmission_download'
+        ) : userdate($assignment->allowsubmissionsfromdate);
 
         $headerduedate = get_string('pdf_duedate', 'local_assignsubmission_download') . ':';
         $duedate = ($assignment->duedate == 0) ? get_string(
-                'pdf_notactive', 'local_assignsubmission_download') : userdate($assignment->duedate);
+            'pdf_notactive',
+            'local_assignsubmission_download'
+        ) : userdate($assignment->duedate);
 
         $headerview = get_string('pdf_view', 'local_assignsubmission_download');
         $viewname = get_string('submissions', 'local_assignsubmission_download');
@@ -182,12 +186,20 @@ class table_pdf_export_format extends core_table\base_export_format {
             $groupname = ($group == 0) ? get_string('allparticipants') : format_string($allowedgroups[$group]->name);
         }
 
-        $this->pdf->setheadertext($headercourse, $coursename,
-                            $headerallowsubmissionfromdate, $allowsubmissionsfromdate,
-                            $headerview, $viewname,
-                            $headerassignment, $assignmentname,
-                            $headerduedate, $duedate,
-                            $headergroup, $groupname);
+        $this->pdf->setheadertext(
+            $headercourse,
+            $coursename,
+            $headerallowsubmissionfromdate,
+            $allowsubmissionsfromdate,
+            $headerview,
+            $viewname,
+            $headerassignment,
+            $assignmentname,
+            $headerduedate,
+            $duedate,
+            $headergroup,
+            $groupname
+        );
 
         $printheader = get_user_preferences('assign_printheader', 0);
         $this->pdf->showheaderfooter($printheader);
@@ -239,7 +251,6 @@ class table_pdf_export_format extends core_table\base_export_format {
      * @return void
      */
     public function finish_table() {
-
     }
 
     /**
