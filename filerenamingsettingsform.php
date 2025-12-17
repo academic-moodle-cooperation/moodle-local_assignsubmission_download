@@ -147,8 +147,12 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $teamsubmissionenabled = (!empty($assignrecord) && !empty($assignrecord->teamsubmission));
 
         if ($teamsubmissionenabled) {
-            $mform->addElement('advcheckbox', 'onegroupsubmission',
-                get_string('onegroupsubmission', 'local_assignsubmission_download'), ' ');
+            $mform->addElement(
+                'advcheckbox',
+                'onegroupsubmission',
+                get_string('onegroupsubmission', 'local_assignsubmission_download'),
+                ' '
+            );
             $mform->addHelpButton('onegroupsubmission', 'onegroupsubmission', 'local_assignsubmission_download');
         }
 

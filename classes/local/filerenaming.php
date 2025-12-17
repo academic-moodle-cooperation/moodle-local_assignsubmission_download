@@ -286,9 +286,15 @@ class filerenaming extends assign {
             $downloadsubmissions = $data->downloadtype_submissions == '1';
             $downloadfeedbacks = $data->downloadtype_feedbacks == '1';
             if (isset($data->submittodownload)) {
-                $this->download_submissions($data->coursegroup, $data->coursegrouping,
-                    $data->submissionneweras, $downloadsubmissions, $downloadfeedbacks, $data->prevent_nameextension,
-                    $data->onegroupsubmission);
+                $this->download_submissions(
+                    $data->coursegroup,
+                    $data->coursegrouping,
+                    $data->submissionneweras,
+                    $downloadsubmissions,
+                    $downloadfeedbacks,
+                    $data->prevent_nameextension,
+                    $data->onegroupsubmission
+                );
             }
         }
     }
@@ -642,8 +648,15 @@ class filerenaming extends assign {
      * @param bool $onegroupsubmission Select if only one submission per group should be downloaded.
      * @return string - If an error occurs, this will contain the error page.
      */
-    protected function download_submissions($coursegroup = false, $coursegrouping = false, $submissionneweras = 0,
-            $downloadsubmissions = true, $downloadfeedbacks = false, $preventnameextension = false, $onegroupsubmission = false) {
+    protected function download_submissions(
+        $coursegroup = false,
+        $coursegrouping = false,
+        $submissionneweras = 0,
+        $downloadsubmissions = true,
+        $downloadfeedbacks = false,
+        $preventnameextension = false,
+        $onegroupsubmission = false
+    ) {
         global $CFG, $USER;
 
         // More efficient to load this here.
