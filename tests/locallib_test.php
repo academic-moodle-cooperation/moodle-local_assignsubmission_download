@@ -22,8 +22,7 @@
  * @copyright   2025 Academic Moodle Cooperation {@link http://www.academic-moodle-cooperation.org}
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class locallib_test extends \advanced_testcase {
-
+final class locallib_test extends \advanced_testcase {
     /**
      * Basic smoke test for filerenaming_rename_file.
      * Ensures common placeholders are replaced correctly for non-blind marking.
@@ -109,7 +108,7 @@ class locallib_test extends \advanced_testcase {
             'firstname' => '太郎',
             'lastname' => '山田',
             'firstnamephonetic' => 'タロウ', // Katakana.
-            'lastnamephonetic' => 'ヤマダ',   // Katakana.
+            'lastnamephonetic' => 'ヤマダ', // Katakana.
             'alternatename' => 'YAMADA Taro', // Latin, used by non-Japanese teachers.
         ]);
         $this->setUser($user);

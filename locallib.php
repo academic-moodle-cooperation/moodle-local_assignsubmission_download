@@ -138,22 +138,22 @@ function filerenaming_rename_file(
         $o = str_replace('[idnumber]', $blind, $o);
         $o = (strpos($o, $blind) === false) ? str_replace('[fullname]', $blind, $o) : str_replace('[fullname]', '', $o);
         $o = (strpos($o, $blind) === false) ? str_replace('[firstname]', $blind, $o) : str_replace('[firstname]', '', $o);
-        $o = (strpos($o, $blind) === false) ? str_replace('[lastname]',  $blind, $o) : str_replace('[lastname]',  '', $o);
-        $o = (strpos($o, $blind) === false) ? str_replace('[username]',  $blind, $o) : str_replace('[username]',  '', $o);
-        $o = (strpos($o, $blind) === false) ? str_replace('[alternatename]',  $blind, $o) : str_replace('[alternatename]',  '', $o);
+        $o = (strpos($o, $blind) === false) ? str_replace('[lastname]', $blind, $o) : str_replace('[lastname]', '', $o);
+        $o = (strpos($o, $blind) === false) ? str_replace('[username]', $blind, $o) : str_replace('[username]', '', $o);
+        $o = (strpos($o, $blind) === false) ? str_replace('[alternatename]', $blind, $o) : str_replace('[alternatename]', '', $o);
         $o = (strpos($o, $blind) === false) ?
             str_replace('[firstnamephonetic]', $blind, $o) : str_replace('[firstnamephonetic]', '', $o);
         $o = (strpos($o, $blind) === false) ?
-            str_replace('[lastnamephonetic]',  $blind, $o) : str_replace('[lastnamephonetic]',  '', $o);
+            str_replace('[lastnamephonetic]', $blind, $o) : str_replace('[lastnamephonetic]', '', $o);
     } else {
         $o = str_replace('[idnumber]', $user->idnumber, $o);
         $o = str_replace('[fullname]', fullname($user), $o);
         $o = str_replace('[firstname]', $user->firstname, $o);
-        $o = str_replace('[lastname]',  $user->lastname, $o);
-        $o = str_replace('[username]',  $user->username, $o);
-        $o = str_replace('[alternatename]',  $user->alternatename, $o);
+        $o = str_replace('[lastname]', $user->lastname, $o);
+        $o = str_replace('[username]', $user->username, $o);
+        $o = str_replace('[alternatename]', $user->alternatename, $o);
         $o = str_replace('[firstnamephonetic]', $user->firstnamephonetic, $o);
-        $o = str_replace('[lastnamephonetic]',  $user->lastnamephonetic, $o);
+        $o = str_replace('[lastnamephonetic]', $user->lastnamephonetic, $o);
     }
 
     $o = replace_custom($o, $maxlength, '[assignmentname]', $assignmentname);
