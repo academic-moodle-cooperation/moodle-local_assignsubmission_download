@@ -34,42 +34,6 @@ define(['jquery', 'core/log'], function($, log) {
         // Initialize empty constructor
     };
 
-    Printpreviewer.prototype.changeInPerpage = function(e) {
-        // Stop the event's default behavior.
-        e.preventDefault();
-        // Stop the event from bubbling up the DOM tree.
-        e.stopPropagation();
-
-        if ($(window.combo[1]).val() == 0) {
-            // Check checkbox and disable text field.
-            $(window.combo[0]).prop('checked', true);
-            $(window.combo[1]).prop('disabled', true);
-        } else {
-            // Save last value, uncheck checkbox and enable textfield if checked/disabled.
-            window.stdperpage = $(window.combo[1]).val();
-            $(window.combo[0]).prop('checked', false);
-            $(window.combo[1]).prop('disabled', false);
-        }
-    };
-
-    Printpreviewer.prototype.changeInOptimum = function(e) {
-        // Stop the event's default behavior.
-        e.preventDefault();
-        // Stop the event from bubbling up the DOM tree.
-        e.stopPropagation();
-
-        if ($(window.combo[0]).prop('checked')) {
-            // Save last value, set to 0 and disable textfield.
-            window.stdperpage = $(window.combo[1]).val();
-            $(window.combo[1]).val(0);
-            $(window.combo[1]).prop('disabled', true);
-        } else {
-            // Restore last value and enable again.
-            $(window.combo[1]).val(window.stdperpage);
-            $(window.combo[1]).prop('disabled', false);
-        }
-    };
-
     var instance = new Printpreviewer();
 
     instance.initializer = function() {
@@ -82,25 +46,8 @@ define(['jquery', 'core/log'], function($, log) {
 
         var filterelement = $('#id_filter');
         var groupelement = $('#id_group');
-        var exportformat = $('#id_exportformat');
         var selectall = $('#selectall');
         var select = $('td.cell input[type=checkbox]');
-
-        var toggleprintsettings = function(exportformat) {
-            if (exportformat == 0) {
-                $('#id_grpperpage_perpage').prop('disabled', false);
-                $('#id_grpperpage_optimum').prop('disabled', false);
-                $('#id_textsize').prop('disabled', false);
-                $('#id_pageorientation').prop('disabled', false);
-                $('#id_printheader').prop('disabled', false);
-            } else {
-                $('#id_grpperpage_perpage').prop('disabled', true);
-                $('#id_grpperpage_optimum').prop('disabled', true);
-                $('#id_textsize').prop('disabled', true);
-                $('#id_pageorientation').prop('disabled', true);
-                $('#id_printheader').prop('disabled', true);
-            }
-        };
 
         if (filterelement) {
             filterelement.on('change', function() {
@@ -114,31 +61,9 @@ define(['jquery', 'core/log'], function($, log) {
             });
         }
 
-        if (exportformat) {
-            exportformat.on('change', function() {
-                toggleprintsettings(exportformat.val());
-            });
-        }
-
         selectall.prop('checked', 'checked');
         select.prop('checked', 'checked');
 
-        window.combo = new Array();
-        window.combo[0] = 'input[id=id_grpperpage_optimum]';
-        window.combo[1] = 'input[id=id_grpperpage_perpage]';
-
-        window.stdperpage = $(window.combo[1]).val();
-
-        if ($(window.combo[0]).checked) {
-            $(window.combo[1]).prop('disabled', true);
-        } else {
-            $(window.combo[1]).prop('disabled', false);
-        }
-
-        $(window.combo[1]).change(this.changeInPerpage);
-        $(window.combo[0]).change(this.changeInOptimum);
-
-        toggleprintsettings(exportformat.val());
         return true;
     };
 

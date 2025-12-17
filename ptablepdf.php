@@ -207,9 +207,14 @@ class table_pdf_export_format extends core_table\base_export_format {
         $exportformat = get_user_preferences('assign_exportformat', 0);
         $this->pdf->setoutputformat($exportformat);
 
+        $defaultperpage = get_config('local_assignsubmission_download', 'assignmentpatch_perpage');
+        $perpagepref = get_user_preferences('assign_perpage', $defaultperpage);
         $optimum = get_user_preferences('assign_optimum', 0);
-        $perpage = get_user_preferences('assign_perpage', get_config('local_assignsubmission_download', 'assignmentpatch_perpage'));
-        $perpage = ($optimum) ? get_config('local_assignsubmission_download', 'assignmentpatch_perpage') : $perpage;
+        if ($optimum || $perpagepref <= 0) {
+            $perpage = $defaultperpage;
+        } else {
+            $perpage = $perpagepref;
+        }
         $this->pdf->setrowsperpage($perpage);
 
         $textsize = get_user_preferences('assign_textsize', 0);

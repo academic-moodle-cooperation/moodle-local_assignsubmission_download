@@ -146,15 +146,15 @@ class printpreview extends assign {
         $gradingmanager = get_grading_manager($this->get_context(), 'mod_assign', 'submissions');
 
         $filter  = get_user_preferences('assign_filter', '');
-        $perpage = get_user_preferences(
-            'assign_perpage',
-            get_config('local_assignsubmission_download', 'assignmentpatch_perpage')
-        );
+
+        $defaultperpage = get_config('local_assignsubmission_download', 'assignmentpatch_perpage');
+        $perpagepref = get_user_preferences('assign_perpage', $defaultperpage);
         $optimum = get_user_preferences('assign_optimum', 0);
-        if ($perpage <= 0 || $optimum) {
-            $perpage = get_config('local_assignsubmission_download', 'assignmentpatch_perpage');
+        if ($optimum || $perpagepref <= 0) {
+            $perpage = $defaultperpage;
+        } else {
+            $perpage = $perpagepref;
         }
-        $optimum = ($perpage == 0 || $perpage == '') ? 1 : 0;
 
         $textsize = get_user_preferences('assign_textsize', 0);
         $pageorientation = get_user_preferences('assign_pageorientation', 0);
@@ -183,7 +183,8 @@ class printpreview extends assign {
         $tablehtml .= html_writer::tag('div', get_string('data_preview', 'local_assignsubmission_download')
             . $OUTPUT->render($helpicon), ['class' => 'data_bold']);
 
-        $gradingtable = new printpreview_table($this, $perpage, $filter, 0, null);
+        // Always show all users in the preview table.
+        $gradingtable = new printpreview_table($this, -1, $filter, 0, null);
 
         $tablehtml .= $PAGE->get_renderer('local_assignsubmission_download')->render($gradingtable);
 
@@ -269,13 +270,13 @@ class printpreview extends assign {
                 isset($data->grpperpage['perpage']) ?
                     $data->grpperpage['perpage'] : get_config('local_assignsubmission_download', 'assignmentpatch_perpage')
             );
-            set_user_preference('assign_optimum', $data->grpperpage['optimum']);
+            set_user_preference('assign_optimum', isset($data->grpperpage['optimum']) ? $data->grpperpage['optimum'] : 0);
             set_user_preference('assign_textsize', isset($data->textsize) ? $data->textsize : 0);
             set_user_preference('assign_pageorientation', isset($data->pageorientation) ? $data->pageorientation : 0);
             set_user_preference('assign_printheader', $data->printheader);
 
-            $selectedusers = optional_param_array('selectedusers', [], PARAM_INT);
-
+            $selectall = optional_param('selectall', 0, PARAM_BOOL);
+            $selectedusers = $selectall ? null : optional_param_array('selectedusers', [], PARAM_INT);
             $SESSION->selectedusers = $selectedusers;
             // Download submissions.
             if (isset($data->submittoprint)) {
@@ -297,13 +298,15 @@ class printpreview extends assign {
         $PAGE->set_pagelayout('popup');
 
         $filter  = get_user_preferences('assign_filter', '');
-        $perpage = get_user_preferences('assign_perpage', get_config('local_assignsubmission_download', 'assignmentpatch_perpage'));
+        $defaultperpage = get_config('local_assignsubmission_download', 'assignmentpatch_perpage');
+        $perpagepref = get_user_preferences('assign_perpage', $defaultperpage);
         $optimum = get_user_preferences('assign_optimum', 0);
-        if ($perpage <= 0 || $optimum) {
-            $perpage = get_config('local_assignsubmission_download', 'assignmentpatch_perpage');
+        if ($optimum || $perpagepref <= 0) {
+            $perpage = $defaultperpage;
+        } else {
+            $perpage = $perpagepref;
         }
-        $optimum = ($perpage == 0 || $perpage == '') ? 1 : 0;
-        $selectedusers = $SESSION->selectedusers;
+        $selectedusers = $SESSION->selectedusers ?? null;
 
         \local_assignsubmission_download\event\assignsubmission_download_table_downloaded::create_from_assign($this)->trigger();
 

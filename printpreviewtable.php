@@ -407,6 +407,10 @@ class printpreview_table extends table_sql implements renderable {
             $total = $grandtotal;
         }
 
+        if ($pagesize === -1 || $pagesize === 0) {
+            $pagesize = $total;
+        }
+
         $this->pagesize($pagesize, $total);
 
         // Fetch the attempts.
