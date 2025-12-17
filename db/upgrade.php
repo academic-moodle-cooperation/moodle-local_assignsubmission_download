@@ -239,7 +239,6 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2025050700, 'local', 'assignsubmission_download');
     }
     if ($oldversion < 2025100600) {
-
         // Define field lastsubneweras to be added to local_assignsubmission_download.
         $table = new xmldb_table('local_assignsubmission_download');
         $field = new xmldb_field('lastsubneweras', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'cleanfilenames');

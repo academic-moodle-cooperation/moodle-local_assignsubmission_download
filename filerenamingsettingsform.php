@@ -286,14 +286,22 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         );
         $mform->setExpanded('lastdownloadsettings', false);
 
-        $mform->addElement('static', 'lastfilenamingscheme', get_string('filerenamingpattern',
-            'local_assignsubmission_download'), $this->_customdata['lastfilenamingscheme']);
-        $mform->addElement('static', 'lastpreventextension', get_string('prevent_nameextension',
-            'local_assignsubmission_download'), $this->_customdata['lastpreventnameextension']);
-        $mform->addElement('static', 'lastcleanfilenames', get_string('clean_filerenaming',
-            'local_assignsubmission_download'), $this->_customdata['lastcleanfilename']);
-        $mform->addElement('static', 'lastsubmissionneweras', get_string('submissionneweras',
-            'local_assignsubmission_download'), $this->_customdata['lastsubneweras']);
+        $mform->addElement('static', 'lastfilenamingscheme', get_string(
+            'filerenamingpattern',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastfilenamingscheme']);
+        $mform->addElement('static', 'lastpreventextension', get_string(
+            'prevent_nameextension',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastpreventnameextension']);
+        $mform->addElement('static', 'lastcleanfilenames', get_string(
+            'clean_filerenaming',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastcleanfilename']);
+        $mform->addElement('static', 'lastsubmissionneweras', get_string(
+            'submissionneweras',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastsubneweras']);
         if (($groupmode != NOGROUPS)) {
             $mform->addElement('static', 'lastgrouping', get_string(
                 'labelgrouping',
@@ -312,18 +320,30 @@ class mod_assign_filerenaming_settings_form extends moodleform {
         $mform->closeHeaderBefore('lastfeedbacksettings');
 
         // Add new collabsible area for settings of last feedback file download.
-        $mform->addElement('header', 'lastfeedbacksettings',
-            get_string('lastfeedbackdownloadsettings', 'local_assignsubmission_download'), '');
+        $mform->addElement(
+            'header',
+            'lastfeedbacksettings',
+            get_string('lastfeedbackdownloadsettings', 'local_assignsubmission_download'),
+            ''
+        );
         $mform->setExpanded('lastfeedbacksettings', false);
 
-        $mform->addElement('static', 'lastfilenamingscheme', get_string('filerenamingpattern',
-            'local_assignsubmission_download'), $this->_customdata['lastfilenamingschemefeedback']);
-        $mform->addElement('static', 'lastpreventextension', get_string('prevent_nameextension',
-            'local_assignsubmission_download'), $this->_customdata['lastpreventnameextensionfeedback']);
-        $mform->addElement('static', 'lastcleanfilenames', get_string('clean_filerenaming',
-            'local_assignsubmission_download'), $this->_customdata['lastcleanfilenamefeedback']);
-        $mform->addElement('static', 'lastsubmissionneweras', get_string('submissionneweras',
-            'local_assignsubmission_download'), $this->_customdata['lastsubnewerasfeedback']);
+        $mform->addElement('static', 'lastfilenamingscheme', get_string(
+            'filerenamingpattern',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastfilenamingschemefeedback']);
+        $mform->addElement('static', 'lastpreventextension', get_string(
+            'prevent_nameextension',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastpreventnameextensionfeedback']);
+        $mform->addElement('static', 'lastcleanfilenames', get_string(
+            'clean_filerenaming',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastcleanfilenamefeedback']);
+        $mform->addElement('static', 'lastsubmissionneweras', get_string(
+            'submissionneweras',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastsubnewerasfeedback']);
         if (($groupmode != NOGROUPS)) {
             $mform->addElement('static', 'lastgrouping', get_string(
                 'labelgrouping',

@@ -554,8 +554,18 @@ class filerenaming extends assign {
      * @param string $zipnamingscheme string zip naming scheme
      * @return void
      */
-    public function update_database_entry($cmid, $userid, $tablename, $filenamingscheme, $preventnameextension, $cleanfilenames,
-     $submissionneweras, $coursegroupname, $coursegroupingname, $zipnamingscheme) {
+    public function update_database_entry(
+        $cmid,
+        $userid,
+        $tablename,
+        $filenamingscheme,
+        $preventnameextension,
+        $cleanfilenames,
+        $submissionneweras,
+        $coursegroupname,
+        $coursegroupingname,
+        $zipnamingscheme
+    ) {
         global $DB;
         $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
         if ($databaseentry) {
@@ -1082,11 +1092,17 @@ class filerenaming extends assign {
             // Depending on if submissions or feedbacks were downloaded.
             if ((isset($pluginfiles) && count($pluginfiles) > 0) || $submissionneweras > 0) {
                 if ($downloadsubmissions) {
-                    $result .= $this->get_renderer()->notification(get_string('nosubmissionneweras',
-                            'local_assignsubmission_download', userdate($submissionneweras)));
+                    $result .= $this->get_renderer()->notification(get_string(
+                        'nosubmissionneweras',
+                        'local_assignsubmission_download',
+                        userdate($submissionneweras)
+                    ));
                 } else {
-                    $result .= $this->get_renderer()->notification(get_string('nofeedbackneweras',
-                            'local_assignsubmission_download', userdate($submissionneweras)));
+                    $result .= $this->get_renderer()->notification(get_string(
+                        'nofeedbackneweras',
+                        'local_assignsubmission_download',
+                        userdate($submissionneweras)
+                    ));
                 }
             } else {
                 if ($downloadsubmissions) {
