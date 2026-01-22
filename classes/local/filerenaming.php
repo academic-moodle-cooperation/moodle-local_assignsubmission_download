@@ -280,6 +280,9 @@ class filerenaming extends assign {
             if (!isset($data->submissionneweras)) {
                 $data->submissionneweras = 0;
             }
+            if (!isset($data->onegroupsubmission)) {
+                $data->onegroupsubmission = 0;
+            }
             $downloadsubmissions = $data->downloadtype_submissions == '1';
             $downloadfeedbacks = $data->downloadtype_feedbacks == '1';
             if (isset($data->submittodownload)) {
@@ -289,7 +292,8 @@ class filerenaming extends assign {
                     $data->submissionneweras,
                     $downloadsubmissions,
                     $downloadfeedbacks,
-                    $data->prevent_nameextension
+                    $data->prevent_nameextension,
+                    $data->onegroupsubmission
                 );
             }
         }
@@ -641,6 +645,7 @@ class filerenaming extends assign {
      * @param mixed $downloadsubmissions
      * @param mixed $downloadfeedbacks
      * @param bool $preventnameextension Select if the automatic extension of file names should be prevented.
+     * @param bool $onegroupsubmission Select if only one submission per group should be downloaded.
      * @return string - If an error occurs, this will contain the error page.
      */
     protected function download_submissions(
@@ -649,7 +654,8 @@ class filerenaming extends assign {
         $submissionneweras = 0,
         $downloadsubmissions = true,
         $downloadfeedbacks = false,
-        $preventnameextension = false
+        $preventnameextension = false,
+        $onegroupsubmission = false
     ) {
         global $CFG, $USER;
 
@@ -691,6 +697,9 @@ class filerenaming extends assign {
 
         // Construct the zip file name.
         $zipname = ziprenaming_rename_zip_archive($this);
+
+        // Array to remember already downloaded group files.
+        $alreadydownloadedgroups = [];
 
         // Get all the files for each student.
         $resetgroupname = false;
@@ -751,6 +760,14 @@ class filerenaming extends assign {
                     $prefix = clean_filename($prefix . '_' . $this->get_uniqueid_for_user($userid));
                 }
 
+                if ($onegroupsubmission && $submissiongroup) {
+                    if (in_array($submissiongroup->id, $alreadydownloadedgroups)) {
+                        // This group has already been downloaded.
+                        continue;
+                    } else {
+                        $alreadydownloadedgroups[] = $submissiongroup->id;
+                    }
+                }
                 if ($submission) {
                     $downloadasfolders = get_user_preferences('assign_downloadasfolders', 1);
                     // TODO is this ever been used / when did it last work? TBD whether it will be used - 15.06.2022.
