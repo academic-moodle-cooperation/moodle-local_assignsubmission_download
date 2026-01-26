@@ -238,5 +238,28 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         // Assignsubmission_download savepoint reached.
         upgrade_plugin_savepoint(true, 2025050700, 'local', 'assignsubmission_download');
     }
+    if ($oldversion < 2025100600) {
+        // Define field lastsubneweras to be added to local_assignsubmission_download.
+        $table = new xmldb_table('local_assignsubmission_download');
+        $field = new xmldb_field('lastsubneweras', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'cleanfilenames');
+
+        // Conditionally launch add field lastsubneweras.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field lastsubneweras to be added to local_assignsubmission_download_feedback.
+        $table = new xmldb_table('local_assignsubmission_download_feedback');
+        $field = new xmldb_field('lastsubneweras', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'cleanfilenames');
+
+        // Conditionally launch add field lastsubneweras.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Assignsubmission_download savepoint reached.
+        upgrade_plugin_savepoint(true, 2025100600, 'local', 'assignsubmission_download');
+    }
+
     return true;
 }

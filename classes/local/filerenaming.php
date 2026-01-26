@@ -200,6 +200,8 @@ class filerenaming extends assign {
             $lastpreventnameextfeedback = $this->get_preventnameextension_as_string($cmid, $userid, $feedbacktable);
             $lastcleanfilename = $this->get_cleanfilename_as_string($cmid, $userid, $downloadtable);
             $lastcleanfilenamefeedback = $this->get_cleanfilename_as_string($cmid, $userid, $feedbacktable);
+            $lastsubneweras = $this->get_submission_neweras_date($cmid, $userid, $downloadtable);
+            $lastsubnewerasfeedback = $this->get_submission_neweras_date($cmid, $userid, $feedbacktable);
             $lastgroup = $this->get_group($cmid, $userid, $downloadtable);
             $lastgroupfeedback = $this->get_group($cmid, $userid, $feedbacktable);
             $lastgrouping = $this->get_grouping($cmid, $userid, $downloadtable);
@@ -225,6 +227,8 @@ class filerenaming extends assign {
                 'lastpreventnameextensionfeedback' => $lastpreventnameextfeedback,
                 'lastcleanfilename' => $lastcleanfilename,
                 'lastcleanfilenamefeedback' => $lastcleanfilenamefeedback,
+                'lastsubneweras' => $lastsubneweras,
+                'lastsubnewerasfeedback' => $lastsubnewerasfeedback,
                 'lastgroup' => $lastgroup,
                 'lastgroupfeedback' => $lastgroupfeedback,
                 'lastgrouping' => $lastgrouping,
@@ -264,8 +268,9 @@ class filerenaming extends assign {
 
         if ($data = $mform->get_data()) {
             set_user_preference('filerenamingpattern', $data->filerenamingpattern);
-            set_user_preference('clean_filerenaming', $data->clean_filerenaming);
             set_user_preference('prevent_nameextension', $data->prevent_nameextension);
+            set_user_preference('clean_filerenaming', $data->clean_filerenaming);
+            set_user_preference('submissionneweras', $data->submissionneweras);
             set_user_preference('nameofziparchive', $data->nameofziparchive);
             set_user_preference('downloadtype_submissions', $data->downloadtype_submissions);
             set_user_preference('downloadtype_feedbacks', $data->downloadtype_feedbacks);
@@ -315,6 +320,7 @@ class filerenaming extends assign {
             $data->filerenamingpattern = $this->get_filenamingscheme($cmid, $userid, $tablename);
             $data->clean_filerenaming = $this->get_cleanfilename_as_bool($cmid, $userid, $tablename);
             $data->prevent_nameextension = $this->get_preventnameextension_as_bool($cmid, $userid, $tablename);
+            $data->submissionneweras = $this->get_submission_neweras_setting($cmid, $userid, $tablename);
             $data->nameofziparchive = $this->get_zipnamingscheme($cmid, $userid, $tablename);
         }
         return $data;
@@ -447,6 +453,43 @@ class filerenaming extends assign {
     }
 
     /**
+     * Returns the last submission newer as date setting
+     *
+     * @param int $cmid int coursemodule id
+     * @param int $userid int user id
+     * @param string $tablename string table name
+     * @return string date as string or info text
+     */
+    private function get_submission_neweras_date($cmid, $userid, $tablename) {
+        global $DB;
+        $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
+        if ($databaseentry && $databaseentry->lastsubneweras !== null) {
+            return userdate($databaseentry->lastsubneweras);
+        } else if ($databaseentry && $databaseentry->lastsubneweras === null) {
+            return get_string('functionnotused', 'local_assignsubmission_download');
+        } else {
+            return get_string('nodownloadsyet', 'local_assignsubmission_download');
+        }
+    }
+
+    /**
+     * Return the last submission newer as setting as int from database, 0 if not set
+     *
+     * @param int $cmid int coursemodule id
+     * @param int $userid int user id
+     * @param string $tablename string table name
+     * @return int date setting as int, 0 if not set
+     */
+    private function get_submission_neweras_setting($cmid, $userid, $tablename): int {
+        global $DB;
+        $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
+        if ($databaseentry && $databaseentry->lastsubneweras !== null) {
+            return $databaseentry->lastsubneweras;
+        }
+        return 0;
+    }
+
+    /**
      * Return the last group setting for module and user as string from database
      * @param int $cmid int coursemodule id
      * @param int $userid int user id
@@ -505,9 +548,10 @@ class filerenaming extends assign {
      * @param string $filenamingscheme string filenaming scheme
      * @param int $preventnameextension int prevent name extension setting
      * @param int $cleanfilenames int clean filename setting
-     * @param string $zipnamingscheme string zip naming scheme
+     * @param int|null $submissionneweras submission newer as date setting
      * @param string|null $coursegroupname course group name
      * @param string|null $coursegroupingname course grouping name
+     * @param string $zipnamingscheme string zip naming scheme
      * @return void
      */
     public function update_database_entry(
@@ -517,9 +561,10 @@ class filerenaming extends assign {
         $filenamingscheme,
         $preventnameextension,
         $cleanfilenames,
-        $zipnamingscheme,
+        $submissionneweras,
         $coursegroupname,
-        $coursegroupingname
+        $coursegroupingname,
+        $zipnamingscheme
     ) {
         global $DB;
         $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
@@ -527,6 +572,7 @@ class filerenaming extends assign {
             $databaseentry->filenamingscheme = $filenamingscheme;
             $databaseentry->preventnameextension = $preventnameextension;
             $databaseentry->cleanfilenames = $cleanfilenames;
+            $databaseentry->lastsubneweras = $submissionneweras;
             $databaseentry->choosegroup = $coursegroupname;
             $databaseentry->choosegrouping = $coursegroupingname;
             $databaseentry->zipnamingscheme = $zipnamingscheme;
@@ -538,6 +584,7 @@ class filerenaming extends assign {
             $databaseentry->filenamingscheme = $filenamingscheme;
             $databaseentry->preventnameextension = $preventnameextension;
             $databaseentry->cleanfilenames = $cleanfilenames;
+            $databaseentry->lastsubneweras = $submissionneweras;
             $databaseentry->choosegroup = $coursegroupname;
             $databaseentry->choosegrouping = $coursegroupingname;
             $databaseentry->zipnamingscheme = $zipnamingscheme;
@@ -591,6 +638,7 @@ class filerenaming extends assign {
         $filenamingscheme = get_user_preferences('filerenamingpattern', '');
         $preventnameextension = get_user_preferences('prevent_nameextension', '');
         $cleanfilename = get_user_preferences('clean_filerenaming', '');
+        $submissionneweras = get_user_preferences('submissionneweras', 0);
         $ziparchivename = get_user_preferences('nameofziparchive', '');
         $groupname = $groupid ? format_string(groups_get_group_name($groupid)) : null;
         $groupingname = $groupingid ? format_string(groups_get_grouping_name($groupingid)) : null;
@@ -601,9 +649,10 @@ class filerenaming extends assign {
             $filenamingscheme,
             (int) $preventnameextension,
             (int) $cleanfilename,
-            $ziparchivename,
+            $submissionneweras,
             $groupname,
-            $groupingname
+            $groupingname,
+            $ziparchivename
         );
     }
 
@@ -1038,16 +1087,29 @@ class filerenaming extends assign {
             );
             $result .= $this->get_renderer()->render($header);
 
-            // Print nosubmissionneweras warning if files were found and $submissionneweras was set.
-            // Otherwise print nosubmission warning.
+            // Print warning with date if files were found and $submissionneweras was set.
+            // Otherwise print normale warning.
+            // Depending on if submissions or feedbacks were downloaded.
             if ((isset($pluginfiles) && count($pluginfiles) > 0) || $submissionneweras > 0) {
-                $result .= $this->get_renderer()->notification(get_string(
-                    'nosubmissionneweras',
-                    'local_assignsubmission_download',
-                    userdate($submissionneweras)
-                ));
+                if ($downloadsubmissions) {
+                    $result .= $this->get_renderer()->notification(get_string(
+                        'nosubmissionneweras',
+                        'local_assignsubmission_download',
+                        userdate($submissionneweras)
+                    ));
+                } else {
+                    $result .= $this->get_renderer()->notification(get_string(
+                        'nofeedbackneweras',
+                        'local_assignsubmission_download',
+                        userdate($submissionneweras)
+                    ));
+                }
             } else {
-                $result .= $this->get_renderer()->notification(get_string('nosubmission', 'assign'));
+                if ($downloadsubmissions) {
+                    $result .= $this->get_renderer()->notification(get_string('nosubmission', 'assign'));
+                } else {
+                    $result .= $this->get_renderer()->notification(get_string('nofeedback', 'local_assignsubmission_download'));
+                }
             }
 
             $url = new moodle_url('/mod/assign/view.php', ['id' => $this->get_course_module()->id,

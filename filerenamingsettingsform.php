@@ -298,6 +298,10 @@ class mod_assign_filerenaming_settings_form extends moodleform {
             'clean_filerenaming',
             'local_assignsubmission_download'
         ), $this->_customdata['lastcleanfilename']);
+        $mform->addElement('static', 'lastsubmissionneweras', get_string(
+            'submissionneweras',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastsubneweras']);
         if (($groupmode != NOGROUPS)) {
             $mform->addElement('static', 'lastgrouping', get_string(
                 'labelgrouping',
@@ -315,7 +319,7 @@ class mod_assign_filerenaming_settings_form extends moodleform {
 
         $mform->closeHeaderBefore('lastfeedbacksettings');
 
-        // Add new collabsible area for settings of last submissions download.
+        // Add new collabsible area for settings of last feedback file download.
         $mform->addElement(
             'header',
             'lastfeedbacksettings',
@@ -336,6 +340,10 @@ class mod_assign_filerenaming_settings_form extends moodleform {
             'clean_filerenaming',
             'local_assignsubmission_download'
         ), $this->_customdata['lastcleanfilenamefeedback']);
+        $mform->addElement('static', 'lastsubmissionneweras', get_string(
+            'submissionneweras',
+            'local_assignsubmission_download'
+        ), $this->_customdata['lastsubnewerasfeedback']);
         if (($groupmode != NOGROUPS)) {
             $mform->addElement('static', 'lastgrouping', get_string(
                 'labelgrouping',

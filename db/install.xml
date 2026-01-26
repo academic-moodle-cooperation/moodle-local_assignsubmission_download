@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/assignsubmission_download/db" VERSION="20250403" COMMENT="XMLDB file for Moodle local/assignsubmission_download"
+<XMLDB PATH="local/assignsubmission_download/db" VERSION="20251008" COMMENT="XMLDB file for Moodle local/assignsubmission_download"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -13,6 +13,7 @@
         <FIELD NAME="filenamingscheme" TYPE="char" LENGTH="200" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="preventnameextension" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="cleanfilenames" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="lastsubneweras" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Download setting for option &quot;Download submission newer as&quot;"/>
         <FIELD NAME="choosegrouping" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="Setting to choose from specific grouping"/>
         <FIELD NAME="choosegroup" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="Setting to choose specific group"/>
         <FIELD NAME="zipnamingscheme" TYPE="char" LENGTH="200" NOTNULL="false" SEQUENCE="false" COMMENT="Naming scheme for ZIP archive"/>
@@ -34,6 +35,7 @@
         <FIELD NAME="filenamingscheme" TYPE="char" LENGTH="200" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="preventnameextension" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="cleanfilenames" TYPE="int" LENGTH="2" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="lastsubneweras" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Download setting for option &quot;Download submission newer as&quot;"/>
         <FIELD NAME="choosegrouping" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="choosegroup" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="zipnamingscheme" TYPE="char" LENGTH="200" NOTNULL="false" SEQUENCE="false"/>
