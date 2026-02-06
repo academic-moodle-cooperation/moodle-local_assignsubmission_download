@@ -26,6 +26,8 @@ final class locallib_test extends \advanced_testcase {
     /**
      * Basic smoke test for filerenaming_rename_file.
      * Ensures common placeholders are replaced correctly for non-blind marking.
+     *
+     * @covers ::filerenaming_rename_file
      */
     public function test_filerenaming_rename_file_basic(): void {
         global $CFG;
@@ -92,6 +94,8 @@ final class locallib_test extends \advanced_testcase {
     /**
      * Japanese-specific fields test.
      * Ensures username, phonetic names, and alternatename are correctly substituted.
+     *
+     * @covers ::filerenaming_rename_file
      */
     public function test_filerenaming_rename_file_japanese_fields(): void {
         global $CFG;
@@ -155,6 +159,8 @@ final class locallib_test extends \advanced_testcase {
     /**
      * Comprehensive pattern test covering all supported tags.
      * Verifies replacement for id/name fields, group, file number, assignment/course, and date/time.
+     *
+     * @covers ::filerenaming_rename_file
      */
     public function test_filerenaming_rename_file_all_tags(): void {
         global $CFG;
@@ -258,5 +264,84 @@ final class locallib_test extends \advanced_testcase {
         $expected .= '.tar.gz';
 
         $this->assertSame($expected, $result);
+    }
+
+    /**
+     * Tests clean_custom() with accented characters.
+     * Covers behavior with clean_filerenaming disabled and enabled.
+     *
+     * @covers ::clean_custom
+     */
+    public function test_clean_custom_with_accented_characters(): void {
+        $this->resetAfterTest(true);
+
+        // Require needed libs.
+        require_once(dirname(__DIR__) . '/locallib.php');
+
+        // Test case 1: clean_filerenaming DISABLED (only German umlauts replaced, specialtoascii NOT called).
+        set_user_preference('clean_filerenaming', 0);
+        $filenamewithaccents = 'Müller_Françoïs.pdf';
+        $resultwithoutclean = clean_custom($filenamewithaccents);
+
+        // Expected: Only German umlauts replaced (ü->ue); other accents preserved.
+        $this->assertSame('Mueller_Françoïs.pdf', $resultwithoutclean);
+
+        // Test case 2: clean_filerenaming ENABLED (specialtoascii converts all accents, then special chars are replaced).
+        set_user_preference('clean_filerenaming', 1);
+        $filenamewithaccents = 'Müller_Françoïs.pdf';
+        $resultwithclean = clean_custom($filenamewithaccents);
+
+        // Expected: All accented characters are converted via specialtoascii.
+        $this->assertSame('Mueller_Francois.pdf', $resultwithclean);
+    }
+
+    /**
+     * Tests clean_custom() with a set of European accented filenames.
+     * Behavior differs based on clean_filerenaming setting.
+     *
+     * @covers ::clean_custom
+     */
+    public function test_clean_custom_various_european_accents(): void {
+        $this->resetAfterTest(true);
+
+        // Require needed libs.
+        require_once(dirname(__DIR__) . '/locallib.php');
+
+        // Test with various European characters.
+        // With clean_filerenaming DISABLED: Only German umlauts are replaced, others preserved.
+        // With clean_filerenaming ENABLED: All accents converted via specialtoascii(), then special chars removed.
+        $testcases = [
+            // Spanish: á, é, í, ó, ú, ñ - NOT German umlauts, so preserved when disabled.
+            'García.pdf' => ['disabled' => 'García.pdf', 'enabled' => 'Garcia.pdf'],
+            'López.pdf' => ['disabled' => 'López.pdf', 'enabled' => 'Lopez.pdf'],
+            // Polish: ł, ą, ć, ę, ń, ó, ś, ź, ż - NOT German umlauts, so preserved when disabled.
+            'Żółw.pdf' => ['disabled' => 'Żółw.pdf', 'enabled' => 'Zolw.pdf'],
+            // Portuguese: ã, õ, ç - NOT German umlauts, so preserved when disabled (except space->underscore).
+            'São_Paulo.pdf' => ['disabled' => 'São_Paulo.pdf', 'enabled' => 'Sao_Paulo.pdf'],
+            // Czech: č, ř, š, ž - NOT German umlauts, so preserved when disabled.
+            'Čech.pdf' => ['disabled' => 'Čech.pdf', 'enabled' => 'Cech.pdf'],
+            // German umlauts ARE replaced even when disabled.
+            'Müller.pdf' => ['disabled' => 'Mueller.pdf', 'enabled' => 'Mueller.pdf'],
+        ];
+
+        foreach ($testcases as $input => $expected) {
+            // Test without clean_filerenaming (only German umlauts replaced, specialtoascii NOT called).
+            set_user_preference('clean_filerenaming', 0);
+            $resultwithoutclean = clean_custom($input);
+            $this->assertSame(
+                $expected['disabled'],
+                $resultwithoutclean,
+                "Failed for '$input' without clean_filerenaming setting. Got: '$resultwithoutclean'"
+            );
+
+            // Test with clean_filerenaming (specialtoascii converts all accents).
+            set_user_preference('clean_filerenaming', 1);
+            $resultwithclean = clean_custom($input);
+            $this->assertSame(
+                $expected['enabled'],
+                $resultwithclean,
+                "Failed for '$input' with clean_filerenaming setting. Got: '$resultwithclean'"
+            );
+        }
     }
 }
