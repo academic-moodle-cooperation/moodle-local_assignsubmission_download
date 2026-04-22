@@ -389,7 +389,7 @@ class filerenaming extends assign {
      * @return string
      */
     private function int_to_string($int) {
-        return $int ? 'yes' : 'no';
+        return $int ? get_string('yes') : get_string('no');
     }
 
     /**
