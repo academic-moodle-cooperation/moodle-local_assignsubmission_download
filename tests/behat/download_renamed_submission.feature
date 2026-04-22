@@ -59,8 +59,8 @@ Feature: Testing the download of renamed submissions.
     And I should see "ZIP_[assignmentname]_[currentdate]" in the "#id_lastdownloadsettings" "css_element"
     And I should see "1 October 2025" in the "#id_lastdownloadsettings" "css_element"
     And I should see "6:00 PM" in the "#id_lastdownloadsettings" "css_element"
-    And I should see "no" in the "#fitem_id_lastpreventextension" "css_element"
-    And I should see "yes" in the "#fitem_id_lastcleanfilenames" "css_element"
+    And I should see "No" in the "#fitem_id_lastpreventextension" "css_element"
+    And I should see "Yes" in the "#fitem_id_lastcleanfilenames" "css_element"
     And I should see "no downloads yet" in the "#id_lastfeedbacksettings" "css_element"
 
   @javascript @feedback
@@ -94,8 +94,8 @@ Feature: Testing the download of renamed submissions.
     And I should not see "no downloads yet" in the "#id_lastfeedbacksettings" "css_element"
     And I should see "FB_[lastname]_[filenumber]" in the "#id_lastfeedbacksettings" "css_element"
     And I should see "FBZIP_[assignmentname]_[currenttime]" in the "#id_lastfeedbacksettings" "css_element"
-    And I should see "yes" in the "#id_lastfeedbacksettings #fitem_id_lastpreventextension" "css_element"
-    And I should see "no" in the "#id_lastfeedbacksettings #fitem_id_lastcleanfilenames" "css_element"
+    And I should see "Yes" in the "#id_lastfeedbacksettings #fitem_id_lastpreventextension" "css_element"
+    And I should see "No" in the "#id_lastfeedbacksettings #fitem_id_lastcleanfilenames" "css_element"
     And I should see "no downloads yet" in the "#id_lastdownloadsettings" "css_element"
 
   @javascript @feedback @error
