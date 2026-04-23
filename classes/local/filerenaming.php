@@ -267,15 +267,6 @@ class filerenaming extends assign {
         $mform = $this->get_filenrenaming_form();
 
         if ($data = $mform->get_data()) {
-            set_user_preference('filerenamingpattern', $data->filerenamingpattern);
-            set_user_preference('prevent_nameextension', $data->prevent_nameextension);
-            set_user_preference('clean_filerenaming', $data->clean_filerenaming);
-            set_user_preference('submissionneweras', $data->submissionneweras);
-            set_user_preference('nameofziparchive', $data->nameofziparchive);
-            set_user_preference('downloadtype_submissions', $data->downloadtype_submissions);
-            set_user_preference('downloadtype_feedbacks', $data->downloadtype_feedbacks);
-
-            // Download submissions.
             if (!isset($data->coursegroup)) {
                 $data->coursegroup = 0;
             }
@@ -288,6 +279,24 @@ class filerenaming extends assign {
             if (!isset($data->onegroupsubmission)) {
                 $data->onegroupsubmission = 0;
             }
+
+            $downloadsettings = (object) [
+                'filenamingscheme' => $data->filerenamingpattern,
+                'preventnameextension' => (int) $data->prevent_nameextension,
+                'cleanfilenames' => (int) $data->clean_filerenaming,
+                'submissionneweras' => $data->submissionneweras > 0 ? (int) $data->submissionneweras : null,
+                'zipnamingscheme' => $data->nameofziparchive,
+            ];
+
+            set_user_preference('filerenamingpattern', $data->filerenamingpattern);
+            set_user_preference('prevent_nameextension', $data->prevent_nameextension);
+            set_user_preference('clean_filerenaming', $data->clean_filerenaming);
+            set_user_preference('submissionneweras', $data->submissionneweras);
+            set_user_preference('nameofziparchive', $data->nameofziparchive);
+            set_user_preference('downloadtype_submissions', $data->downloadtype_submissions);
+            set_user_preference('downloadtype_feedbacks', $data->downloadtype_feedbacks);
+
+            // Download submissions.
             $downloadsubmissions = $data->downloadtype_submissions == '1';
             $downloadfeedbacks = $data->downloadtype_feedbacks == '1';
             if (isset($data->submittodownload)) {
@@ -298,7 +307,8 @@ class filerenaming extends assign {
                     $downloadsubmissions,
                     $downloadfeedbacks,
                     $data->prevent_nameextension,
-                    $data->onegroupsubmission
+                    $data->onegroupsubmission,
+                    $downloadsettings
                 );
             }
         }
@@ -632,27 +642,23 @@ class filerenaming extends assign {
      * @param int $userid int user id
      * @param int $groupid int group id
      * @param int $groupingid int grouping id
+     * @param stdClass $downloadsettings current download settings to persist
      * @return void
      */
-    private function handle_download_settings($tablename, $cmid, $userid, $groupid, $groupingid) {
-        $filenamingscheme = get_user_preferences('filerenamingpattern', '');
-        $preventnameextension = get_user_preferences('prevent_nameextension', '');
-        $cleanfilename = get_user_preferences('clean_filerenaming', '');
-        $submissionneweras = get_user_preferences('submissionneweras', 0);
-        $ziparchivename = get_user_preferences('nameofziparchive', '');
+    private function handle_download_settings($tablename, $cmid, $userid, $groupid, $groupingid, $downloadsettings) {
         $groupname = $groupid ? format_string(groups_get_group_name($groupid)) : null;
         $groupingname = $groupingid ? format_string(groups_get_grouping_name($groupingid)) : null;
         $this->update_database_entry(
             $cmid,
             $userid,
             $tablename,
-            $filenamingscheme,
-            (int) $preventnameextension,
-            (int) $cleanfilename,
-            $submissionneweras,
+            $downloadsettings->filenamingscheme,
+            $downloadsettings->preventnameextension,
+            $downloadsettings->cleanfilenames,
+            $downloadsettings->submissionneweras,
             $groupname,
             $groupingname,
-            $ziparchivename
+            $downloadsettings->zipnamingscheme
         );
     }
 
@@ -695,6 +701,7 @@ class filerenaming extends assign {
      * @param mixed $downloadfeedbacks
      * @param bool $preventnameextension Select if the automatic extension of file names should be prevented.
      * @param bool $onegroupsubmission Select if only one submission per group should be downloaded.
+     * @param stdClass|null $downloadsettings current download settings to persist after a successful download
      * @return string - If an error occurs, this will contain the error page.
      */
     protected function download_submissions(
@@ -704,13 +711,24 @@ class filerenaming extends assign {
         $downloadsubmissions = true,
         $downloadfeedbacks = false,
         $preventnameextension = false,
-        $onegroupsubmission = false
+        $onegroupsubmission = false,
+        $downloadsettings = null
     ) {
         global $CFG, $USER;
 
         // More efficient to load this here.
         require_once($CFG->libdir . '/filelib.php');
         require_once($CFG->dirroot . '/local/assignsubmission_download/locallib.php');
+
+        if ($downloadsettings === null) {
+            $downloadsettings = (object) [
+                'filenamingscheme' => get_user_preferences('filerenamingpattern', ''),
+                'preventnameextension' => (int) get_user_preferences('prevent_nameextension', ''),
+                'cleanfilenames' => (int) get_user_preferences('clean_filerenaming', ''),
+                'submissionneweras' => $submissionneweras > 0 ? (int) $submissionneweras : null,
+                'zipnamingscheme' => get_user_preferences('nameofziparchive', ''),
+            ];
+        }
 
         // Increase the server timeout to handle the creation and sending of large zip files.
         core_php_time_limit::raise();
@@ -1127,7 +1145,8 @@ class filerenaming extends assign {
                     $this->get_course_module()->id,
                     $USER->id,
                     $groupid,
-                    $groupingid
+                    $groupingid,
+                    $downloadsettings
                 );
             }
             if ($downloadfeedbacks) {
@@ -1137,7 +1156,8 @@ class filerenaming extends assign {
                     $this->get_course_module()->id,
                     $USER->id,
                     $groupid,
-                    $groupingid
+                    $groupingid,
+                    $downloadsettings
                 );
             }
             \mod_assign\event\all_submissions_downloaded::create_from_assign($this)->trigger();
