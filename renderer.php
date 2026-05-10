@@ -39,7 +39,7 @@ class local_assignsubmission_download_renderer extends plugin_renderer_base {
      */
     public function render_printpreview_table(printpreview_table $table) {
         $o = '';
-        $o .= $this->output->box_start('boxaligncenter gradingtable');
+        $o .= html_writer::start_tag('div', ['class' => 'box py-3 boxaligncenter gradingtable']);
 
         $this->page->requires->js_init_call('M.mod_assign.init_grading_table', []);
         $this->page->requires->string_for_js('nousersselected', 'assign');
@@ -60,7 +60,7 @@ class local_assignsubmission_download_renderer extends plugin_renderer_base {
             }
         }
         $o .= $this->flexible_table($table, $table->get_rows_per_page(), true);
-        $o .= $this->output->box_end();
+        $o .= html_writer::end_tag('div');
 
         return $o;
     }
