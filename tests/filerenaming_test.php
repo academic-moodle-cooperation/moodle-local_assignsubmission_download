@@ -66,6 +66,7 @@ final class filerenaming_test extends \advanced_testcase {
             'preventnameextension' => 1,
             'cleanfilenames' => 0,
             'submissionneweras' => $timestamp,
+            'splitgroupsintofolders' => 1,
             'zipnamingscheme' => 'ZIP_[assignmentname]',
         ];
 
@@ -86,6 +87,7 @@ final class filerenaming_test extends \advanced_testcase {
             MUST_EXIST
         );
         $this->assertSame($timestamp, (int) $record->lastsubneweras);
+        $this->assertSame(1, (int) $record->splitgroupsintofolders);
         $this->assertSame(
             userdate($timestamp),
             $displaymethod->invoke($filerenaming, $cm->id, $teacher->id, 'local_assignsubmission_download')

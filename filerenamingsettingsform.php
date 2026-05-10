@@ -158,6 +158,16 @@ class mod_assign_filerenaming_settings_form extends moodleform {
 
         $groupmode = groups_get_activity_groupmode($cm);
 
+        if (($groupmode != NOGROUPS)) {
+            $mform->addElement(
+                'advcheckbox',
+                'splitgroupsintofolders',
+                get_string('splitgroupsintofolders', 'local_assignsubmission_download'),
+                ' '
+            );
+            $mform->addHelpButton('splitgroupsintofolders', 'splitgroupsintofolders', 'local_assignsubmission_download');
+        }
+
         $course = $PAGE->course;
         $activitygroupings = groups_get_all_groupings($course->id);
 
@@ -311,6 +321,10 @@ class mod_assign_filerenaming_settings_form extends moodleform {
                 'labelgroup',
                 'local_assignsubmission_download'
             ), $this->_customdata['lastgroup']);
+            $mform->addElement('static', 'lastsplitgroupsintofolders', get_string(
+                'splitgroupsintofolders',
+                'local_assignsubmission_download'
+            ), $this->_customdata['lastsplitgroupsintofolders']);
         }
         $mform->addElement('static', 'lastziparchivescheme', get_string(
             'nameofziparchive',
@@ -353,6 +367,10 @@ class mod_assign_filerenaming_settings_form extends moodleform {
                 'labelgroup',
                 'local_assignsubmission_download'
             ), $this->_customdata['lastgroupfeedback']);
+            $mform->addElement('static', 'lastsplitgroupsintofolders', get_string(
+                'splitgroupsintofolders',
+                'local_assignsubmission_download'
+            ), $this->_customdata['lastsplitgroupsintofoldersfeedback']);
         }
         $mform->addElement('static', 'lastziparchivescheme', get_string(
             'nameofziparchive',

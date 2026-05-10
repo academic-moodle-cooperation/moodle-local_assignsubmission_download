@@ -260,6 +260,28 @@ function xmldb_local_assignsubmission_download_upgrade($oldversion) {
         // Assignsubmission_download savepoint reached.
         upgrade_plugin_savepoint(true, 2025100600, 'local', 'assignsubmission_download');
     }
+    if ($oldversion < 2026042300) {
+        // Define field splitgroupsintofolders to be added to local_assignsubmission_download.
+        $table = new xmldb_table('local_assignsubmission_download');
+        $field = new xmldb_field('splitgroupsintofolders', XMLDB_TYPE_INTEGER, '2', null, null, null, null, 'choosegroup');
+
+        // Conditionally launch add field splitgroupsintofolders.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field splitgroupsintofolders to be added to local_assignsubmission_download_feedback.
+        $table = new xmldb_table('local_assignsubmission_download_feedback');
+        $field = new xmldb_field('splitgroupsintofolders', XMLDB_TYPE_INTEGER, '2', null, null, null, null, 'choosegroup');
+
+        // Conditionally launch add field splitgroupsintofolders.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Assignsubmission_download savepoint reached.
+        upgrade_plugin_savepoint(true, 2026042300, 'local', 'assignsubmission_download');
+    }
 
     return true;
 }

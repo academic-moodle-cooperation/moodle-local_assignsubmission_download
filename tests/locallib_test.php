@@ -344,4 +344,42 @@ final class locallib_test extends \advanced_testcase {
             );
         }
     }
+
+    /**
+     * Tests that group folder names are made unique and fall back to the group id when needed.
+     *
+     * @covers ::filerenaming_build_group_folder_map
+     */
+    public function test_filerenaming_build_group_folder_map(): void {
+        $this->resetAfterTest(true);
+
+        require_once(dirname(__DIR__) . '/locallib.php');
+
+        $groups = [
+            (object) ['id' => 1, 'name' => 'Group 1'],
+            (object) ['id' => 2, 'name' => 'Group 1'],
+            (object) ['id' => 3, 'name' => ''],
+        ];
+
+        $result = filerenaming_build_group_folder_map($groups);
+
+        $this->assertSame('Group 1/', $result[1]);
+        $this->assertSame('Group 1-1/', $result[2]);
+        $this->assertSame('group-3/', $result[3]);
+    }
+
+    /**
+     * Tests prefixing zip paths with a group folder path.
+     *
+     * @covers ::filerenaming_add_group_folder_to_path
+     */
+    public function test_filerenaming_add_group_folder_to_path(): void {
+        $this->resetAfterTest(true);
+
+        require_once(dirname(__DIR__) . '/locallib.php');
+
+        $this->assertSame('Group 1/file.txt', filerenaming_add_group_folder_to_path('file.txt', 'Group 1/'));
+        $this->assertSame('Group 1/sub/file.txt', filerenaming_add_group_folder_to_path('/sub/file.txt', 'Group 1/'));
+        $this->assertSame('file.txt', filerenaming_add_group_folder_to_path('file.txt', ''));
+    }
 }
