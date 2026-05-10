@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+5.2.0 (2026-04-23)
+------------------
+
+* Moodle 5.2 compatible version
+* [FIXED] #8679 Add missing German language strings
+* [FIXED] #8680 Fix wrong value for saved last download setting "submission newer as"
+* [FEATURE] #8353 New option to split group submissions into separate folders when downloading
+
 5.1.0 (2025-10-06)
 ------------------
 
