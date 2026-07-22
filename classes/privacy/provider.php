@@ -41,8 +41,8 @@ use core_privacy\local\request\approved_userlist;
  * @license       http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class provider implements
-    \core_privacy\local\request\core_userlist_provider,
     \core_privacy\local\metadata\provider,
+    \core_privacy\local\request\core_userlist_provider,
     \core_privacy\local\request\plugin\provider,
     user_preference_provider {
     // This plugin does store personal user data, even if its just user preferences.
