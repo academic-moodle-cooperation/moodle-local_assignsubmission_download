@@ -253,6 +253,50 @@ function clean_custom($filename) {
 }
 
 /**
+ * Build the folder map used when ZIP contents are split into group folders.
+ *
+ * @param \stdClass[] $groups groups keyed or indexed arbitrarily
+ * @return string[] map of group id to folder path ending with /
+ */
+function filerenaming_build_group_folder_map(array $groups) {
+    $foldermap = [];
+    $usedfoldernames = [];
+
+    foreach ($groups as $group) {
+        $basefoldername = clean_param(format_string($group->name), PARAM_FILE);
+        if ($basefoldername === '') {
+            $basefoldername = 'group-' . $group->id;
+        }
+
+        $foldername = $basefoldername;
+        $suffix = 1;
+        while (isset($usedfoldernames[$foldername])) {
+            $foldername = $basefoldername . '-' . $suffix++;
+        }
+
+        $usedfoldernames[$foldername] = true;
+        $foldermap[$group->id] = $foldername . '/';
+    }
+
+    return $foldermap;
+}
+
+/**
+ * Prefix a path in the ZIP archive with a group folder path.
+ *
+ * @param string $pathinzip relative path inside the zip archive
+ * @param string $groupfolderpath group folder path ending with /
+ * @return string
+ */
+function filerenaming_add_group_folder_to_path($pathinzip, $groupfolderpath) {
+    if ($groupfolderpath === '') {
+        return $pathinzip;
+    }
+
+    return $groupfolderpath . ltrim($pathinzip, '/');
+}
+
+/**
  * ZIP archive rename function
  * Function to rename the zip archive name based on the user name and pattern
  *

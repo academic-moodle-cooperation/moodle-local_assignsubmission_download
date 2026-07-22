@@ -206,6 +206,12 @@ class filerenaming extends assign {
             $lastgroupfeedback = $this->get_group($cmid, $userid, $feedbacktable);
             $lastgrouping = $this->get_grouping($cmid, $userid, $downloadtable);
             $lastgroupingfeedback = $this->get_grouping($cmid, $userid, $feedbacktable);
+            $lastsplitgroupsintofolders = $this->get_splitgroupsintofolders_as_string($cmid, $userid, $downloadtable);
+            $lastsplitgroupsintofoldersfeedback = $this->get_splitgroupsintofolders_as_string(
+                $cmid,
+                $userid,
+                $feedbacktable
+            );
             $lastzipnamingscheme = $this->get_zipnamingscheme($cmid, $userid, $downloadtable);
             $lastzipnamingschemefeedback = $this->get_zipnamingscheme($cmid, $userid, $feedbacktable);
 
@@ -233,6 +239,8 @@ class filerenaming extends assign {
                 'lastgroupfeedback' => $lastgroupfeedback,
                 'lastgrouping' => $lastgrouping,
                 'lastgroupingfeedback' => $lastgroupingfeedback,
+                'lastsplitgroupsintofolders' => $lastsplitgroupsintofolders,
+                'lastsplitgroupsintofoldersfeedback' => $lastsplitgroupsintofoldersfeedback,
                 'lastzipnamingscheme' => $lastzipnamingscheme,
                 'lastzipnamingschemefeedback' => $lastzipnamingschemefeedback,
             ];
@@ -279,12 +287,16 @@ class filerenaming extends assign {
             if (!isset($data->onegroupsubmission)) {
                 $data->onegroupsubmission = 0;
             }
+            if (!isset($data->splitgroupsintofolders)) {
+                $data->splitgroupsintofolders = 0;
+            }
 
             $downloadsettings = (object) [
                 'filenamingscheme' => $data->filerenamingpattern,
                 'preventnameextension' => (int) $data->prevent_nameextension,
                 'cleanfilenames' => (int) $data->clean_filerenaming,
                 'submissionneweras' => $data->submissionneweras > 0 ? (int) $data->submissionneweras : null,
+                'splitgroupsintofolders' => (int) $data->splitgroupsintofolders,
                 'zipnamingscheme' => $data->nameofziparchive,
             ];
 
@@ -295,6 +307,7 @@ class filerenaming extends assign {
             set_user_preference('nameofziparchive', $data->nameofziparchive);
             set_user_preference('downloadtype_submissions', $data->downloadtype_submissions);
             set_user_preference('downloadtype_feedbacks', $data->downloadtype_feedbacks);
+            set_user_preference('splitgroupsintofolders', $data->splitgroupsintofolders);
 
             // Download submissions.
             $downloadsubmissions = $data->downloadtype_submissions == '1';
@@ -332,6 +345,7 @@ class filerenaming extends assign {
             $data->prevent_nameextension = $this->get_preventnameextension_as_bool($cmid, $userid, $tablename);
             $data->submissionneweras = $this->get_submission_neweras_setting($cmid, $userid, $tablename);
             $data->nameofziparchive = $this->get_zipnamingscheme($cmid, $userid, $tablename);
+            $data->splitgroupsintofolders = $this->get_splitgroupsintofolders_as_bool($cmid, $userid, $tablename);
         }
         return $data;
     }
@@ -551,6 +565,38 @@ class filerenaming extends assign {
     }
 
     /**
+     * Return the last split-into-group-folders setting for module and user as string from database.
+     *
+     * @param int $cmid int coursemodule id
+     * @param int $userid int user id
+     * @param string $tablename
+     * @return string last split-into-group-folders setting as 'yes'/'no'
+     */
+    protected function get_splitgroupsintofolders_as_string($cmid, $userid, $tablename) {
+        global $DB;
+        $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
+        if ($databaseentry && ($databaseentry->splitgroupsintofolders ?? null) !== null) {
+            return $this->int_to_string($databaseentry->splitgroupsintofolders);
+        } else {
+            return get_string('nodownloadsyet', 'local_assignsubmission_download');
+        }
+    }
+
+    /**
+     * Return the last split-into-group-folders setting for module and user as boolean (int) from database.
+     *
+     * @param int $cmid int coursemodule id
+     * @param int $userid int user id
+     * @param string $tablename
+     * @return int (bool) last split-into-group-folders setting as 0/1
+     */
+    protected function get_splitgroupsintofolders_as_bool($cmid, $userid, $tablename) {
+        global $DB;
+        $databaseentry = $DB->get_record($tablename, ['userid' => $userid, 'cmid' => $cmid]);
+        return $databaseentry->splitgroupsintofolders ?? 0;
+    }
+
+    /**
      * Update or insert the database entry for the download settings
      * @param int $cmid int coursemodule id
      * @param int $userid int user id
@@ -561,6 +607,7 @@ class filerenaming extends assign {
      * @param int|null $submissionneweras submission newer as date setting
      * @param string|null $coursegroupname course group name
      * @param string|null $coursegroupingname course grouping name
+     * @param int $splitgroupsintofolders split files into folders per group setting
      * @param string $zipnamingscheme string zip naming scheme
      * @return void
      */
@@ -574,6 +621,7 @@ class filerenaming extends assign {
         $submissionneweras,
         $coursegroupname,
         $coursegroupingname,
+        $splitgroupsintofolders,
         $zipnamingscheme
     ) {
         global $DB;
@@ -585,6 +633,7 @@ class filerenaming extends assign {
             $databaseentry->lastsubneweras = $submissionneweras;
             $databaseentry->choosegroup = $coursegroupname;
             $databaseentry->choosegrouping = $coursegroupingname;
+            $databaseentry->splitgroupsintofolders = $splitgroupsintofolders;
             $databaseentry->zipnamingscheme = $zipnamingscheme;
             $DB->update_record($tablename, $databaseentry);
         } else {
@@ -597,6 +646,7 @@ class filerenaming extends assign {
             $databaseentry->lastsubneweras = $submissionneweras;
             $databaseentry->choosegroup = $coursegroupname;
             $databaseentry->choosegrouping = $coursegroupingname;
+            $databaseentry->splitgroupsintofolders = $splitgroupsintofolders;
             $databaseentry->zipnamingscheme = $zipnamingscheme;
             $DB->insert_record($tablename, $databaseentry);
         }
@@ -658,6 +708,7 @@ class filerenaming extends assign {
             $downloadsettings->submissionneweras,
             $groupname,
             $groupingname,
+            $downloadsettings->splitgroupsintofolders,
             $downloadsettings->zipnamingscheme
         );
     }
@@ -690,6 +741,79 @@ class filerenaming extends assign {
      */
     public function is_only_html_structure($content) {
         return $content == '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body></body></html>';
+    }
+
+    /**
+     * Return the relevant group folders for the current download.
+     *
+     * @param int $groupid selected group id
+     * @param int $groupingid selected grouping id
+     * @return array
+     */
+    private function get_group_folders_for_download($groupid, $groupingid) {
+        if (!groups_get_activity_groupmode($this->get_course_module())) {
+            return [];
+        }
+
+        if ($groupid) {
+            $group = groups_get_group($groupid);
+            if (!$group) {
+                return [];
+            }
+            $groups = [$group];
+        } else if ($groupingid) {
+            $groups = groups_get_all_groups($this->get_course()->id, 0, $groupingid);
+        } else {
+            $groups = groups_get_activity_allowed_groups($this->get_course_module());
+        }
+
+        if (empty($groups)) {
+            return [];
+        }
+
+        $foldermap = filerenaming_build_group_folder_map($groups);
+        $groupfolders = [];
+        foreach ($groups as $group) {
+            if (!isset($foldermap[$group->id])) {
+                continue;
+            }
+            $groupfolders[$group->id] = [
+                'name' => format_string($group->name),
+                'path' => $foldermap[$group->id],
+            ];
+        }
+
+        return $groupfolders;
+    }
+
+    /**
+     * Resolve the zip folder path for the current student/group combination.
+     *
+     * @param array $groupfolders group folder metadata keyed by group id
+     * @param string $groupname current resolved group name
+     * @param stdClass|false $submissiongroup current team submission group
+     * @return string
+     */
+    private function get_group_folder_path_for_download($groupfolders, $groupname, $submissiongroup = false) {
+        if ($submissiongroup && isset($groupfolders[$submissiongroup->id])) {
+            return $groupfolders[$submissiongroup->id]['path'];
+        }
+
+        if ($groupname === '') {
+            return '';
+        }
+
+        if (substr($groupname, -1) === '-') {
+            $groupname = substr($groupname, 0, -1);
+        }
+
+        foreach ($groupfolders as $groupfolder) {
+            if ($groupfolder['name'] === $groupname) {
+                return $groupfolder['path'];
+            }
+        }
+
+        return '';
     }
 
     /**
@@ -726,9 +850,11 @@ class filerenaming extends assign {
                 'preventnameextension' => (int) get_user_preferences('prevent_nameextension', ''),
                 'cleanfilenames' => (int) get_user_preferences('clean_filerenaming', ''),
                 'submissionneweras' => $submissionneweras > 0 ? (int) $submissionneweras : null,
+                'splitgroupsintofolders' => (int) get_user_preferences('splitgroupsintofolders', 0),
                 'zipnamingscheme' => get_user_preferences('nameofziparchive', ''),
             ];
         }
+        $splitgroupsintofolders = (bool) $downloadsettings->splitgroupsintofolders;
 
         // Increase the server timeout to handle the creation and sending of large zip files.
         core_php_time_limit::raise();
@@ -749,11 +875,13 @@ class filerenaming extends assign {
 
         // Build a list of files to zip.
         $filesforzipping = [];
+        $filesforzippingbyfolder = ['' => []];
 
         $groupmode = groups_get_activity_groupmode($this->get_course_module());
         // All users.
         $groupid = $coursegroup;
         $groupingid = $coursegrouping;
+        $groupfolders = $splitgroupsintofolders ? $this->get_group_folders_for_download($groupid, $groupingid) : [];
 
         $groupname = '';
         if ($groupmode) {
@@ -836,6 +964,19 @@ class filerenaming extends assign {
                     }
                 }
                 if ($submission) {
+                    $groupfolderpath = '';
+                    if ($splitgroupsintofolders) {
+                        $groupfolderpath = $this->get_group_folder_path_for_download(
+                            $groupfolders,
+                            $groupname,
+                            $submissiongroup
+                        );
+                    }
+                    if (!isset($filesforzippingbyfolder[$groupfolderpath])) {
+                        $filesforzippingbyfolder[$groupfolderpath] = [];
+                    }
+                    $folderfiles = &$filesforzippingbyfolder[$groupfolderpath];
+
                     $downloadasfolders = get_user_preferences('assign_downloadasfolders', 1);
                     // TODO is this ever been used / when did it last work? TBD whether it will be used - 15.06.2022.
                     $downloadasfolders = false;
@@ -884,12 +1025,17 @@ class filerenaming extends assign {
                                                 $submission,
                                                 $groupname,
                                                 $sequence++,
-                                                $filesforzipping,
+                                                $folderfiles,
                                                 $preventnameextension
                                             );
                                             // AMC moodle university code end.
                                             $pathfilename = clean_param($pathfilename, PARAM_PATH);
-                                            $filesforzipping[$pathfilename] = $file;
+                                            $groupedpathinzip = filerenaming_add_group_folder_to_path(
+                                                $pathfilename,
+                                                $groupfolderpath
+                                            );
+                                            $filesforzipping[$groupedpathinzip] = $file;
+                                            $folderfiles[$pathfilename] = true;
                                         }
                                     }
                                 } else {
@@ -932,12 +1078,17 @@ class filerenaming extends assign {
                                                         $submission,
                                                         $groupname,
                                                         $sequence,
-                                                        $filesforzipping,
+                                                        $folderfiles,
                                                         $preventnameextension
                                                     );
-                                                    $prefixedfilename = $dirname . '_files/' . $zipfilename;
-                                                    $filesforzipping[$prefixedfilename] = $file;
-                                                    $onlinetextfilestorename[$zipfilename] = $prefixedfilename;
+                                                    $relativepathinzip = $dirname . '_files/' . $zipfilename;
+                                                    $groupedpathinzip = filerenaming_add_group_folder_to_path(
+                                                        $relativepathinzip,
+                                                        $groupfolderpath
+                                                    );
+                                                    $filesforzipping[$groupedpathinzip] = $file;
+                                                    $folderfiles[$relativepathinzip] = true;
+                                                    $onlinetextfilestorename[$zipfilename] = $relativepathinzip;
                                                 } else {
                                                     $prefixedfilename = filerenaming_rename_file(
                                                         $prefixedfilename,
@@ -947,11 +1098,14 @@ class filerenaming extends assign {
                                                         $submission,
                                                         $groupname,
                                                         $sequence++,
-                                                        $filesforzipping,
+                                                        $folderfiles,
                                                         $preventnameextension
                                                     );
                                                     $onlinetextcontents = $file[0];
-                                                    $onlinetextfilename = $prefixedfilename;
+                                                    $onlinetextfilename = filerenaming_add_group_folder_to_path(
+                                                        $prefixedfilename,
+                                                        $groupfolderpath
+                                                    );
                                                 }
                                                 $onlinetextcontents = str_replace(
                                                     array_keys($onlinetextfilestorename),
@@ -959,8 +1113,12 @@ class filerenaming extends assign {
                                                     $onlinetextcontents
                                                 );
                                                 // Adds the onlinetext file only if it is not empty.
-                                                if (!$this->is_only_html_structure($onlinetextcontents)) {
+                                                if (
+                                                    !$this->is_only_html_structure($onlinetextcontents)
+                                                    && $onlinetextfilename !== ''
+                                                ) {
                                                     $filesforzipping[$onlinetextfilename] = [$onlinetextcontents];
+                                                    $folderfiles[$prefixedfilename] = true;
                                                 }
                                             } else {
                                                 $prefixedfilename = filerenaming_rename_file(
@@ -971,10 +1129,15 @@ class filerenaming extends assign {
                                                     $submission,
                                                     $groupname,
                                                     $sequence++,
-                                                    $filesforzipping,
+                                                    $folderfiles,
                                                     $preventnameextension
                                                 );
-                                                $filesforzipping[$prefixedfilename] = $file;
+                                                $groupedpathinzip = filerenaming_add_group_folder_to_path(
+                                                    $prefixedfilename,
+                                                    $groupfolderpath
+                                                );
+                                                $filesforzipping[$groupedpathinzip] = $file;
+                                                $folderfiles[$prefixedfilename] = true;
                                             }
                                         }
                                     }
@@ -1024,12 +1187,17 @@ class filerenaming extends assign {
                                                     $submission,
                                                     $groupname,
                                                     $sequence,
-                                                    $filesforzipping,
+                                                    $folderfiles,
                                                     $preventnameextension
                                                 );
-                                                $prefixedfilename = $dirname . '_files/' . $zipfilename;
-                                                $filesforzipping[$prefixedfilename] = $file;
-                                                $commentsfilestorename[$zipfilename] = $prefixedfilename;
+                                                $relativepathinzip = $dirname . '_files/' . $zipfilename;
+                                                $groupedpathinzip = filerenaming_add_group_folder_to_path(
+                                                    $relativepathinzip,
+                                                    $groupfolderpath
+                                                );
+                                                $filesforzipping[$groupedpathinzip] = $file;
+                                                $folderfiles[$relativepathinzip] = true;
+                                                $commentsfilestorename[$zipfilename] = $relativepathinzip;
                                             } else {
                                                 $prefixedfilename = clean_filename(/*$prefix .*/
                                                     '_' .
@@ -1046,10 +1214,15 @@ class filerenaming extends assign {
                                                     $submission,
                                                     $groupname,
                                                     $sequence++,
-                                                    $filesforzipping,
+                                                    $folderfiles,
                                                     $preventnameextension
                                                 );
-                                                $filesforzipping[$prefixedfilename] = $file;
+                                                $groupedpathinzip = filerenaming_add_group_folder_to_path(
+                                                    $prefixedfilename,
+                                                    $groupfolderpath
+                                                );
+                                                $filesforzipping[$groupedpathinzip] = $file;
+                                                $folderfiles[$prefixedfilename] = true;
                                             }
                                         }
                                     }
@@ -1081,21 +1254,28 @@ class filerenaming extends assign {
                                             $submission,
                                             $groupname,
                                             $sequence++,
-                                            $filesforzipping,
+                                            $folderfiles,
                                             $preventnameextension
                                         );
 
-                                        $filesforzipping[$prefixedfilename] = [$comments];
+                                        $groupedpathinzip = filerenaming_add_group_folder_to_path(
+                                            $prefixedfilename,
+                                            $groupfolderpath
+                                        );
+                                        $filesforzipping[$groupedpathinzip] = [$comments];
+                                        $folderfiles[$prefixedfilename] = true;
                                     }
                                 }
                             }
                         }
                     }
+                    unset($folderfiles);
                 }
             }
         }
         $result = '';
-        if (count($filesforzipping) == 0) {
+        $haszipcontent = count($filesforzipping) > 0 || ($splitgroupsintofolders && count($groupfolders) > 0);
+        if (!$haszipcontent) {
             $header = new assign_header(
                 $this->get_instance(),
                 $this->get_context(),
@@ -1166,6 +1346,12 @@ class filerenaming extends assign {
             \core\session\manager::write_close();
 
             $zipwriter = \core_files\archive_writer::get_stream_writer($zipname, \core_files\archive_writer::ZIP_WRITER);
+
+            if ($splitgroupsintofolders) {
+                foreach ($groupfolders as $groupfolder) {
+                    $zipwriter->add_file_from_string($groupfolder['path'], '');
+                }
+            }
 
             foreach ($filesforzipping as $pathinzip => $file) {
                 if ($file instanceof \stored_file) {

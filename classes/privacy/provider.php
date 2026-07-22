@@ -69,6 +69,7 @@ class provider implements
         $collection->add_user_preference('nameofziparchive', 'privacy:metadata:preference:nameofziparchive');
         $collection->add_user_preference('downloadtype_submissions', 'privacy:metadata:preference:downloadtype_submissions');
         $collection->add_user_preference('downloadtype_feedbacks', 'privacy:metadata:preference:downloadtype_feedbacks');
+        $collection->add_user_preference('splitgroupsintofolders', 'privacy:metadata:preference:splitgroupsintofolders');
 
         $collection->add_database_table(
             'local_assignsubmission_download',
@@ -82,6 +83,7 @@ class provider implements
                 'cleanfilenames' => 'privacy:metadata:local_assignsubm_download:cleanfilenames',
                 'choosegrouping' => 'privacy:metadata:local_assignsubm_download:choosegrouping',
                 'choosegroup' => 'privacy:metadata:local_assignsubm_download:choosegroup',
+                'splitgroupsintofolders' => 'privacy:metadata:local_assignsubm_download:splitgroupsintofolders',
                 'zipnamingscheme' => 'privacy:metadata:local_assignsubm_download:zipnamingscheme',
             ],
             'privacy:metadata:local_assignsubm_download',
@@ -99,6 +101,7 @@ class provider implements
                 'cleanfilenames' => 'privacy:metadata:local_assignsubm_feedback:cleanfilenames',
                 'choosegrouping' => 'privacy:metadata:local_assignsubm_feedback:choosegrouping',
                 'choosegroup' => 'privacy:metadata:local_assignsubm_feedback:choosegroup',
+                'splitgroupsintofolders' => 'privacy:metadata:local_assignsubm_feedback:splitgroupsintofolders',
                 'zipnamingscheme' => 'privacy:metadata:local_assignsubm_feedback:zipnamingscheme',
             ],
             'privacy:metadata:local_assignsubm_feedback',
@@ -253,6 +256,20 @@ class provider implements
                 'downloadtype_feedbacks',
                 $downloadtypefeedbacks,
                 $downloadtypefeedbacksdescription
+            );
+        }
+
+        $splitgroupsintofolders = get_user_preferences('splitgroupsintofolders', null, $userid);
+        if (null !== $splitgroupsintofolders) {
+            $splitgroupsintofoldersdescription = get_string(
+                'splitgroupsintofolders',
+                'local_assignsubmission_download'
+            );
+            writer::export_user_preference(
+                'local_assignsubmission_download',
+                'splitgroupsintofolders',
+                $splitgroupsintofolders,
+                $splitgroupsintofoldersdescription
             );
         }
     }
