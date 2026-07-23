@@ -149,8 +149,7 @@ class printpreview_table extends table_sql implements renderable {
         $fields .= 'uf.mailed as mailed, ';
         $fields .= 'uf.locked as locked, ';
         $fields .= 'uf.extensionduedate as extensionduedate, ';
-        $fields .= 'uf.workflowstate as workflowstate, ';
-        $fields .= 'uf.allocatedmarker as allocatedmarker ';
+        $fields .= 'uf.workflowstate as workflowstate ';
 
         $submissionmaxattempt = 'SELECT mxs.userid, MAX(mxs.attemptnumber) AS maxattempt
                                  FROM {assign_submission} mxs
@@ -204,16 +203,29 @@ class printpreview_table extends table_sql implements renderable {
             }
         }
 
-        if ($this->assignment->get_instance()->markingallocation) {
+        if ($this->assignment->get_instance()->markingworkflow && $this->assignment->get_instance()->markingallocation) {
             if (has_capability('mod/assign:manageallocations', $this->assignment->get_context())) {
                 // Check to see if marker filter is set.
                 $markerfilter = (int)get_user_preferences('assign_markerfilter', '');
                 if (!empty($markerfilter)) {
-                    $where .= ' AND uf.allocatedmarker = :markerid';
-                    $params['markerid'] = $markerfilter;
+                    $from .= ' LEFT JOIN {assign_allocated_marker} am
+                                     ON u.id = am.student
+                                    AND am.assignment = :assignmentid6 ';
+                    $params['assignmentid6'] = (int)$this->assignment->get_instance()->id;
+                    if ($markerfilter == ASSIGN_MARKER_FILTER_NO_MARKER) {
+                        $where .= ' AND am.marker IS NULL';
+                    } else {
+                        $where .= ' AND am.marker = :markerid';
+                        $params['markerid'] = $markerfilter;
+                    }
                 }
-            } else { // Only show users allocated to this marker.
-                $where .= ' AND uf.allocatedmarker = :markerid';
+            } else if (has_capability('mod/assign:grade', $this->assignment->get_context())) {
+                // Only show users allocated to this marker.
+                $from .= ' LEFT JOIN {assign_allocated_marker} am
+                                 ON u.id = am.student
+                                AND am.assignment = :assignmentid6 ';
+                $params['assignmentid6'] = (int)$this->assignment->get_instance()->id;
+                $where .= ' AND am.marker = :markerid';
                 $params['markerid'] = $USER->id;
             }
         }
